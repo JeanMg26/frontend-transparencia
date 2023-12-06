@@ -10,7 +10,7 @@
       // "@composables/*": ["./src/composables/*"],
       "@components/*": ["./src/components/*"],
       "@assets/*": ["./src/assets/*"],
-      // "@services/*": ["./src/services/*"],
+      "@services/*": ["./src/services/*"],
       "@utils/*": ["./src/utils/*"]
     }
   }

@@ -71,7 +71,7 @@ module.exports = configure(function (/* ctx */) {
         "@boot": path.join(__dirname, "./src/boot"),
         "@router": path.join(__dirname, "./src/router"),
         "@stores": path.join(__dirname, "./src/stores"),
-        // "@services": path.join(__dirname, "./src/services"),
+        "@services": path.join(__dirname, "./src/services"),
         "@interfaces": path.join(__dirname, "./src/interfaces"),
         // "@composables": path.join(__dirname, "./src/composables"),
         "@components": path.join(__dirname, "./src/components"),
