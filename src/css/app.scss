@@ -1,0 +1,84 @@
+// app global css in SCSS form
+
+// ******************* GLOBAL CLASS ****************
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/Nunito-Regular.woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/Nunito-Bold.woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+body {
+  // background-color: #f5f5f5;
+  // background-color: #fff;
+  font-family: "Nunito";
+  color: #526484 !important;
+}
+
+.item-expand {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.q-btn {
+  font-weight: normal !important;
+}
+
+.q-input {
+  .q-field__bottom {
+    padding-left: 0 !important;
+  }
+}
+
+.q-dialog-header {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.q-page-header {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.q-wp-100 {
+  width: 100px;
+}
+.q-wp-120 {
+  width: 120px;
+}
+.q-wp-140 {
+  width: 140px;
+}
+.q-wp-150 {
+  width: 150px;
+}
+
+.q-pl-30 {
+  padding-left: 30px;
+}
+
+// ****************** SideBar ****************
+.q-item__section--avatar {
+  &.icon-sidemenu {
+    min-width: 30px !important;
+  }
+}
+
+// **************** SiginIn *******************
+.q-label-input {
+  font-size: 0.9rem;
+  font-weight: 500;
+}

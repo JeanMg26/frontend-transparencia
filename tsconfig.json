@@ -1,0 +1,17 @@
+{
+  "extends": "@quasar/app-vite/tsconfig-preset",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@boot/*": ["./src/boot/*"],
+      "@stores/*": ["./src/stores/*"],
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@router/*": ["./src/router/*"],
+      // "@composables/*": ["./src/composables/*"],
+      "@components/*": ["./src/components/*"],
+      "@assets/*": ["./src/assets/*"],
+      // "@services/*": ["./src/services/*"],
+      "@utils/*": ["./src/utils/*"]
+    }
+  }
+}
