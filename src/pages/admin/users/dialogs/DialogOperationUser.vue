@@ -83,6 +83,7 @@ import { reactive, ref, watch } from "vue";
 import { createUserAPI } from "@services/api_rest";
 import { AxiosError } from "axios";
 import { useUser } from "@stores/User";
+import { notify } from "@utils/notify";
 
 // ++Props
 const props = defineProps({
@@ -112,6 +113,7 @@ const onSubmitUser = async () => {
       email: dataSend.email,
     });
     refDialog.value.hide();
+    notify("success", "Usuario creado correctamente.");
     userStore.isLoadingTable = true;
     await userStore.getUsersStore();
   } catch (error) {
