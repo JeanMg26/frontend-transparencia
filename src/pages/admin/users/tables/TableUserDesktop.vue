@@ -49,7 +49,7 @@
                 name="fa-regular fa-trash-can"
                 color="red"
                 class="cursor-pointer"
-                @click="openDialogDeleteUser()"
+                @click="openDialogDeleteUser(user)"
               >
                 <q-tooltip
                   anchor="top middle"
@@ -78,6 +78,10 @@
         </tr>
       </template>
     </tbody>
+    <!-- //++ INNER LOADING ++ -->
+    <q-inner-loading :showing="loadingTableState">
+      <q-spinner-bars size="35px" color="primary" />
+    </q-inner-loading>
   </q-markup-table>
   <!-- //++Pagination++ -->
   <q-pagination
@@ -113,6 +117,7 @@ const currentPage = ref<number>(1);
 
 //************* Functions Computed *************
 const listUsersState = computed(() => userStore.users);
+const loadingTableState = computed(() => userStore.isLoadingTable);
 </script>
 
 <style lang="scss" scoped>

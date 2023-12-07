@@ -24,7 +24,7 @@
     <!-- //++Dialog Operation++ -->
     <DialogOperationUser :openDialog="dialogUser" />
     <!-- //++Dialog Delete++ -->
-    <DialogDeleteUser :openDialog="dialogDeleteUser" />
+    <DialogDeleteUser :openDialog="dialogDeleteUser" :userSelect="userSelect" />
   </q-page>
   <!-- //************ INNER LOADING **************** -->
   <q-inner-loading :showing="loadingPageState">
@@ -40,19 +40,23 @@ import { useUser } from "@stores/User";
 import TableUserDesktop from "./tables/TableUserDesktop.vue";
 import DialogOperationUser from "./dialogs/DialogOperationUser.vue";
 import DialogDeleteUser from "./dialogs/DialogDeleteUser.vue";
+import { User } from "@interfaces/interface-store";
 
 // ****************** Constans *******************
 const userStore = useUser();
 const dialogUser = ref<boolean>(false);
 const dialogDeleteUser = ref<boolean>(false);
 
+const userSelect = ref<User>();
+
 // **************** Functions Template *******************
 const openDialogOperationUser = () => {
   dialogUser.value = !dialogUser.value;
 };
 
-const openDialogDeleteUser = () => {
+const openDialogDeleteUser = (user: User) => {
   console.log("click");
+  userSelect.value = user;
   dialogDeleteUser.value = !dialogDeleteUser.value;
 };
 

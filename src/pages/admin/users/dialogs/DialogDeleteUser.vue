@@ -1,18 +1,7 @@
 <template>
-  <q-dialog v-model="dialogDelete" persistent>
+  <q-dialog v-model="dialogDelete" persistent ref="refDialog">
     <q-card class="card-user">
       <q-card-section>
-        <div class="flex justify-between items-center">
-          <span class="text-header">Eliminar un usuario</span>
-          <q-icon
-            name="fa-solid fa-xmark"
-            class="cursor-pointer"
-            size="1rem"
-            v-close-popup
-          />
-        </div>
-      </q-card-section>
-      <q-card-section class="q-pt-none">
         <div class="flex column justify-center items-center">
           <q-icon
             name="fa-solid fa-circle-exclamation"
@@ -20,7 +9,10 @@
             size="2.5rem"
             class="q-mb-md"
           />
-          <span>¿Esta seguro que desea eliminar este usuario?</span>
+          <span>
+            ¿Esta seguro que desea eliminar al usuario
+            {{ userSelect?.username }} ?
+          </span>
         </div>
         <div class="btn-actions q-gutter-x-md q-mt-md">
           <q-btn
@@ -37,7 +29,7 @@
             color="red"
             label="Eliminar"
             size="0.9rem"
-            v-close-popup
+            @click="deleteUser()"
           />
         </div>
       </q-card-section>
@@ -46,10 +38,19 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from "vue";
+import { ref, watch, PropType } from "vue";
+import { deleteUserAPI } from "@services/api_rest";
+import { AxiosError } from "axios";
+import { User } from "@interfaces/interface-store";
+import { useUser } from "@stores/User";
+import { notify } from "@utils/notify";
 
 // ++Props
 const props = defineProps({
+  userSelect: {
+    type: Object as PropType<User>,
+    required: false,
+  },
   openDialog: {
     type: Boolean,
     required: true,
@@ -57,11 +58,23 @@ const props = defineProps({
 });
 
 // ***************** Constants *****************
+const userStore = useUser();
 const dialogDelete = ref<boolean>(false);
+const refDialog = ref<any>(null);
 
 // ****************** Functions API *******************
-const deleteUser = () => {
-  console.log("ok");
+const deleteUser = async () => {
+  try {
+    await deleteUserAPI(props.userSelect!.id);
+    refDialog.value.hide();
+    notify("success", "Usuario eliminado correctamente.");
+    userStore.isLoadingTable = true;
+    await userStore.getUsersStore();
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data);
+    }
+  }
 };
 
 // ****************** Functions LifeCycle ***************
@@ -76,6 +89,7 @@ watch(
 <style lang="scss" scoped>
 .card-user {
   width: 300px;
+  padding: 0 0.5rem;
 }
 .text-header {
   font-size: 1.1rem;

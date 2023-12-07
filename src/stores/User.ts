@@ -6,12 +6,14 @@ import { User } from "@interfaces/interface-store";
 interface UserState {
   users: User[];
   isLoadingPage: boolean;
+  isLoadingTable: boolean;
 }
 
 export const useUser = defineStore("user", {
   state: (): UserState => ({
     users: [],
     isLoadingPage: true,
+    isLoadingTable: true,
   }),
   actions: {
     // ++++++ List Users +++++++++++
@@ -20,6 +22,7 @@ export const useUser = defineStore("user", {
         const { data } = await getListUsersAPI();
         this.users = data.items;
         this.isLoadingPage = false;
+        this.isLoadingTable = false;
         console.log(data);
       } catch (error) {
         if (error instanceof AxiosError) {

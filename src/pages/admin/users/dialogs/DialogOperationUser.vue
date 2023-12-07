@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="dialogUser" persistent>
+  <q-dialog v-model="dialogUser" persistent ref="refDialog">
     <q-card class="card-user">
       <q-card-section>
         <div class="flex justify-between items-center">
@@ -12,7 +12,7 @@
           />
         </div>
       </q-card-section>
-      <q-form @submit="operationUser" greedy>
+      <q-form @submit="onSubmitUser" greedy>
         <q-card-section class="q-pt-none">
           <div class="row">
             <div class="col-12">
@@ -22,30 +22,20 @@
                 outlined
                 v-model="dataSend.username"
                 type="text"
+                maxlength="15"
                 placeholder="Ingresa tu nombre de usuario"
-                class="full-width"
+                class="q-mt-xs"
               />
             </div>
             <div class="col-12 q-mt-sm">
-              <span class="q-label-input">Nombre</span>
+              <span class="q-label-input">Nombres Completos</span>
               <q-input
                 dense
                 outlined
-                v-model="dataSend.first_name"
+                v-model="dataSend.fullname"
                 type="text"
                 placeholder="Ingresa tu nombre de usuario"
-                class="full-width"
-              />
-            </div>
-            <div class="col-12 q-mt-sm">
-              <span class="q-label-input">Apellidos</span>
-              <q-input
-                dense
-                outlined
-                v-model="dataSend.last_name"
-                type="text"
-                placeholder="Ingresa tu nombre de usuario"
-                class="full-width"
+                class="q-mt-xs"
               />
             </div>
             <div class="col-12 q-mt-sm">
@@ -54,29 +44,30 @@
                 dense
                 outlined
                 v-model="dataSend.email"
-                type="text"
+                type="email"
                 placeholder="Ingresa tu nombre de usuario"
-                class="full-width"
+                class="q-mt-xs"
               />
             </div>
             <!-- //++Button Actions++ -->
-            <div class="col-12 q-mt-md">
+            <div class="col-12 q-mt-lg">
               <div class="btn-actions q-gutter-x-md">
                 <q-btn
                   no-caps
                   unelevated
                   color="grey-6"
                   label="Cancelar"
-                  size="0.9rem"
+                  size="0.8rem"
                   v-close-popup
                 />
                 <q-btn
                   no-caps
                   unelevated
+                  :ripple="false"
                   color="primary"
+                  size="0.8rem"
                   label="Agregar"
-                  size="0.9rem"
-                  v-close-popup
+                  type="submit"
                 />
               </div>
             </div>
@@ -89,6 +80,9 @@
 
 <script setup lang="ts">
 import { reactive, ref, watch } from "vue";
+import { createUserAPI } from "@services/api_rest";
+import { AxiosError } from "axios";
+import { useUser } from "@stores/User";
 
 // ++Props
 const props = defineProps({
@@ -99,17 +93,32 @@ const props = defineProps({
 });
 
 // ***************** Constants *****************
+const userStore = useUser();
 const dialogUser = ref<boolean>(false);
+const refDialog = ref<any>(null);
 
 const dataSend = reactive({
   username: "",
-  first_name: "",
-  last_name: "",
+  fullname: "",
   email: "",
 });
 
 // ****************** Functions API *******************
-const operationUser = () => {
+const onSubmitUser = async () => {
+  try {
+    await createUserAPI({
+      name: dataSend.fullname,
+      username: dataSend.username,
+      email: dataSend.email,
+    });
+    refDialog.value.hide();
+    userStore.isLoadingTable = true;
+    await userStore.getUsersStore();
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data);
+    }
+  }
   console.log("ok");
 };
 
