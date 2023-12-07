@@ -6,328 +6,77 @@
         <th class="text-left">Nombre de Usuario</th>
         <th class="text-left">Nombres Completos</th>
         <th class="text-left">Correo Electrónico</th>
+        <th class="text-left">Estado</th>
         <th class="text-right">Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td class="text-left">Boris</td>
-        <td class="text-left">Boris Fisher</td>
-        <td class="text-left">boris@gmail.com</td>
-        <!-- //++Actions++ -->
-        <td class="text-right">
-          <div class="q-gutter-x-md">
-            <!-- //--Edit-- -->
-            <q-icon
-              name="fa-solid fa-edit"
-              color="primary"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
+      <template v-if="!listUsersState?.length">
+        <tr>
+          <td colspan="5">
+            <NoResults />
+          </td>
+        </tr>
+      </template>
+      <template v-if="listUsersState?.length">
+        <tr v-for="(user, index) in listUsersState" :key="index">
+          <td class="text-left">{{ user.username }}</td>
+          <td class="text-left">{{ user.name }}</td>
+          <td class="text-left">{{ user.email }}</td>
+          <td class="text-left">
+            <span v-if="user.active == 1" class="text-positive">Activo</span>
+            <span v-if="user.active == 0" class="text-red">Inactivo</span>
+          </td>
+          <!-- //++Actions++ -->
+          <td class="text-right">
+            <div class="q-gutter-x-md">
+              <!-- //--Edit-- -->
+              <q-icon
+                name="fa-solid fa-edit"
+                color="primary"
+                class="cursor-pointer"
               >
-                <span>Editar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Eliminar-- -->
-            <q-icon
-              name="fa-regular fa-trash-can"
-              color="red"
-              class="cursor-pointer"
-              @click="openDialogDeleteUser()"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
+                <q-tooltip
+                  anchor="top middle"
+                  self="bottom middle"
+                  :offset="[10, 10]"
+                >
+                  <span>Editar</span>
+                </q-tooltip>
+              </q-icon>
+              <!-- //--Eliminar-- -->
+              <q-icon
+                name="fa-regular fa-trash-can"
+                color="red"
+                class="cursor-pointer"
+                @click="openDialogDeleteUser()"
               >
-                <span>Eliminar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Reseat-- -->
-            <q-icon
-              name="fa-solid fa-power-off"
-              color="positive"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
+                <q-tooltip
+                  anchor="top middle"
+                  self="bottom middle"
+                  :offset="[10, 10]"
+                >
+                  <span>Eliminar</span>
+                </q-tooltip>
+              </q-icon>
+              <!-- //--Reseat-- -->
+              <q-icon
+                name="fa-solid fa-power-off"
+                color="positive"
+                class="cursor-pointer"
               >
-                <span>Resetar Contraseña</span>
-              </q-tooltip>
-            </q-icon>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-left">Boris</td>
-        <td class="text-left">Boris Fisher</td>
-        <td class="text-left">boris@gmail.com</td>
-        <!-- //++Actions++ -->
-        <td class="text-right">
-          <div class="q-gutter-x-md">
-            <!-- //--Edit-- -->
-            <q-icon
-              name="fa-solid fa-edit"
-              color="primary"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Editar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Eliminar-- -->
-            <q-icon
-              name="fa-regular fa-trash-can"
-              color="red"
-              class="cursor-pointer"
-              @click="openDialogDeleteUser()"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Eliminar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Reseat-- -->
-            <q-icon
-              name="fa-solid fa-power-off"
-              color="positive"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Resetar Contraseña</span>
-              </q-tooltip>
-            </q-icon>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-left">Boris</td>
-        <td class="text-left">Boris Fisher</td>
-        <td class="text-left">boris@gmail.com</td>
-        <!-- //++Actions++ -->
-        <td class="text-right">
-          <div class="q-gutter-x-md">
-            <!-- //--Edit-- -->
-            <q-icon
-              name="fa-solid fa-edit"
-              color="primary"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Editar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Eliminar-- -->
-            <q-icon
-              name="fa-regular fa-trash-can"
-              color="red"
-              class="cursor-pointer"
-              @click="openDialogDeleteUser()"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Eliminar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Reseat-- -->
-            <q-icon
-              name="fa-solid fa-power-off"
-              color="positive"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Resetar Contraseña</span>
-              </q-tooltip>
-            </q-icon>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-left">Boris</td>
-        <td class="text-left">Boris Fisher</td>
-        <td class="text-left">boris@gmail.com</td>
-        <!-- //++Actions++ -->
-        <td class="text-right">
-          <div class="q-gutter-x-md">
-            <!-- //--Edit-- -->
-            <q-icon
-              name="fa-solid fa-edit"
-              color="primary"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Editar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Eliminar-- -->
-            <q-icon
-              name="fa-regular fa-trash-can"
-              color="red"
-              class="cursor-pointer"
-              @click="openDialogDeleteUser()"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Eliminar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Reseat-- -->
-            <q-icon
-              name="fa-solid fa-power-off"
-              color="positive"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Resetar Contraseña</span>
-              </q-tooltip>
-            </q-icon>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-left">Boris</td>
-        <td class="text-left">Boris Fisher</td>
-        <td class="text-left">boris@gmail.com</td>
-        <!-- //++Actions++ -->
-        <td class="text-right">
-          <div class="q-gutter-x-md">
-            <!-- //--Edit-- -->
-            <q-icon
-              name="fa-solid fa-edit"
-              color="primary"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Editar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Eliminar-- -->
-            <q-icon
-              name="fa-regular fa-trash-can"
-              color="red"
-              class="cursor-pointer"
-              @click="openDialogDeleteUser()"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Eliminar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Reseat-- -->
-            <q-icon
-              name="fa-solid fa-power-off"
-              color="positive"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Resetar Contraseña</span>
-              </q-tooltip>
-            </q-icon>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="text-left">Boris</td>
-        <td class="text-left">Boris Fisher</td>
-        <td class="text-left">boris@gmail.com</td>
-        <!-- //++Actions++ -->
-        <td class="text-right">
-          <div class="q-gutter-x-md">
-            <!-- //--Edit-- -->
-            <q-icon
-              name="fa-solid fa-edit"
-              color="primary"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Editar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Eliminar-- -->
-            <q-icon
-              name="fa-regular fa-trash-can"
-              color="red"
-              class="cursor-pointer"
-              @click="openDialogDeleteUser()"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Eliminar</span>
-              </q-tooltip>
-            </q-icon>
-            <!-- //--Reseat-- -->
-            <q-icon
-              name="fa-solid fa-power-off"
-              color="positive"
-              class="cursor-pointer"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[10, 10]"
-              >
-                <span>Resetar Contraseña</span>
-              </q-tooltip>
-            </q-icon>
-          </div>
-        </td>
-      </tr>
+                <q-tooltip
+                  anchor="top middle"
+                  self="bottom middle"
+                  :offset="[10, 10]"
+                >
+                  <span>Resetar Contraseña</span>
+                </q-tooltip>
+              </q-icon>
+            </div>
+          </td>
+        </tr>
+      </template>
     </tbody>
   </q-markup-table>
   <!-- //++Pagination++ -->
@@ -346,7 +95,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useUser } from "@stores/User";
+import NoResults from "@components/others/NoResults.vue";
 
 // ++Props
 defineProps({
@@ -357,7 +108,11 @@ defineProps({
 });
 
 // ****************** Constants *****************
+const userStore = useUser();
 const currentPage = ref<number>(1);
+
+//************* Functions Computed *************
+const listUsersState = computed(() => userStore.users);
 </script>
 
 <style lang="scss" scoped>

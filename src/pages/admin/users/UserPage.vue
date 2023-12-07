@@ -1,5 +1,5 @@
 <template>
-  <q-page class="container">
+  <q-page v-if="!loadingPageState" class="container">
     <!-- //***************** HEADER **************** -->
     <div class="text-center q-my-md">
       <span class="q-page-header">Gestión de Usuarios</span>
@@ -26,10 +26,15 @@
     <!-- //++Dialog Delete++ -->
     <DialogDeleteUser :openDialog="dialogDeleteUser" />
   </q-page>
+  <!-- //************ INNER LOADING **************** -->
+  <q-inner-loading :showing="loadingPageState">
+    <q-spinner-bars size="50px" color="primary" />
+  </q-inner-loading>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
+import { useUser } from "@stores/User";
 
 // ++Components
 import TableUserDesktop from "./tables/TableUserDesktop.vue";
@@ -37,6 +42,7 @@ import DialogOperationUser from "./dialogs/DialogOperationUser.vue";
 import DialogDeleteUser from "./dialogs/DialogDeleteUser.vue";
 
 // ****************** Constans *******************
+const userStore = useUser();
 const dialogUser = ref<boolean>(false);
 const dialogDeleteUser = ref<boolean>(false);
 
@@ -49,6 +55,15 @@ const openDialogDeleteUser = () => {
   console.log("click");
   dialogDeleteUser.value = !dialogDeleteUser.value;
 };
+
+//************* Functions Computed *************
+const loadingPageState = computed(() => userStore.isLoadingPage);
+const listUsersState = computed(() => userStore.users);
+
+//************* Functions LifeCycle *************
+onMounted(async () => {
+  await userStore.getUsersStore();
+});
 </script>
 
 <style lang="scss" scoped></style>

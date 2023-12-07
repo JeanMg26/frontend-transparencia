@@ -1,4 +1,3 @@
-import { api } from "@boot/axios";
 import jwtAxios from "@services/jwt_axios";
 
 // ********************** AUTHENTICATE ************************
