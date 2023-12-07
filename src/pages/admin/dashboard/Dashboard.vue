@@ -11,15 +11,18 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { useUser } from "@stores/User";
 
 //***************** Constants *****************
 const loading = ref<boolean>(true);
+const userStore = useUser();
 
 //************* Functions LifeCycle *************
-onMounted(() => {
+onMounted(async () => {
   setTimeout(() => {
     loading.value = false;
   }, 500);
+  await userStore.getUsersStore();
 });
 </script>
 

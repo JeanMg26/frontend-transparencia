@@ -9,24 +9,29 @@
       <q-card flat bordered class="card-sigin">
         <q-card-section>
           <q-form @submit="onSignIn" greedy>
-            <!-- //++ Email ++ -->
+            <!-- //++ Username ++ -->
             <div class="form-group">
-              <span class="q-label-input">Correo Electrónico</span>
+              <span class="q-label-input">Nombre de usuario</span>
               <q-input
                 dense
                 outlined
-                v-model="dataSignin.email"
+                v-model="dataSignin.username"
                 type="text"
                 class="q-mt-xs"
-                placeholder="Ingresar tu correo electrónico"
-                :rules="emailRequired"
+                placeholder="Ingresar su bombre de usuario"
+                :class="{ 'error-back': errorBackUsername }"
+                :rules="usernameRequired"
                 :no-error-icon="true"
-                ref="refEmail"
+                ref="refUsername"
                 @blur="resetErrorEmail()"
                 :hide-bottom-space="
-                  refEmail && refEmail.hasError ? false : true
+                  refUsername && refUsername.hasError ? false : true
                 "
               />
+              <!-- //-- ErrorBack -- -->
+              <span v-if="errorBackUsername" class="q-label-error">
+                {{ errorBackUsername }}
+              </span>
             </div>
             <!-- //++ Contraseña ++ -->
             <div class="form-group q-mt-md">
@@ -84,29 +89,33 @@
 </template>
 
 <script setup lang="ts">
+import { LocalStorage } from "quasar";
 import { reactive, ref } from "vue";
-import { emailRequired, passwordRequired } from "@utils/validation";
-import { useSignIn } from "@stores/Signin";
+import { usernameRequired, passwordRequired } from "@utils/validation";
 import { useRouter } from "vue-router";
+import { signInAPI } from "@services/api_rest";
+import { AxiosError } from "axios";
 
 // ***************** Constants ***************
-const signInStore = useSignIn();
 const router = useRouter();
 
 const dataSignin = reactive({
-  email: "",
+  username: "",
   password: "",
 });
+
+const errorBackUsername = ref<string>("");
 
 const showPassword = ref<boolean>(false);
 
 // ++Refs
-const refEmail = ref<any>(null);
+const refUsername = ref<any>(null);
 const refPassword = ref<any>(null);
 
 // ********************* Functions Template +++++++++++++++++
 const resetErrorEmail = () => {
-  refEmail.value.resetValidation();
+  errorBackUsername.value = "";
+  refUsername.value.resetValidation();
 };
 
 const resetErrorPassword = () => {
@@ -114,10 +123,29 @@ const resetErrorPassword = () => {
 };
 
 // ************************ Functions API *******************
-const onSignIn = () => {
-  console.log("ok");
-  signInStore.signin = true;
-  router.push({ name: "Dashboard" });
+const onSignIn = async () => {
+  try {
+    const { data } = await signInAPI({
+      username: dataSignin.username,
+      password: dataSignin.password,
+    });
+    LocalStorage.set("jwt_access", data.jwt);
+    router.push({ name: "Dashboard" });
+    console.log(data);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.response?.data) {
+        switch (error.response?.data.code) {
+          case 1000:
+            errorBackUsername.value =
+              "El usuario o contraseña son incorrectos.";
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
 };
 </script>
 

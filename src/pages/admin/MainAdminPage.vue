@@ -4,17 +4,6 @@
   </q-page>
 </template>
 
-<script setup lang="ts">
-import { useSignIn } from "@stores/Signin";
-import { onMounted } from "vue";
-
-// ****************** Constants *****************
-const signInStore = useSignIn();
-
-// ******************* Functions LifeCycle *****************
-onMounted(() => {
-  signInStore.signin = true;
-});
-</script>
+<script setup lang="ts"></script>
 
 <style lang="scss" scoped></style>

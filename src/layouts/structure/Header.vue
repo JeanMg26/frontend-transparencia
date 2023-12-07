@@ -2,7 +2,7 @@
   <q-header elevated>
     <q-toolbar class="justify-between">
       <q-btn
-        v-if="signInState"
+        v-if="jwt_access"
         flat
         dense
         round
@@ -11,14 +11,14 @@
         @click="toggleLeftDrawer"
       />
       <!-- //++ Title ++ -->
-      <q-toolbar-title v-if="!signInState">
+      <q-toolbar-title v-if="!jwt_access">
         <q-avatar size="1.5rem">
           <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
         </q-avatar>
         <span class="text-header"> Administración </span>
       </q-toolbar-title>
       <!-- //++Log out++ -->
-      <div v-if="signInState" class="logout">
+      <div v-if="jwt_access" class="logout">
         <q-icon name="fa-solid fa-circle-user" size="1.1rem" />
         <span>Usuario</span>
         <q-menu :offset="[10, 15]">
@@ -58,28 +58,32 @@
 </template>
 
 <script setup lang="ts">
+import { LocalStorage } from "quasar";
 import { useDrawer } from "@stores/Sidebar";
-import { useSignIn } from "@stores/Signin";
-import { computed } from "vue";
 import { useRouter } from "vue-router";
+
+// ++ Props
+defineProps({
+  jwt_access: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 // ***************** Constants *****************
 const router = useRouter();
-const signinStore = useSignIn();
 const leftDrawerStore = useDrawer();
 
 // **************** Function Template **************
+// ++ Toggle Drawer
 function toggleLeftDrawer() {
   leftDrawerStore.toggleLeftDrawerStore();
 }
-
+// ++ LogOut
 const onLogout = () => {
-  signinStore.signin = false;
   router.push({ name: "SignInPage" });
+  LocalStorage.remove("jwt_access");
 };
-
-// **************** Functions Computed ***************
-const signInState = computed(() => signinStore.signin);
 </script>
 
 <style lang="scss" scoped>

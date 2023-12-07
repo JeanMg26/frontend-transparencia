@@ -70,6 +70,22 @@ body {
   padding-left: 30px;
 }
 
+.q-label-error {
+  font-size: 0.7rem;
+  color: $red;
+}
+
+// ++Error
+.error-back {
+  .q-field__inner {
+    .q-field__control {
+      &::before {
+        border: 2px solid red !important;
+      }
+    }
+  }
+}
+
 // ****************** SideBar ****************
 .q-item__section--avatar {
   &.icon-sidemenu {

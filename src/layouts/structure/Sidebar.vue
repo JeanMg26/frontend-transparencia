@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed } from "vue";
 import { listMenu } from "@router/route-list";
 import { useDrawer } from "@stores/Sidebar";
 

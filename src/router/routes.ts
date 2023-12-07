@@ -1,13 +1,15 @@
 import { RouteRecordRaw } from "vue-router";
+import { LocalStorage } from "quasar";
 
 const routes: RouteRecordRaw[] = [
+  // ************** AUTH *********************
   {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
+    redirect: { name: "MainAuthPage" },
     children: [
-      // ************** AUTH *********************
       {
-        path: "",
+        path: "signin",
         name: "MainAuthPage",
         component: () => import("pages/auth/MainAuthPage.vue"),
         redirect: { name: "SignInPage" },
@@ -20,7 +22,23 @@ const routes: RouteRecordRaw[] = [
           },
         ],
       },
-      // ************** MAIN *********************
+    ],
+    beforeEnter: (to, from, next) => {
+      let jwt_access = LocalStorage.getItem("jwt_access");
+      if (jwt_access) {
+        next({ name: "MainAdminPage" });
+      } else {
+        next();
+      }
+    },
+  },
+
+  // ************** MAIN *********************
+  {
+    path: "/",
+    component: () => import("layouts/MainLayout.vue"),
+    redirect: { name: "MainAdminPage" },
+    children: [
       {
         path: "",
         name: "MainAdminPage",
@@ -81,13 +99,25 @@ const routes: RouteRecordRaw[] = [
         ],
       },
     ],
+    beforeEnter: (to, from, next) => {
+      let jwt_access = LocalStorage.getItem("jwt_access");
+      if (jwt_access) {
+        next();
+      } else {
+        next({ name: "MainAuthPage" });
+      }
+    },
   },
 
   // Always leave this as last one,
   // but you can also remove it
+  // {
+  //   path: "/:catchAll(.*)*",
+  //   component: () => import("pages/ErrorNotFound.vue"),
+  // },
   {
-    path: "/:catchAll(.*)*",
-    component: () => import("pages/ErrorNotFound.vue"),
+    path: "/:pathMatch(.*)*",
+    redirect: "/",
   },
 ];
 
