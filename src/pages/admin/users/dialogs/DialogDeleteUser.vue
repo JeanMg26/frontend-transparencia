@@ -30,7 +30,12 @@
             label="Eliminar"
             size="0.9rem"
             @click="deleteUser()"
-          />
+            :loading="loadingSubmit"
+          >
+            <template v-slot:loading>
+              <q-spinner-bars size="20px" />
+            </template>
+          </q-btn>
         </div>
       </q-card-section>
     </q-card>
@@ -62,10 +67,14 @@ const userStore = useUser();
 const dialogDelete = ref<boolean>(false);
 const refDialog = ref<any>(null);
 
+const loadingSubmit = ref<boolean>(false);
+
 // ****************** Functions API *******************
 const deleteUser = async () => {
+  loadingSubmit.value = true;
   try {
     await deleteUserAPI(props.userSelect!.id);
+    loadingSubmit.value = false;
     refDialog.value.hide();
     notify("success", "Usuario eliminado correctamente.");
     userStore.isLoadingTable = true;
