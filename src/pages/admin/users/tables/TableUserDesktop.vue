@@ -35,6 +35,7 @@
                 name="fa-solid fa-edit"
                 color="primary"
                 class="cursor-pointer"
+                @click="openDialogUpdateUser(user.id)"
               >
                 <q-tooltip
                   anchor="top middle"
@@ -64,6 +65,7 @@
                 name="fa-solid fa-power-off"
                 color="positive"
                 class="cursor-pointer"
+                @click="openDialogResetUser(user)"
               >
                 <q-tooltip
                   anchor="top middle"
@@ -105,7 +107,15 @@ import NoResults from "@components/others/NoResults.vue";
 
 // ++Props
 defineProps({
+  openDialogUpdateUser: {
+    type: Function,
+    required: true,
+  },
   openDialogDeleteUser: {
+    type: Function,
+    required: true,
+  },
+  openDialogResetUser: {
     type: Function,
     required: true,
   },

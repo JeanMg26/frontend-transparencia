@@ -19,10 +19,16 @@
       </q-btn>
     </div>
     <!-- //***************** TABLES **************** -->
-    <TableUserDesktop :openDialogDeleteUser="openDialogDeleteUser" />
+    <TableUserDesktop
+      :openDialogUpdateUser="openDialogUpdateUser"
+      :openDialogDeleteUser="openDialogDeleteUser"
+      :openDialogResetUser="openDialogResetUser"
+    />
     <!-- //***************** DIALOGS *************** -->
     <!-- //++Dialog Operation++ -->
     <DialogOperationUser :openDialog="dialogUser" />
+    <!-- //++Dialog Reset++ -->
+    <DialogResetUser :openDialog="dialogResetUser" :userSelect="userSelect" />
     <!-- //++Dialog Delete++ -->
     <DialogDeleteUser :openDialog="dialogDeleteUser" :userSelect="userSelect" />
   </q-page>
@@ -35,29 +41,36 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { useUser } from "@stores/User";
+import { User } from "@interfaces/interface-store";
 
 // ++Components
 import TableUserDesktop from "./tables/TableUserDesktop.vue";
 import DialogOperationUser from "./dialogs/DialogOperationUser.vue";
 import DialogDeleteUser from "./dialogs/DialogDeleteUser.vue";
-import { User } from "@interfaces/interface-store";
+import DialogResetUser from "./dialogs/DialogResetUser.vue";
 
 // ****************** Constans *******************
 const userStore = useUser();
 const dialogUser = ref<boolean>(false);
 const dialogDeleteUser = ref<boolean>(false);
+const dialogResetUser = ref<boolean>(false);
 
 const userSelect = ref<User>();
 
 // **************** Functions Template *******************
-const openDialogOperationUser = () => {
+const openDialogUpdateUser = async (user_id: number) => {
+  await userStore.getUserStore(user_id);
   dialogUser.value = !dialogUser.value;
 };
 
 const openDialogDeleteUser = (user: User) => {
-  console.log("click");
   userSelect.value = user;
   dialogDeleteUser.value = !dialogDeleteUser.value;
+};
+
+const openDialogResetUser = (user: User) => {
+  userSelect.value = user;
+  dialogResetUser.value = !dialogResetUser.value;
 };
 
 //************* Functions Computed *************

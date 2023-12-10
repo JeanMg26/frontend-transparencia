@@ -19,10 +19,10 @@ const userStore = useUser();
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
-  setTimeout(() => {
+  setTimeout(async () => {
     loading.value = false;
+    await userStore.getUsersStore();
   }, 500);
-  await userStore.getUsersStore();
 });
 </script>
 

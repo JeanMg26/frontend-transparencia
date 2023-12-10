@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
 import { AxiosError } from "axios";
-import { getListUsersAPI } from "@services/api_rest";
+import { getListUsersAPI, getUserAPI } from "@services/api_rest";
 import { User } from "@interfaces/interface-store";
 
 interface UserState {
   users: User[];
+  user: User;
   isLoadingPage: boolean;
   isLoadingTable: boolean;
 }
@@ -12,6 +13,7 @@ interface UserState {
 export const useUser = defineStore("user", {
   state: (): UserState => ({
     users: [],
+    user: {} as User,
     isLoadingPage: true,
     isLoadingTable: true,
   }),
@@ -29,6 +31,22 @@ export const useUser = defineStore("user", {
           console.log(error);
         }
       }
+    },
+
+    async getUserStore(user_id: number) {
+      try {
+        const { data } = await getUserAPI(user_id);
+        this.user = data.item;
+        console.log(data);
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          console.log(error.response?.data);
+        }
+      }
+    },
+
+    clearUserStore() {
+      this.user = {} as User;
     },
   },
 });

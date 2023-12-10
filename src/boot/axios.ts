@@ -1,5 +1,6 @@
 import { boot } from "quasar/wrappers";
 import axios, { AxiosInstance } from "axios";
+import { LocalStorage } from "quasar";
 
 declare module "@vue/runtime-core" {
   interface ComponentCustomProperties {

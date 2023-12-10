@@ -40,7 +40,7 @@
                 dense
                 outlined
                 v-model="dataSignin.password"
-                :type="showPassword ? 'password' : 'text'"
+                :type="!showPassword ? 'password' : 'text'"
                 class="q-mt-xs"
                 placeholder="Ingresar tu contraseña"
                 :rules="passwordRequired"
@@ -54,13 +54,13 @@
                 <template v-slot:append>
                   <span @click="showPassword = !showPassword">
                     <q-icon
-                      v-if="showPassword"
+                      v-if="!showPassword"
                       name="fa-solid fa-eye"
                       size="1rem"
                       class="cursor-pointer"
                     />
                     <q-icon
-                      v-if="!showPassword"
+                      v-if="showPassword"
                       name="fa-solid fa-eye-slash"
                       size="1rem"
                       class="cursor-pointer"
@@ -79,7 +79,12 @@
                 label="Ingresar"
                 type="submit"
                 class="full-width q-mt-lg"
-              />
+                :loading="loadingSubmit"
+              >
+                <template v-slot:loading>
+                  <q-spinner-bars size="20px" />
+                </template>
+              </q-btn>
             </div>
           </q-form>
         </q-card-section>
@@ -104,6 +109,8 @@ const dataSignin = reactive({
   password: "",
 });
 
+const loadingSubmit = ref<boolean>(false);
+
 const errorBackUsername = ref<string>("");
 
 const showPassword = ref<boolean>(false);
@@ -124,12 +131,14 @@ const resetErrorPassword = () => {
 
 // ************************ Functions API *******************
 const onSignIn = async () => {
+  loadingSubmit.value = true;
   try {
     const { data } = await signInAPI({
       username: dataSignin.username,
       password: dataSignin.password,
     });
     LocalStorage.set("jwt_access", data.jwt);
+    loadingSubmit.value = false;
     router.push({ name: "Dashboard" });
     console.log(data);
   } catch (error) {
