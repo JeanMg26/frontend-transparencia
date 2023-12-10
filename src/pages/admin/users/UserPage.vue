@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useUser } from "@stores/User";
 import { User } from "@interfaces/interface-store";
 
@@ -80,6 +80,10 @@ const listUsersState = computed(() => userStore.users);
 //************* Functions LifeCycle *************
 onMounted(async () => {
   await userStore.getUsersStore();
+});
+
+onUnmounted(() => {
+  userStore.isLoadingPage = true;
 });
 </script>
 

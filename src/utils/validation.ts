@@ -30,6 +30,15 @@ const newPasswordVal = (password: any) => {
   ];
 };
 
+// ++ Categories
+const nameCategoryVal = [
+  (val: any) => !!val || "Por favor ingrese el nombre de la categoria.",
+  (val: any) =>
+    val.length >= 6 || "La categoria debe de tener como mínimo 6 caracteres.",
+  (val: any) =>
+    val.length <= 30 || "La categoria debe de tener como máximo 30 caracteres.",
+];
+
 export {
   emailRequired,
   passwordRequired,
@@ -37,4 +46,5 @@ export {
   fullnameRequired,
   currentPasswordVal,
   newPasswordVal,
+  nameCategoryVal,
 };
