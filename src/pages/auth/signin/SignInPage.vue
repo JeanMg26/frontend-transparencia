@@ -138,7 +138,6 @@ const onSignIn = async () => {
       password: dataSignin.password,
     });
     LocalStorage.set("jwt_access", data.jwt);
-    loadingSubmit.value = false;
     router.push({ name: "Dashboard" });
     console.log(data);
   } catch (error) {
@@ -154,6 +153,8 @@ const onSignIn = async () => {
         }
       }
     }
+  } finally {
+    loadingSubmit.value = false;
   }
 };
 </script>

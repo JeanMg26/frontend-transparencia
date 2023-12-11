@@ -23,12 +23,17 @@ const currentPasswordVal = [
     val.length >= 6 || "La contraseña debe tener al menos 6 caracteres.",
 ];
 
-const newPasswordVal = (password: any) => {
-  return [
-    (val: any) =>
-      (password && val == password) || "Las contraseñas no coinciden.",
-  ];
-};
+const newPasswordVal = [
+  (val: any) =>
+    val.length >= 6 || "La contraseña debe tener al menos 6 caracteres.",
+];
+
+// const newPasswordVal = (password: any) => {
+//   return [
+//     (val: any) =>
+//       (password && val == password) || "Las contraseñas no coinciden.",
+//   ];
+// };
 
 // ++ Categories
 const nameCategoryVal = [

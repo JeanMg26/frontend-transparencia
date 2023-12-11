@@ -11,6 +11,11 @@ const signInAPI = (data: any) => {
 // ************************************************************
 
 // *********************** API-GET ****************************
+// ++ Profile
+const getProfileAPI = () => {
+  return jwtAxios.get("profile");
+};
+
 // ++ Users
 const getListUsersAPI = () => {
   return jwtAxios.get("users");
@@ -55,6 +60,11 @@ const createSubcategoryAPI = (data: any) => {
 };
 
 // *********************** API-UPDATE ****************************
+// ++ Profile
+const updateProfileAPI = (data: any) => {
+  return jwtAxios.put("profile", data);
+};
+
 // ++ Users
 const updateUserAPI = (user_id: number, data: any) => {
   return jwtAxios.put("user/" + user_id, data);
@@ -91,11 +101,13 @@ const deleteSubcategoryAPI = (subcat_id: number) => {
 };
 
 export {
+  getProfileAPI,
   getListUsersAPI,
   signInAPI,
   createUserAPI,
   deleteUserAPI,
   getUserAPI,
+  updateProfileAPI,
   updateUserAPI,
   resetUserAPI,
   createCategoryAPI,
