@@ -37,7 +37,8 @@ body {
   font-weight: normal !important;
 }
 
-.q-input {
+.q-input,
+.q-select {
   .q-field__bottom {
     padding-left: 0 !important;
   }
@@ -75,6 +76,14 @@ body {
   color: $red;
 }
 
+.q-table {
+  tbody {
+    td {
+      height: 30px !important;
+    }
+  }
+}
+
 // ++Error
 .error-back {
   .q-field__inner {
@@ -97,4 +106,24 @@ body {
 .q-label-input {
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+// **************** Sub Category **************
+.popup-category {
+  max-height: 200px !important;
+  .q-item {
+    min-height: 30px !important;
+  }
+}
+.popup-category::-webkit-scrollbar {
+  width: 0.5rem; /* width of the entire scrollbar */
+}
+
+.popup-category::-webkit-scrollbar-track {
+  background: #e5e9f2; /* color of the tracking area */
+}
+
+.popup-category::-webkit-scrollbar-thumb {
+  background-color: #b7c2d0; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
 }

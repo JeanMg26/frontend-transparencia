@@ -29,6 +29,11 @@ const getCategoryAPI = (cat_id: number) => {
   return jwtAxios.get("cat/" + cat_id);
 };
 
+// ++ SubCategories
+const getSubcategoriesAPI = () => {
+  return jwtAxios.get("subcats");
+};
+
 // *********************** API-POST ****************************
 // ++ Users
 const createUserAPI = (data: any) => {
@@ -38,6 +43,11 @@ const createUserAPI = (data: any) => {
 // ++ Categories
 const createCategoryAPI = (data: any) => {
   return jwtAxios.post("cat", data);
+};
+
+// ++ Subcategories
+const createSubcategoryAPI = (data: any) => {
+  return jwtAxios.post("subcat", data);
 };
 
 // *********************** API-UPDATE ****************************
@@ -79,4 +89,6 @@ export {
   getCategoryAPI,
   updateCategoryAPI,
   deleteCategoryAPI,
+  getSubcategoriesAPI,
+  createSubcategoryAPI,
 };

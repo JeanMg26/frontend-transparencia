@@ -39,6 +39,21 @@ const nameCategoryVal = [
     val.length <= 30 || "La categoria debe de tener como máximo 30 caracteres.",
 ];
 
+// ++ Subcategories
+const nameSubcategoryVal = [
+  (val: any) => !!val || "Por favor ingrese el nombre de la subcategoria.",
+  (val: any) =>
+    val.length >= 6 ||
+    "La subcategoria debe de tener como mínimo 6 caracteres.",
+  (val: any) =>
+    val.length <= 30 ||
+    "La subcategoria debe de tener como máximo 30 caracteres.",
+];
+
+const selectCategoryVal = [
+  (val: any) => !!val || "Por seleccionar una categoria.",
+];
+
 export {
   emailRequired,
   passwordRequired,
@@ -47,4 +62,6 @@ export {
   currentPasswordVal,
   newPasswordVal,
   nameCategoryVal,
+  nameSubcategoryVal,
+  selectCategoryVal,
 };
