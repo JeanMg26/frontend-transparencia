@@ -13,7 +13,7 @@
         :ripple="false"
         color="primary"
         size="0.8rem"
-        @click="openDialogAddSubcat()"
+        @click="dialogOperationSubcat = !dialogOperationSubcat"
       >
         <q-icon name="fa-solid fa-circle-plus" size="1rem" class="q-mr-sm" />
         <span>Agregar una subcategoria</span>
@@ -23,15 +23,18 @@
     <div>
       <TableDesktopSubcategory
         v-if="$q.screen.width >= 1024"
-        :openDialogAdd="openDialogAddSubcat"
-        :openDialogDelete="openDialogDeleteCat"
+        :openDialogUpdateSubcat="openDialogUpdateSubcat"
+        :openDialogDeleteSubcat="openDialogDeleteSubcat"
       />
     </div>
     <!-- //*************** DIALOGS *************** -->
     <!-- //++ Add Category ++ -->
-    <DialogOperationSubcategory :open-dialog="dialogAddSubcat" />
+    <DialogOperationSubcategory :open-dialog="dialogOperationSubcat" />
     <!-- //++ Delete Category ++ -->
-    <DialogDeleteSubcategory :open-dialog="dialogDeleteSubcat" />
+    <DialogDeleteSubcategory
+      :open-dialog="dialogDeleteSubcat"
+      :subcatID="subcatID"
+    />
   </q-page>
   <!-- //************** INNER LOADING *************** -->
   <q-inner-loading :showing="loadingPageState">
@@ -54,15 +57,20 @@ import DialogDeleteSubcategory from "./dialogs/DialogDeleteSubcategory.vue";
 const categoryStore = useCategory();
 const subcategoryStore = useSubcategory();
 const $q = useQuasar();
-const dialogAddSubcat = ref<boolean>(false);
+const dialogOperationSubcat = ref<boolean>(false);
 const dialogDeleteSubcat = ref<boolean>(false);
+const subcatID = ref<number>();
 
 //************* Functions Template *************
-const openDialogAddSubcat = () => {
-  dialogAddSubcat.value = !dialogAddSubcat.value;
+// ++ Dialog Updated
+const openDialogUpdateSubcat = async (subcat_id: number) => {
+  await subcategoryStore.getSubcategoryStore(subcat_id);
+  dialogOperationSubcat.value = !dialogOperationSubcat.value;
 };
 
-const openDialogDeleteCat = () => {
+// ++ Dialog Delete
+const openDialogDeleteSubcat = (subcat_id: number) => {
+  subcatID.value = subcat_id;
   dialogDeleteSubcat.value = !dialogDeleteSubcat.value;
 };
 

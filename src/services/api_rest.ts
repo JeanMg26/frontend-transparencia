@@ -34,6 +34,10 @@ const getSubcategoriesAPI = () => {
   return jwtAxios.get("subcats");
 };
 
+const getSubcategoryAPI = (subcat_id: number) => {
+  return jwtAxios.get("subcat/" + subcat_id);
+};
+
 // *********************** API-POST ****************************
 // ++ Users
 const createUserAPI = (data: any) => {
@@ -65,6 +69,11 @@ const updateCategoryAPI = (cat_id: number, data: any) => {
   return jwtAxios.put("cat/" + cat_id, data);
 };
 
+// ++ Subcategory
+const updateSubcategoryAPI = (subcat_id: number, data: any) => {
+  return jwtAxios.put("subcat/" + subcat_id, data);
+};
+
 // *********************** API-DELETE ****************************
 // ++ Users
 const deleteUserAPI = (user_id: number) => {
@@ -74,6 +83,11 @@ const deleteUserAPI = (user_id: number) => {
 // ++ Category
 const deleteCategoryAPI = (cat_id: number) => {
   return jwtAxios.delete("cat/" + cat_id);
+};
+
+// ++ Subcategory
+const deleteSubcategoryAPI = (subcat_id: number) => {
+  return jwtAxios.delete("subcat/" + subcat_id);
 };
 
 export {
@@ -91,4 +105,7 @@ export {
   deleteCategoryAPI,
   getSubcategoriesAPI,
   createSubcategoryAPI,
+  getSubcategoryAPI,
+  updateSubcategoryAPI,
+  deleteSubcategoryAPI,
 };

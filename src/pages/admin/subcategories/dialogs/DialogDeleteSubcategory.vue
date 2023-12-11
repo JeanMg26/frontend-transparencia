@@ -26,8 +26,13 @@
             color="red"
             label="Eliminar"
             size="0.9rem"
-            @click="deleteArticle()"
-          />
+            :loading="loadingSubmit"
+            @click="deleteSubcategory()"
+          >
+            <template v-slot:loading>
+              <q-spinner-bars size="20px" />
+            </template>
+          </q-btn>
         </div>
       </q-card-section>
     </q-card>
@@ -35,7 +40,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from "vue";
+import { ref, watch } from "vue";
+import { deleteSubcategoryAPI } from "@services/api_rest";
+import { useSubcategory } from "@stores/Subcategory";
+import { AxiosError } from "axios";
+import { notify } from "@utils/notify";
 
 // ++Props
 const props = defineProps({
@@ -43,16 +52,35 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  subcatID: {
+    type: Number,
+    required: false,
+  },
 });
 
 // ***************** Constants *****************
+const subcategoryStore = useSubcategory();
 const dialogDelete = ref<boolean>(false);
 const refDialog = ref<any>(null);
 
+const loadingSubmit = ref<boolean>(false);
+
 // ****************** Functions API *******************
-const deleteArticle = () => {
-  console.log("ok");
-  refDialog.value.hide();
+const deleteSubcategory = async () => {
+  loadingSubmit.value = true;
+  try {
+    await deleteSubcategoryAPI(props.subcatID!);
+    refDialog.value.hide();
+    notify("success", "Subcategoria creada correctamente.");
+    subcategoryStore.isLoadingTable = true;
+    await subcategoryStore.getSubCategoriesStore();
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data);
+    }
+  } finally {
+    loadingSubmit.value = false;
+  }
 };
 
 // ****************** Functions LifeCycle ***************
@@ -67,6 +95,7 @@ watch(
 <style lang="scss" scoped>
 .card-user {
   width: 300px;
+  padding: 0 0.5rem;
 }
 .text-header {
   font-size: 1.1rem;

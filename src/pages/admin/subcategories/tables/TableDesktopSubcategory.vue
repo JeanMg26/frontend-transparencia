@@ -22,7 +22,7 @@
           <td class="text-left">
             {{ date.formatDate(subcat.created_at, "DD-MM-YYYY HH:mm:ss") }}
           </td>
-          <td>{{ subcat.category_id }}</td>
+          <td>{{ subcat.category }}</td>
           <td>{{ subcat.name }}</td>
           <!-- //++ Actions ++ -->
           <td class="text-right">
@@ -32,6 +32,7 @@
                 name="fa-solid fa-edit"
                 color="primary"
                 class="cursor-pointer"
+                @click="openDialogUpdateSubcat(subcat.id)"
               >
                 <q-tooltip
                   anchor="top middle"
@@ -46,7 +47,7 @@
                 name="fa-regular fa-trash-can"
                 color="red"
                 class="cursor-pointer"
-                @click="openDialogDelete()"
+                @click="openDialogDeleteSubcat(subcat.id)"
               >
                 <q-tooltip
                   anchor="top middle"
@@ -78,11 +79,11 @@ import NoResults from "@components/others/NoResults.vue";
 
 // ++Props
 defineProps({
-  openDialogAdd: {
+  openDialogUpdateSubcat: {
     type: Function,
     required: true,
   },
-  openDialogDelete: {
+  openDialogDeleteSubcat: {
     type: Function,
     required: true,
   },

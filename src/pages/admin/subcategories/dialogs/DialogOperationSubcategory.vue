@@ -3,7 +3,12 @@
     <q-card class="card-add-category">
       <q-card-section>
         <div class="flex justify-between items-center">
-          <span class="q-dialog-header">Agregar una subcategoria</span>
+          <span v-if="!subcategoryState.id" class="q-dialog-header">
+            Agregar una subcategoria
+          </span>
+          <span v-else class="q-dialog-header">
+            Actualizar una subcategoria
+          </span>
           <q-icon
             name="fa-solid fa-xmark"
             size="1.1rem"
@@ -15,20 +20,20 @@
       <q-card-section>
         <q-form @submit="submitCategory" greedy no-error-focus>
           <div class="row">
-            <!-- //++ Suncategory ++ -->
+            <!-- //++ Subcategory ++ -->
             <div class="col-12">
               <span class="q-label-input">Selecciona la categoria</span>
               <q-select
                 dense
                 outlined
-                v-model="selectCategory"
+                v-model="categoryState"
                 :options="categoriesState"
                 behavior="menu"
                 popup-content-class="popup-category"
                 :rules="selectCategoryVal"
                 :no-error-icon="true"
                 ref="refSelectCat"
-                @blur="!selectCategory ? resetErrorCat() : ''"
+                @blur="!categoryState ? resetErrorCat() : ''"
                 :hide-bottom-space="
                   refSelectCat && refSelectCat.hasError ? false : true
                 "
@@ -36,10 +41,10 @@
               >
                 <!-- //++ Selected -->
                 <template v-slot:selected>
-                  <span v-if="!selectCategory" class="text-grey-6">
+                  <span v-if="!categoryState" class="text-grey-6">
                     Selecionar la categoria
                   </span>
-                  <span v-else>{{ selectCategory.name }}</span>
+                  <span v-else>{{ categoryState.name }}</span>
                 </template>
                 <!-- //++ Options -->
                 <template v-slot:option="{ itemProps, opt }">
@@ -57,7 +62,7 @@
               <q-input
                 dense
                 outlined
-                v-model="dataSend.name"
+                v-model="nameSubcatState"
                 type="text"
                 class="q-mt-xs"
                 placeholder="Ingresar un nombre"
@@ -65,7 +70,7 @@
                 :rules="nameSubcategoryVal"
                 :no-error-icon="true"
                 ref="refNameSubcat"
-                @blur="!dataSend.name ? resetErrorNameSubcat() : ''"
+                @blur="!nameSubcatState ? resetErrorNameSubcat() : ''"
                 :hide-bottom-space="
                   refNameSubcat && refNameSubcat.hasError ? false : true
                 "
@@ -87,7 +92,7 @@
                   unelevated
                   color="primary"
                   type="submit"
-                  label="Guardar"
+                  :label="!subcategoryState.id ? 'Guardar' : 'Actualizar'"
                   :loading="loadingSubmit"
                 >
                   <template v-slot:loading>
@@ -105,12 +110,13 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from "vue";
-import { nameSubcategoryVal, selectCategoryVal } from "@utils/validation";
+import { createSubcategoryAPI, updateSubcategoryAPI } from "@services/api_rest";
 import { AxiosError } from "axios";
-import { createSubcategoryAPI } from "@services/api_rest";
 import { useSubcategory } from "@stores/Subcategory";
 import { useCategory } from "@stores/Category";
 import { Category } from "@interfaces/interface-store";
+import { notify } from "@utils/notify";
+import { nameSubcategoryVal, selectCategoryVal } from "@utils/validation";
 
 // ++Props
 const props = defineProps({
@@ -123,17 +129,19 @@ const props = defineProps({
 //***************** Constants *****************
 const categoryStore = useCategory();
 const subcategoryStore = useSubcategory();
+
 const dialogOperation = ref<boolean>(false);
 const refDialog = ref<any>(null);
 
 const dataSend = reactive({
   name: "",
-  category_id: 0,
+  category_id: "",
 });
 
 const selectCategory = ref<Category>();
-
 const loadingSubmit = ref<boolean>(false);
+
+// ++ Refs
 const refNameSubcat = ref<any>(null);
 const refSelectCat = ref<any>(null);
 
@@ -146,24 +154,48 @@ const resetErrorCat = () => {
   refSelectCat.value.resetValidation();
 };
 
-// ++ Updated
+// ++ Update Value Select ID
 const updateCategory = (value: Category) => {
-  dataSend.category_id = value.id;
-  console.log(value);
+  dataSend.category_id = String(value.id);
 };
 
 //************* Functions Computed *************
 const categoriesState = computed(() => categoryStore.categories);
+const subcategoryState = computed(() => subcategoryStore.subcategory);
+
+// ++ Fields State
+const nameSubcatState = computed({
+  get() {
+    return dataSend.name ? dataSend.name : subcategoryState.value.name;
+  },
+  set(value: any) {
+    dataSend.name = value;
+  },
+});
+
+const categoryState = computed({
+  get() {
+    return selectCategory.value
+      ? selectCategory.value
+      : categoriesState.value.find(
+          (cat: Category) => cat.id == subcategoryState.value.category_id
+        );
+  },
+  set(value: any) {
+    selectCategory.value = value;
+  },
+});
 
 //**************** Functions API ***************
-const createSubcategoy = async () => {
+// ++ Created Subcategory
+const createSubcategory = async () => {
   loadingSubmit.value = true;
   try {
-    const resp = await createSubcategoryAPI({
+    await createSubcategoryAPI({
       name: dataSend.name,
-      category_id: dataSend.category_id,
+      category_id: Number(dataSend.category_id),
     });
-    console.log(resp);
+    notify("success", "Subcategoria creada correctamente.");
     refDialog.value.hide();
     subcategoryStore.isLoadingTable = true;
     await subcategoryStore.getSubCategoriesStore();
@@ -176,8 +208,36 @@ const createSubcategoy = async () => {
   }
 };
 
+// ++ Updated Subcategory
+const updateSubcategory = async () => {
+  loadingSubmit.value = true;
+  try {
+    await updateSubcategoryAPI(subcategoryState.value.id, {
+      name: dataSend.name ? dataSend.name : subcategoryState.value.name,
+      category_id: dataSend.category_id
+        ? Number(dataSend.category_id)
+        : subcategoryState.value.category_id,
+    });
+    notify("success", "Subcategoria actualizada correctamente.");
+    refDialog.value.hide();
+    subcategoryStore.isLoadingTable = true;
+    await subcategoryStore.getSubCategoriesStore();
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data);
+    }
+  } finally {
+    loadingSubmit.value = false;
+  }
+};
+
+// ++ Submit Subcategory
 const submitCategory = () => {
-  createSubcategoy();
+  if (!subcategoryState.value.id) {
+    createSubcategory();
+  } else {
+    updateSubcategory();
+  }
 };
 
 //************* Functions LifeCycle *************
@@ -191,6 +251,9 @@ watch(
 watch(dialogOperation, () => {
   if (!dialogOperation.value) {
     dataSend.name = "";
+    dataSend.category_id = "";
+    selectCategory.value = undefined;
+    subcategoryStore.clearSubcategoryStore();
   }
 });
 </script>

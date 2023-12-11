@@ -27,7 +27,7 @@
             label="Eliminar"
             size="0.9rem"
             :loading="loadingSubmit"
-            @click="deleteArticle()"
+            @click="deleteCategory()"
           >
             <template v-slot:loading>
               <q-spinner-bars size="20px" />
@@ -65,7 +65,7 @@ const refDialog = ref<any>(null);
 const loadingSubmit = ref<boolean>(false);
 
 // ****************** Functions API *******************
-const deleteArticle = async () => {
+const deleteCategory = async () => {
   loadingSubmit.value = true;
   try {
     await deleteCategoryAPI(props.catID!);
@@ -94,6 +94,7 @@ watch(
 <style lang="scss" scoped>
 .card-user {
   width: 300px;
+  padding: 0 0.5rem;
 }
 .text-header {
   font-size: 1.1rem;
