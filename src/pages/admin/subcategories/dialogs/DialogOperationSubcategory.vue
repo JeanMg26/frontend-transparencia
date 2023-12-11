@@ -20,7 +20,7 @@
       <q-card-section>
         <q-form @submit="submitCategory" greedy no-error-focus>
           <div class="row">
-            <!-- //++ Subcategory ++ -->
+            <!-- //++ Category ++ -->
             <div class="col-12">
               <span class="q-label-input">Selecciona la categoria</span>
               <q-select

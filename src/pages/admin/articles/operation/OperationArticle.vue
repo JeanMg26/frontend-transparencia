@@ -16,8 +16,8 @@
     </div>
     <q-card flat bordered class="card-article">
       <q-card-section>
-        <q-form @submit="onSubmitSection">
-          <div class="row">
+        <q-form @submit="onSubmitSection" greedy no-error-focus>
+          <div class="row q-col-gutter-x-lg">
             <!-- //++Title++ -->
             <div class="col-12">
               <span class="q-label-input">Título</span>
@@ -30,19 +30,60 @@
                 class="q-mt-xs"
               />
             </div>
-            <!-- //++Sub Title++ -->
+            <!-- //++Autor++ -->
             <div class="col-12 q-mt-md">
-              <span class="q-label-input">Subtítulo</span>
+              <span class="q-label-input">Autor</span>
               <q-input
                 outlined
                 autogrow
                 dense
                 rows="2"
-                v-model="dataSend.subtitle"
+                v-model="dataSend.autor"
                 type="textarea"
-                placeholder="Ingresar el subtítulo"
+                placeholder="Ingresar el nombre del autor"
                 class="q-mt-xs"
               />
+            </div>
+            <!-- //++ Category and Subcategory ++ -->
+            <div class="col-6 q-mt-md">
+              <span class="q-label-input">Categoria</span>
+              <q-select
+                dense
+                outlined
+                class="q-mt-xs"
+                v-model="selectCategory"
+                :options="categoriesState"
+                behavior="menu"
+                popup-content-class="popup-category"
+                :rules="selectCategoryVal"
+                :no-error-icon="true"
+                ref="refSelectCat"
+                @blur="!selectCategory ? resetErrorCat() : ''"
+                :hide-bottom-space="
+                  refSelectCat && refSelectCat.hasError ? false : true
+                "
+                @update:model-value="updateCategory"
+              >
+                <!-- //++ Selected -->
+                <template v-slot:selected>
+                  <span v-if="!selectCategory" class="text-grey-6">
+                    Selecionar la categoria
+                  </span>
+                  <span v-else>{{ selectCategory.name }}</span>
+                </template>
+                <!-- //++ Options -->
+                <template v-slot:option="{ itemProps, opt }">
+                  <q-item dense v-bind="itemProps">
+                    <q-item-section>
+                      <q-item-label>{{ opt.name }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
+            <!-- //++ Subcategory ++ -->
+            <div class="col-6 q-mt-md">
+              <span class="q-label-input">SubCategoria</span>
             </div>
             <!-- //++Editor++ -->
             <div class="col-12 q-mt-md">
@@ -50,14 +91,6 @@
               <q-editor
                 v-model="dataSend.body"
                 class="q-mt-xs"
-                :definitions="{
-                  upload: {
-                    tip: 'Subir Imagen',
-                    icon: 'cloud_upload',
-                    label: 'Upload',
-                    handler: dataSend.image,
-                  },
-                }"
                 :toolbar="[
                   [
                     {
@@ -91,23 +124,49 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useQuasar } from "quasar";
+import { useCategory } from "@stores/Category";
+import { Category } from "@interfaces/interface-store";
+import { selectCategoryVal } from "@utils/validation";
 
 // ********************* Constants ********************+
 const $q = useQuasar();
+const categoryStore = useCategory();
 
 const dataSend = reactive({
   title: "",
-  subtitle: "",
-  image: "",
+  autor: "",
   body: "",
 });
+
+const selectCategory = ref<Category>();
+
+// ++Refs
+const refSelectCat = ref<any>(null);
 
 //************* Functions Template *************
 const onSubmitSection = async () => {
   console.log(dataSend.body);
 };
+
+// ++ Errors
+const resetErrorCat = () => {
+  refSelectCat.value.resetValidation();
+};
+
+// ++ Update Value Select ID
+const updateCategory = (value: Category) => {
+  // dataSend.category_id = String(value.id);
+};
+
+//************* Functions Computed *************
+const categoriesState = computed(() => categoryStore.categories);
+
+//************* Functions LifeCycle *************
+onMounted(async () => {
+  await categoryStore.getCategoriesStore();
+});
 </script>
 
 <style lang="scss" scoped>
