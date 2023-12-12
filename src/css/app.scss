@@ -127,3 +127,34 @@ body {
   background-color: #b7c2d0; /* color of the scroll thumb */
   border-radius: 20px; /* roundness of the scroll thumb */
 }
+
+// ********************************************
+// **************** BLOG **********************
+// ********************************************
+
+// ++ HEADER ++
+// .item-category {
+//   .q-hoverable:hover > .q-focus-helper {
+//     opacity: 0 !important;
+//   }
+//   &:hover {
+//     background-color: #fff !important;
+//   }
+// }
+
+.q-no-hover {
+  &.q-hoverable {
+    &:hover {
+      .q-focus-helper {
+        opacity: 0 !important;
+      }
+    }
+  }
+  // &:hover {
+  //   background-color: #fff !important;
+  // }
+}
+
+.q-menu {
+  box-shadow: none !important;
+}

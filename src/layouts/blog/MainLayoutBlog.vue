@@ -1,9 +1,9 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <!-- //************** HEADER *************** -->
-    <!-- <Header :jwt_access="jwt_access" /> -->
-    <!-- //************** SIDEBAR ************** -->
-    <!-- <Sidebar v-if="jwt_access" /> -->
+    <Header />
+    <!-- //************** FOOTER ************** -->
+    <Footer />
     <!-- //************* PAGES ***************** -->
     <q-page-container>
       <router-view />
@@ -18,6 +18,7 @@ import { onMounted, onUpdated, ref } from "vue";
 // ++Components
 import Sidebar from "./structure/Sidebar.vue";
 import Header from "./structure/Header.vue";
+import Footer from "./structure/Footer.vue";
 
 // ****************** Constants ******************
 const $q = useQuasar();
