@@ -1,10 +1,10 @@
 <template>
-  <q-header bordered reveal class="bg-white">
+  <q-header bordered reveal class="bg-header">
     <!-- //++ Logos ++ -->
     <div class="row">
       <div class="col-12 header-blog bg-white">
-        <q-img src="@assets/img/logo-transparencia.png" class="img-logo-left" />
-        <q-img src="@assets/img/logo-entidad.jpg" class="img-logo-right" />
+        <q-img src="@assets/img/logo-transparencia.svg" class="img-logo-left" />
+        <q-img src="@assets/img/logo-entidad.png" class="img-logo-right" />
       </div>
       <!-- //++ Categories ++ -->
       <div class="col-12 section-category">
@@ -64,6 +64,7 @@ import { ref } from "vue";
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-image: url(../../../assets/img/pattern.png) !important;
 }
 
 .section-category {
@@ -109,6 +110,6 @@ import { ref } from "vue";
   width: 16rem;
 }
 .img-logo-right {
-  width: 3rem;
+  width: 4rem;
 }
 </style>

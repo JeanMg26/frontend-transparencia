@@ -411,7 +411,7 @@ export default {
   padding: 0.7rem;
   text-align: center;
   color: #fff;
-  box-shadow: inset 0 4px 0 $grey-7;
+  box-shadow: inset 0 4px 0 #ff4141;
   span {
     font-size: 1.5rem;
     font-weight: 500;
