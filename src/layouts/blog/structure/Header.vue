@@ -1,5 +1,5 @@
 <template>
-  <q-header bordered class="bg-white">
+  <q-header bordered reveal class="bg-white">
     <!-- //++ Logos ++ -->
     <div class="row">
       <div class="col-12 header-blog bg-white">
@@ -83,7 +83,7 @@ import { ref } from "vue";
     }
     &:hover {
       background-color: white;
-      box-shadow: inset 0 -4px 0 $grey-9;
+      box-shadow: inset 0 -4px 0 #264081;
     }
     // ++Subcategory
   }
@@ -98,7 +98,7 @@ import { ref } from "vue";
         font-weight: 500;
       }
       &:hover {
-        background-color: $primary;
+        background-color: #264081;
         color: #fff;
       }
     }

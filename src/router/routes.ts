@@ -111,12 +111,12 @@ const routes: RouteRecordRaw[] = [
 
   // *************** BLOG ********************
   {
-    path: "/blog",
+    path: "/transparencia",
     component: () => import("layouts/blog/MainLayoutBlog.vue"),
     redirect: { name: "BlogPage" },
     children: [
       {
-        path: "/blog",
+        path: "/transparencia",
         name: "BlogPage",
         component: () => import("pages/blog/BlogPage.vue"),
       },
