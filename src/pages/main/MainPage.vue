@@ -4,19 +4,16 @@
       <div class="col-12 header-main">
         <div class="row">
           <!-- //**************** COLUMN LEFT ************* -->
-          <div class="col-6 column-left">
+          <div class="col-12 col-md-6 column-left">
             <div class="row">
               <!-- // ++ Logo +  Menu ++  -->
-              <div class="col-12 flex items-center">
+              <div class="col-12 column-header">
                 <q-img
                   src="@assets/img/main-page/logo.png"
-                  sizes="(max-width: 400px) 400w,
-              (min-width: 400px) and (max-width: 800px) 800w,
-              (min-width: 800px) and (max-width: 1200px) 1200w,
-              (min-width: 1200px) 1600w"
-                  style="max-width: 150px; max-height: 150px"
+                  class="img-logo"
+                  style="max-width: 150px"
                 />
-                <div class="menu-item">
+                <div v-if="$q.screen.width > 1024" class="menu-item">
                   <!-- //++ Navbar ++ -->
                   <q-item class="cursor-pointer">
                     <q-item-section>
@@ -34,6 +31,37 @@
                     </q-item-section>
                   </q-item>
                 </div>
+                <!-- //------MENU MOBILE------ -->
+                <div
+                  v-if="$q.screen.width < 1024"
+                  class="menu-mobile"
+                  @click="showMenuMobile = !showMenuMobile"
+                >
+                  <q-icon name="fa-solid fa-bars"> </q-icon>
+                </div>
+              </div>
+              <!-- //++ Menu Mobile++ -->
+              <div
+                v-if="$q.screen.width < 1024 && showMenuMobile"
+                class="col-12"
+              >
+                <q-list bordered class="list-menu-mobile">
+                  <q-item clickable>
+                    <q-item-section>
+                      <q-item-label>Inicio</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item clickable>
+                    <q-item-section>
+                      <q-item-label>Nosotros</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item clickable>
+                    <q-item-section>
+                      <q-item-label>Trabajos</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
               </div>
               <!-- // ++ Menu - Title ++ -->
               <div class="col-12 menu-title">
@@ -79,7 +107,7 @@
             </div>
           </div>
           <!-- //**************** COLUMN RIGTH ************* -->
-          <div class="col-6 column-rigth">
+          <div class="col-12 col-md-6 column-rigth">
             <q-img src="@assets/img/main-page/gorea.png" />
           </div>
         </div>
@@ -102,7 +130,7 @@
           <!-- //++ News ++ -->
           <div class="col-12 column-news">
             <div class="row">
-              <div class="col-6">
+              <div class="col-12 col-md-6">
                 <q-img src="@assets/img/main-page/img-01.jpg">
                   <div class="absolute-bottom img-caption">
                     GERENTE GENERAL REALIZA ENTREGA DE PRESENTES Y UN
@@ -110,7 +138,7 @@
                   </div>
                 </q-img>
               </div>
-              <div class="col-6">
+              <div class="col-12 col-md-6">
                 <div class="div">
                   <q-img src="@assets/img/main-page/img-02.jpg">
                     <div class="absolute-bottom img-caption">
@@ -138,27 +166,37 @@
   </q-page>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useQuasar } from "quasar";
+import { ref } from "vue";
+
+//***************** Constants *****************
+const $q = useQuasar();
+const showMenuMobile = ref<boolean>(false);
+</script>
 
 <style lang="scss" scoped>
 .header-main {
   background-image: url("@assets/img/main-page/pattern.png");
-  max-height: 83vh !important;
+  max-height: 83vh;
   overflow: hidden;
   .column-left {
     padding-top: 1rem;
     padding-left: 6.5rem;
 
-    .menu-item {
+    .column-header {
       display: flex;
-      margin-left: 1rem;
-      .q-item {
-        font-size: 1rem;
-        padding-right: 2.8rem;
-        text-transform: uppercase;
-        color: #fff;
-        &:hover {
-          color: $indigo-2;
+      .menu-item {
+        display: flex;
+        margin-left: 1rem;
+        .q-item {
+          font-size: 1rem;
+          padding-right: 2.8rem;
+          text-transform: uppercase;
+          color: #fff;
+          &:hover {
+            color: $indigo-2;
+          }
         }
       }
     }
@@ -206,6 +244,17 @@
           }
         }
       }
+    }
+  }
+}
+
+.menu-mobile {
+  .q-icon {
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    &:hover {
+      color: $grey-4;
     }
   }
 }
@@ -277,6 +326,94 @@
 
   .column-rigth {
     width: 55% !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .header-main {
+    max-height: 110vh !important;
+    .column-left {
+      padding-top: 1rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      .column-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .img-logo {
+          width: 120px;
+        }
+      }
+
+      .menu-title {
+        margin-top: 1.5rem;
+        padding-right: 1rem;
+        div {
+          &:first-child {
+            text-align: center;
+            span {
+              font-size: 1.8rem;
+              line-height: 2rem;
+            }
+          }
+          &:last-child {
+            text-align: center;
+            span {
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+
+      .menu-redes {
+        text-align: center;
+      }
+    }
+
+    .column-rigth {
+      margin-top: 1.5rem;
+    }
+  }
+
+  .column-body {
+    .column-news {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+      .row {
+        .img-caption {
+          font-size: 0.8rem !important;
+        }
+      }
+    }
+  }
+
+  .column-footer {
+    span {
+      font-size: 0.8rem;
+    }
+  }
+
+  //
+  .list-menu-mobile {
+    margin-top: 1rem;
+    background-color: #ff4141;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    user-select: none;
+    text-align: center;
+    .q-item {
+      &:not(:last-child) {
+        border-bottom: 1px solid #fff;
+      }
+      &:hover {
+        background-color: #6d0101;
+      }
+    }
+    .q-item__label {
+      color: #fff;
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
   }
 }
 </style>
