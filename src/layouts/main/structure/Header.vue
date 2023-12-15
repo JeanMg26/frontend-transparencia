@@ -1,40 +1,123 @@
 <template>
-  <q-header reveal :reveal-offset="1500" class="header">
-    <q-toolbar>
-      <q-img
-        src="@assets/img/main-page/logo.png"
-        sizes="(max-width: 400px) 400w,
-              (min-width: 400px) and (max-width: 800px) 800w,
-              (min-width: 800px) and (max-width: 1200px) 1200w,
-              (min-width: 1200px) 1600w"
-        style="max-width: 150px; max-height: 150px"
-      />
-      <!-- //++ Menu Items ++ -->
-      <div class="item-menu">
-        <span>inicio</span>
-        <span>nosotros</span>
-        <span>trabajo</span>
+  <q-header bordered reveal class="bg-header">
+    <!-- //++ Logos ++ -->
+    <div class="row">
+      <div class="col-12 header-blog bg-white">
+        <q-img
+          src="@assets/img/logo-transparencia.svg"
+          class="img-logo-left"
+          :no-spinner="true"
+        />
+        <q-img
+          src="@assets/img/logo-entidad.png"
+          class="img-logo-right"
+          :no-spinner="true"
+        />
       </div>
-    </q-toolbar>
-    <!-- <span>inicio</span> -->
+      <!-- //++ Categories ++ -->
+      <div class="col-12 section-category">
+        <div class="row">
+          <div class="col-2">
+            <q-item clickable class="item-category q-no-hover">
+              <q-item-section>
+                <q-item-label>transparencia en la comunidad</q-item-label>
+              </q-item-section>
+              <!-- //-- Menu -- -->
+              <q-menu square class="q-menu-subcategory">
+                <q-list bordered>
+                  <q-item
+                    clickable
+                    v-close-popup
+                    class="item-subcategory q-no-hover"
+                  >
+                    <q-item-section>
+                      <q-item-label>Que es transparencia</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    clickable
+                    v-close-popup
+                    class="item-subcategory q-no-hover"
+                  >
+                    <q-item-section>
+                      <q-item-label>Evaluando transparencia</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item
+                    clickable
+                    v-close-popup
+                    class="item-subcategory q-no-hover"
+                  >
+                    <q-item-section>
+                      <q-item-label>Sujetos obligados</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-item>
+          </div>
+        </div>
+      </div>
+    </div>
   </q-header>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+</script>
 
 <style lang="scss" scoped>
-.header {
-  background-image: url("@assets/img/main-page/pattern.png");
+.header-blog {
+  padding: 0.5rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-image: url(../../../assets/img/pattern.png) !important;
 }
 
-.item-menu {
-  display: flex;
-  width: 500px;
-  margin-left: 2rem;
-  span {
-    text-transform: uppercase;
-    font-size: 1rem;
-    margin-right: 4rem;
+.section-category {
+  background-color: $blue-grey-1;
+  padding: 0 4rem;
+  .item-category {
+    user-select: none;
+    .q-item__label {
+      text-transform: uppercase;
+      color: $grey-9;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0 0.5rem;
+      &::first-line {
+        line-height: 1.8rem;
+      }
+    }
+    &:hover {
+      background-color: white;
+      box-shadow: inset 0 -4px 0 #264081;
+    }
+    // ++Subcategory
   }
+}
+
+.q-menu-subcategory {
+  .q-list {
+    min-width: 250px;
+    .item-subcategory {
+      .q-item__label {
+        font-size: 1rem;
+        font-weight: 500;
+      }
+      &:hover {
+        background-color: #264081;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.img-logo-left {
+  width: 16rem;
+}
+.img-logo-right {
+  width: 4rem;
 }
 </style>

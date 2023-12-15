@@ -1,6 +1,10 @@
 <template>
   <q-page>
-    <q-img src="@assets/img/img-body.jpg" style="height: 280px" />
+    <q-img
+      src="@assets/img/img-body.jpg"
+      style="height: 280px"
+      :no-spinner="true"
+    />
     <div class="section-body bg-main">
       <span>Lo más destacado</span>
     </div>
@@ -363,18 +367,8 @@
   </q-page>
 </template>
 
-<script>
-import { ref } from "vue";
-
-export default {
-  setup() {
-    return {
-      slide: ref("style"),
-      lorem:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam, architecto cupiditate officia rerum, error dignissimos praesentium libero ab nemo.",
-    };
-  },
-};
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
 </script>
 
 <style lang="scss" scoped>

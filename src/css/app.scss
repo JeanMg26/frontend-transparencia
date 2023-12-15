@@ -361,3 +361,14 @@ body {
     line-height: normal;
   }
 }
+
+.menu-item {
+  .q-hoverable {
+    &:hover {
+      .q-focus-helper {
+        background: none !important;
+        opacity: 0 !important;
+      }
+    }
+  }
+}

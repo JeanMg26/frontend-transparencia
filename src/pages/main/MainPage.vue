@@ -25,13 +25,13 @@
                       <q-item-label>nosotros</q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item class="cursor-pointer">
+                  <q-item class="cursor-pointer" :to="{ name: 'BlogPage' }">
                     <q-item-section>
                       <q-item-label>trabajo</q-item-label>
                     </q-item-section>
                   </q-item>
                 </div>
-                <!-- //------MENU MOBILE------ -->
+                <!-- //------Icon Menu Mobile------ -->
                 <div
                   v-if="$q.screen.width < 1024"
                   class="menu-mobile"
@@ -40,7 +40,7 @@
                   <q-icon name="fa-solid fa-bars"> </q-icon>
                 </div>
               </div>
-              <!-- //++ Menu Mobile++ -->
+              <!-- //-----Menu Mobile------ -->
               <div
                 v-if="$q.screen.width < 1024 && showMenuMobile"
                 class="col-12"
@@ -63,7 +63,7 @@
                   </q-item>
                 </q-list>
               </div>
-              <!-- // ++ Menu - Title ++ -->
+              <!-- // ++ Header - Title ++ -->
               <div class="col-12 menu-title">
                 <div>
                   <span> GOREA GERENCIA GENERAL </span>
@@ -413,6 +413,17 @@ const showMenuMobile = ref<boolean>(false);
       color: #fff;
       font-size: 1rem;
       text-transform: uppercase;
+    }
+  }
+}
+
+//
+
+.q-hoverable {
+  &:hover {
+    .q-focus-helper {
+      background: none !important;
+      opacity: 1 !important;
     }
   }
 }

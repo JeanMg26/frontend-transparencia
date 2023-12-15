@@ -4,23 +4,15 @@ import { LocalStorage } from "quasar";
 const routes: RouteRecordRaw[] = [
   // ************** AUTH *********************
   {
-    path: "/",
-    component: () => import("layouts/MainLayout.vue"),
-    redirect: { name: "MainAuthPage" },
+    path: "/signin",
+    component: () => import("layouts/admin/MainLayout.vue"),
+    redirect: { name: "SignInPage" },
     children: [
+      // ++SignIn++
       {
-        path: "signin",
-        name: "MainAuthPage",
-        component: () => import("pages/auth/MainAuthPage.vue"),
-        redirect: { name: "SignInPage" },
-        children: [
-          // ++SignIn++
-          {
-            path: "",
-            name: "SignInPage",
-            component: () => import("pages/auth/signin/SignInPage.vue"),
-          },
-        ],
+        path: "",
+        name: "SignInPage",
+        component: () => import("pages/auth/signin/SignInPage.vue"),
       },
     ],
     beforeEnter: (to, from, next) => {
@@ -35,8 +27,8 @@ const routes: RouteRecordRaw[] = [
 
   // ************** MAIN *********************
   {
-    path: "/",
-    component: () => import("layouts/MainLayout.vue"),
+    path: "/adminitration",
+    component: () => import("layouts/admin/MainLayout.vue"),
     redirect: { name: "MainAdminPage" },
     children: [
       {
@@ -104,14 +96,14 @@ const routes: RouteRecordRaw[] = [
       if (jwt_access) {
         next();
       } else {
-        next({ name: "MainAuthPage" });
+        next({ name: "SignInPage" });
       }
     },
   },
 
   // *************** BLOG ********************
   {
-    path: "/inicio",
+    path: "/",
     component: () => import("layouts/main/MainPageLayout.vue"),
     redirect: { name: "MainPage" },
     children: [
