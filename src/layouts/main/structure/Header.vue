@@ -6,6 +6,7 @@
         <!-- //-------- Icon Menu Mobile -------- -->
         <div>
           <q-icon
+            v-if="$q.screen.width < 600"
             name="fa-solid fa-bars"
             size="1.5rem"
             class="icon-menu-mobile"
@@ -49,6 +50,7 @@
                     clickable
                     v-close-popup
                     class="item-subcategory q-no-hover"
+                    :to="{ name: 'SignInPage' }"
                   >
                     <q-item-section>
                       <q-item-label>Que es transparencia</q-item-label>
