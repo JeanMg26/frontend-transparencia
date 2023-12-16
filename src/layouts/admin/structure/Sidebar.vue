@@ -8,7 +8,7 @@
       <template v-for="(item, index) in listMenu" :key="index">
         <q-item
           clickable
-          :to="item.link"
+          :to="{ name: item.nameRoute }"
           class="list-menu"
           @click="itemExpanded = false"
         >
