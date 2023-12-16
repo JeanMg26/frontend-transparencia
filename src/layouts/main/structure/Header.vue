@@ -60,6 +60,7 @@
                     clickable
                     v-close-popup
                     class="item-subcategory q-no-hover"
+                    :to="{ name: 'SignInPage' }"
                   >
                     <q-item-section>
                       <q-item-label>Evaluando transparencia</q-item-label>
@@ -69,6 +70,7 @@
                     clickable
                     v-close-popup
                     class="item-subcategory q-no-hover"
+                    :to="{ name: 'SignInPage' }"
                   >
                     <q-item-section>
                       <q-item-label>Sujetos obligados</q-item-label>
