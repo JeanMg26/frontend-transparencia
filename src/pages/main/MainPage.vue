@@ -56,7 +56,7 @@
                       <q-item-label>Nosotros</q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item clickable>
+                  <q-item clickable :to="{ name: 'BlogPage' }">
                     <q-item-section>
                       <q-item-label>Trabajos</q-item-label>
                     </q-item-section>

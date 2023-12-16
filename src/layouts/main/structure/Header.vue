@@ -1,13 +1,33 @@
 <template>
-  <q-header bordered reveal class="bg-header">
+  <q-header bordered reveal>
     <!-- //++ Logos ++ -->
     <div class="row">
       <div class="col-12 header-blog bg-white">
-        <q-img
-          src="@assets/img/logo-transparencia.svg"
-          class="img-logo-left"
-          :no-spinner="true"
-        />
+        <!-- //-------- Icon Menu Mobile -------- -->
+        <div>
+          <q-icon
+            name="fa-solid fa-bars"
+            size="1.5rem"
+            class="icon-menu-mobile"
+          >
+            <q-menu square :offset="[0, 22]">
+              <q-list class="list-menu-mobile">
+                <q-item clickable v-close-popup>
+                  <q-item-section>Transparencia en la comunidad</q-item-section>
+                </q-item>
+                <q-separator />
+                <q-item clickable v-close-popup>
+                  <q-item-section>Transparencia en la comunidad</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-icon>
+          <q-img
+            src="@assets/img/logo-transparencia.svg"
+            class="img-logo-left"
+            :no-spinner="true"
+          />
+        </div>
         <q-img
           src="@assets/img/logo-entidad.png"
           class="img-logo-right"
@@ -15,7 +35,7 @@
         />
       </div>
       <!-- //++ Categories ++ -->
-      <div class="col-12 section-category">
+      <div v-if="$q.screen.width > 600" class="col-12 section-category">
         <div class="row">
           <div class="col-2">
             <q-item clickable class="item-category q-no-hover">
@@ -64,6 +84,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useQuasar } from "quasar";
+
+//***************** Constants *****************
+const $q = useQuasar();
 </script>
 
 <style lang="scss" scoped>
@@ -119,5 +143,31 @@ import { ref } from "vue";
 }
 .img-logo-right {
   width: 4rem;
+}
+
+@media (max-width: 600px) {
+  .header-blog {
+    padding: 0.5rem;
+    .img-logo-left {
+      width: 170px;
+    }
+    .img-logo-right {
+      width: 50px;
+    }
+  }
+
+  .icon-menu-mobile {
+    margin-left: -0.5rem;
+    padding-left: 1rem;
+    cursor: pointer;
+    margin-right: 1rem;
+    &:hover {
+      color: $grey-5;
+    }
+  }
+
+  .list-menu-mobile {
+    min-width: 95vw !important;
+  }
 }
 </style>
