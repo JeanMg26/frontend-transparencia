@@ -59,6 +59,10 @@ const selectCategoryVal = [
   (val: any) => !!val || "Por seleccionar una categoria.",
 ];
 
+const selectSubcategoryVal = [
+  (val: any) => !!val || "Por seleccionar una subcategoria.",
+];
+
 export {
   emailRequired,
   passwordRequired,
@@ -69,4 +73,5 @@ export {
   nameCategoryVal,
   nameSubcategoryVal,
   selectCategoryVal,
+  selectSubcategoryVal,
 };

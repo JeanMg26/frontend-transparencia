@@ -142,6 +142,7 @@ body {
   .q-item {
     min-height: 30px !important;
   }
+  border: 1px solid $grey-4;
 }
 .popup-category::-webkit-scrollbar {
   width: 0.5rem; /* width of the entire scrollbar */

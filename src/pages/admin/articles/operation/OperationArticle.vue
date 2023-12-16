@@ -84,6 +84,47 @@
             <!-- //++ Subcategory ++ -->
             <div class="col-6 q-mt-md">
               <span class="q-label-input">SubCategoria</span>
+              <q-select
+                dense
+                outlined
+                class="q-mt-xs"
+                v-model="selectSubcategory"
+                :options="subcategoriesState"
+                behavior="menu"
+                popup-content-class="popup-category"
+                :rules="selectSubcategoryVal"
+                :no-error-icon="true"
+                ref="refSelectSubcat"
+                @blur="!selectSubcategory ? resetErrorSubcat() : ''"
+                :hide-bottom-space="
+                  refSelectSubcat && refSelectSubcat.hasError ? false : true
+                "
+                @update:model-value="updateSubcategory"
+              >
+                <!-- //++ Selected -->
+                <template v-slot:selected>
+                  <span v-if="!selectSubcategory" class="text-grey-6">
+                    Selecionar la subcategoria
+                  </span>
+                  <span v-else>{{ selectSubcategory.name }}</span>
+                </template>
+                <!-- //++ Options -->
+                <template v-slot:option="{ itemProps, opt }">
+                  <q-item dense v-bind="itemProps">
+                    <q-item-section>
+                      <q-item-label>{{ opt.name }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </template>
+                <!-- //--No Options -- -->
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      Sin resultados
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </div>
             <!-- //++Editor++ -->
             <div class="col-12 q-mt-md">
@@ -127,12 +168,14 @@
 import { computed, onMounted, reactive, ref } from "vue";
 import { useQuasar } from "quasar";
 import { useCategory } from "@stores/Category";
-import { Category } from "@interfaces/interface-store";
-import { selectCategoryVal } from "@utils/validation";
+import { useSubcategory } from "@stores/Subcategory";
+import { Category, Subcategory } from "@interfaces/interface-store";
+import { selectCategoryVal, selectSubcategoryVal } from "@utils/validation";
 
 // ********************* Constants ********************+
 const $q = useQuasar();
 const categoryStore = useCategory();
+const subcategoryStore = useSubcategory();
 
 const dataSend = reactive({
   title: "",
@@ -141,9 +184,11 @@ const dataSend = reactive({
 });
 
 const selectCategory = ref<Category>();
+const selectSubcategory = ref<Subcategory>();
 
 // ++Refs
 const refSelectCat = ref<any>(null);
+const refSelectSubcat = ref<any>(null);
 
 //************* Functions Template *************
 const onSubmitSection = async () => {
@@ -155,13 +200,21 @@ const resetErrorCat = () => {
   refSelectCat.value.resetValidation();
 };
 
+const resetErrorSubcat = () => {
+  refSelectSubcat.value.resetValidation();
+};
+
 // ++ Update Value Select ID
 const updateCategory = (value: Category) => {
+  // dataSend.category_id = String(value.id);
+};
+const updateSubcategory = (value: Subcategory) => {
   // dataSend.category_id = String(value.id);
 };
 
 //************* Functions Computed *************
 const categoriesState = computed(() => categoryStore.categories);
+const subcategoriesState = computed(() => subcategoryStore.subcategories);
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
