@@ -13,11 +13,11 @@
           >
             <q-menu square :offset="[0, 22]">
               <q-list class="list-menu-mobile">
-                <q-item clickable v-close-popup>
+                <q-item clickable v-close-popup :to="{ name: 'SignInPage' }">
                   <q-item-section>Transparencia en la comunidad</q-item-section>
                 </q-item>
                 <q-separator />
-                <q-item clickable v-close-popup>
+                <q-item clickable v-close-popup :to="{ name: 'SignInPage' }">
                   <q-item-section>Transparencia en la comunidad</q-item-section>
                 </q-item>
               </q-list>
