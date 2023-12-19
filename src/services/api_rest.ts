@@ -119,6 +119,11 @@ const deleteSubcategoryAPI = (subcat_id: number) => {
   return jwtAxios.delete("subcat/" + subcat_id);
 };
 
+// ++ Articles
+const deleteArticleAPI = (article_id: number) => {
+  return jwtAxios.delete("article/" + article_id);
+};
+
 export {
   getProfileAPI,
   getListUsersAPI,
@@ -143,4 +148,5 @@ export {
   createArticleAPI,
   updateArticleAPI,
   getArticleAPI,
+  deleteArticleAPI,
 };

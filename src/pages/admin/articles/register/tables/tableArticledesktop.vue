@@ -37,6 +37,7 @@
                 name="fa-solid fa-eye"
                 color="positive"
                 class="cursor-pointer"
+                @click="opendialogShowArticle(article.id)"
               >
                 <q-tooltip
                   anchor="top middle"
@@ -66,7 +67,7 @@
                 name="fa-regular fa-trash-can"
                 color="red"
                 class="cursor-pointer"
-                @click="opendialogDeleteArticle()"
+                @click="opendialogDeleteArticle(article.id)"
               >
                 <q-tooltip
                   anchor="top middle"
@@ -80,6 +81,10 @@
           </td>
         </tr>
       </template>
+      <!-- //++ Inner Loafing ++ -->
+      <q-inner-loading :showing="loadingTableState">
+        <q-spinner-bars size="35px" color="primary" />
+      </q-inner-loading>
     </tbody>
   </q-markup-table>
   <!-- //++Pagination++ -->
@@ -98,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, ref } from "vue";
+import { PropType, computed, ref } from "vue";
 import { date } from "quasar";
 import { Article } from "@interfaces/interface-store";
 import { useRouter } from "vue-router";
@@ -113,6 +118,10 @@ defineProps({
     type: Function,
     required: true,
   },
+  opendialogShowArticle: {
+    type: Function,
+    required: true,
+  },
   articlesState: {
     type: Object as PropType<Article[]>,
     required: true,
@@ -124,7 +133,10 @@ const router = useRouter();
 const currentPage = ref<number>(1);
 const articleStore = useArticle();
 
-//************* Functions Template *************
+//************* Functions Computed *************
+const loadingTableState = computed(() => articleStore.isLoadingTable);
+
+//************* Functions API *************
 const updateArticle = async (id: number) => {
   await articleStore.getArticleStore(id);
   router.push({ name: "OperationArticle", params: { id } });

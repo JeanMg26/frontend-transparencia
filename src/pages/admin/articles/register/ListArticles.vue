@@ -22,11 +22,18 @@
     <div>
       <TableArticleDesktop
         :opendialogDeleteArticle="opendialogDeleteArticle"
+        :opendialogShowArticle="opendialogShowArticle"
         :articlesState="articlesState"
       />
     </div>
     <!-- //***************** DIALOGS *************** -->
-    <DialogDeleteArticle :openDialog="dialogDeleteArticle" />
+    <!-- //++Show Article++  -->
+    <DialogViewArticle :openDialog="dialogShowArticle" />
+    <!-- //++Delete Article++ -->
+    <DialogDeleteArticle
+      :openDialog="dialogDeleteArticle"
+      :articleID="articleID"
+    />
   </q-page>
   <!-- //************** INNER LOADING ************* -->
   <q-inner-loading :showing="loadingPageState">
@@ -41,15 +48,23 @@ import { useArticle } from "@stores/Article";
 // ++Components
 import TableArticleDesktop from "./tables/tableArticledesktop.vue";
 import DialogDeleteArticle from "./dialogs/DialogDeleteArticle.vue";
+import DialogViewArticle from "./dialogs/DialogViewArticle.vue";
 
 // ****************** Constants *********************
 const articleStore = useArticle();
 const dialogDeleteArticle = ref<boolean>(false);
+const dialogShowArticle = ref<boolean>(false);
+const articleID = ref<number>();
 
 // ****************** Functions Template *********************
-const opendialogDeleteArticle = () => {
-  console.log("click");
+const opendialogDeleteArticle = (article_id: number) => {
+  articleID.value = article_id;
   dialogDeleteArticle.value = !dialogDeleteArticle.value;
+};
+
+const opendialogShowArticle = async (article_id: number) => {
+  await articleStore.getArticleStore(article_id);
+  dialogShowArticle.value = !dialogShowArticle.value;
 };
 
 //************* Functions Computed *************
