@@ -112,7 +112,7 @@ const $q = useQuasar();
       text-transform: uppercase;
       color: $grey-9;
       font-size: 1rem;
-      font-weight: 500;
+      font-weight: 300;
       padding: 0 0.5rem;
       &::first-line {
         line-height: 1.8rem;
@@ -132,7 +132,7 @@ const $q = useQuasar();
     .item-subcategory {
       .q-item__label {
         font-size: 1rem;
-        font-weight: 500;
+        font-weight: 200;
       }
       &:hover {
         background-color: #264081;

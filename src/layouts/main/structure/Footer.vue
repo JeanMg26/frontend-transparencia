@@ -167,7 +167,7 @@
   padding: 2rem 4rem;
   .title-category {
     font-size: 1.2rem;
-    font-weight: 500;
+    font-weight: 300;
     user-select: none;
   }
   .title-subcategory {

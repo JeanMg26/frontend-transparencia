@@ -63,13 +63,13 @@ const routes: RouteRecordRaw[] = [
             redirect: { name: "ListArticlePage" },
             children: [
               {
-                path: "section",
+                path: "",
                 name: "ListArticlePage",
                 component: () =>
                   import("pages/admin/articles/register/ListArticles.vue"),
               },
               {
-                path: "section/add",
+                path: "section/:id?",
                 name: "OperationArticle",
                 component: () =>
                   import("pages/admin/articles/operation/OperationArticle.vue"),

@@ -92,6 +92,6 @@ const leftDrawerState = computed({
 <style lang="scss" scoped>
 .header-title {
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 300;
 }
 </style>

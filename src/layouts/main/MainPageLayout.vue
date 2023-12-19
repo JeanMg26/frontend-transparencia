@@ -7,7 +7,7 @@
     </q-page-container>
   </q-layout>
   <q-inner-loading :showing="loadingPage" class="loading-page">
-    <q-spinner-bars size="50px" color="primary" />
+    <q-spinner-bars size="35px" color="primary" />
   </q-inner-loading>
 </template>
 

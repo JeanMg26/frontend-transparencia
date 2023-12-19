@@ -32,3 +32,16 @@ export interface Profile {
   created_at: string;
   updated_at: string;
 }
+
+export interface Article {
+  id: number;
+  title: string;
+  autor: string;
+  description: string;
+  category?: string;
+  category_id?: number;
+  subcategory: string;
+  subcategory_id: number;
+  created_at: string;
+  updated_at: string;
+}

@@ -63,6 +63,22 @@ const selectSubcategoryVal = [
   (val: any) => !!val || "Por seleccionar una subcategoria.",
 ];
 
+// ++Section
+const titleArticleVal = [
+  (val: any) => !!val || "Por ingrese un titulo.",
+  (val: any) =>
+    val.length >= 6 || "El título tiene que tener como mínimo 6 carácteres.",
+  (val: any) =>
+    val.length <= 100 ||
+    "El título tiene que tener como máximo 100 carácteres.",
+];
+
+const descArticleVal = [
+  (val: any) => !!val || "Por ingrese una descripción para la publicación.",
+  (val: any) =>
+    val.length >= 6 || "La descripción debe tener como mínimo 6 carácteres.",
+];
+
 export {
   emailRequired,
   passwordRequired,
@@ -74,4 +90,6 @@ export {
   nameSubcategoryVal,
   selectCategoryVal,
   selectSubcategoryVal,
+  titleArticleVal,
+  descArticleVal,
 };

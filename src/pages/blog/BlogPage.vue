@@ -420,7 +420,7 @@ import { onMounted, ref } from "vue";
   color: #fff;
   .title-category {
     font-size: 1.2rem;
-    font-weight: 500;
+    font-weight: 300;
     user-select: none;
   }
   .title-subcategory {
@@ -450,7 +450,7 @@ import { onMounted, ref } from "vue";
   box-shadow: inset 0 4px 0 #ff4141;
   span {
     font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: 300;
   }
 }
 .section-destacado {
@@ -465,7 +465,7 @@ import { onMounted, ref } from "vue";
       span {
         &:first-child {
           font-size: 1.1rem;
-          font-weight: 500;
+          font-weight: 300;
         }
       }
     }
@@ -511,7 +511,7 @@ import { onMounted, ref } from "vue";
   .section-title-reciente {
     span {
       font-size: 1.5rem;
-      font-weight: 500;
+      font-weight: 300;
     }
   }
   .section-info-reciente {
@@ -525,7 +525,7 @@ import { onMounted, ref } from "vue";
         span {
           &:first-child {
             font-size: 1.1rem;
-            font-weight: 500;
+            font-weight: 300;
             color: #264081;
             text-decoration: underline;
           }

@@ -1,5 +1,5 @@
 <template>
-  <q-page class="container">
+  <q-page v-if="!loadingPageState" class="container">
     <!-- //***************** HEADER **************** -->
     <div class="text-center q-my-md">
       <span class="q-page-header">Gestión de Publicaciones</span>
@@ -20,21 +20,30 @@
     </div>
     <!-- //*************** TABLES ******************* -->
     <div>
-      <TableArticleDesktop :opendialogDeleteArticle="opendialogDeleteArticle" />
+      <TableArticleDesktop
+        :opendialogDeleteArticle="opendialogDeleteArticle"
+        :articlesState="articlesState"
+      />
     </div>
     <!-- //***************** DIALOGS *************** -->
     <DialogDeleteArticle :openDialog="dialogDeleteArticle" />
   </q-page>
+  <!-- //************** INNER LOADING ************* -->
+  <q-inner-loading :showing="loadingPageState">
+    <q-spinner-bars size="35px" color="primary" />
+  </q-inner-loading>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
+import { useArticle } from "@stores/Article";
 
 // ++Components
 import TableArticleDesktop from "./tables/tableArticledesktop.vue";
 import DialogDeleteArticle from "./dialogs/DialogDeleteArticle.vue";
 
 // ****************** Constants *********************
+const articleStore = useArticle();
 const dialogDeleteArticle = ref<boolean>(false);
 
 // ****************** Functions Template *********************
@@ -42,6 +51,20 @@ const opendialogDeleteArticle = () => {
   console.log("click");
   dialogDeleteArticle.value = !dialogDeleteArticle.value;
 };
+
+//************* Functions Computed *************
+const articlesState = computed(() => articleStore.articles);
+const loadingPageState = computed(() => articleStore.isLoadingPage);
+const loadingTableState = computed(() => articleStore.isLoadingTable);
+
+//************* Functions LifeCycle *************
+onMounted(async () => {
+  await articleStore.getListArticlesStore();
+});
+
+onUnmounted(() => {
+  articleStore.isLoadingPage = true;
+});
 </script>
 
 <style lang="scss" scoped></style>

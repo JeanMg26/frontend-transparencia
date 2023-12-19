@@ -62,7 +62,7 @@
       </template>
       <!-- //++ INNER LOADING ++ -->
       <q-inner-loading :showing="loadingTableState">
-        <q-spinner-bars size="50px" color="primary" />
+        <q-spinner-bars size="35px" color="primary" />
       </q-inner-loading>
     </tbody>
   </q-markup-table>

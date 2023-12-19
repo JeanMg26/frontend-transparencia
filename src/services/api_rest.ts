@@ -43,6 +43,15 @@ const getSubcategoryAPI = (subcat_id: number) => {
   return jwtAxios.get("subcat/" + subcat_id);
 };
 
+// ++ Articles
+const getListArticlesAPI = () => {
+  return jwtAxios.get("articles");
+};
+
+const getArticleAPI = (id: number) => {
+  return jwtAxios.get("article/" + id);
+};
+
 // *********************** API-POST ****************************
 // ++ Users
 const createUserAPI = (data: any) => {
@@ -57,6 +66,11 @@ const createCategoryAPI = (data: any) => {
 // ++ Subcategories
 const createSubcategoryAPI = (data: any) => {
   return jwtAxios.post("subcat", data);
+};
+
+// ++ Articles
+const createArticleAPI = (data: any) => {
+  return jwtAxios.post("article", data);
 };
 
 // *********************** API-UPDATE ****************************
@@ -82,6 +96,11 @@ const updateCategoryAPI = (cat_id: number, data: any) => {
 // ++ Subcategory
 const updateSubcategoryAPI = (subcat_id: number, data: any) => {
   return jwtAxios.put("subcat/" + subcat_id, data);
+};
+
+// ++ Articles
+const updateArticleAPI = (article_id: number, data: any) => {
+  return jwtAxios.put("article/" + article_id, data);
 };
 
 // *********************** API-DELETE ****************************
@@ -120,4 +139,8 @@ export {
   getSubcategoryAPI,
   updateSubcategoryAPI,
   deleteSubcategoryAPI,
+  getListArticlesAPI,
+  createArticleAPI,
+  updateArticleAPI,
+  getArticleAPI,
 };

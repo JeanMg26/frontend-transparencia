@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page v-if="!loadingPageState" padding>
     <!-- //************** Header ************** -->
     <div class="q-mb-md">
       <div class="container-link q-mb-md">
@@ -12,7 +12,12 @@
           <span> Regresar </span>
         </router-link>
       </div>
-      <span class="text-h6"> Añadir una publicación </span>
+      <div class="text-center">
+        <span v-if="!articleState.id" class="q-page-header">
+          Añadir una Publicación
+        </span>
+        <span v-else class="q-page-header"> Actualizar Publicación </span>
+      </div>
     </div>
     <q-card flat bordered class="card-article">
       <q-card-section>
@@ -21,13 +26,21 @@
             <!-- //++Title++ -->
             <div class="col-12">
               <span class="q-label-input">Título</span>
+              <span class="text-red">*</span>
               <q-input
                 dense
                 outlined
-                v-model="dataSend.title"
+                v-model="titleState"
                 type="text"
                 placeholder="Ingresar el título"
                 class="q-mt-xs"
+                :rules="titleArticleVal"
+                :no-error-icon="true"
+                ref="refTitle"
+                @blur="!titleState ? resetErrorTitle() : ''"
+                :hide-bottom-space="
+                  refTitle && refTitle.hasError ? false : true
+                "
               />
             </div>
             <!-- //++Autor++ -->
@@ -38,7 +51,7 @@
                 autogrow
                 dense
                 rows="2"
-                v-model="dataSend.autor"
+                v-model="autorState"
                 type="textarea"
                 placeholder="Ingresar el nombre del autor"
                 class="q-mt-xs"
@@ -47,18 +60,19 @@
             <!-- //++ Category and Subcategory ++ -->
             <div class="col-6 q-mt-md">
               <span class="q-label-input">Categoria</span>
+              <span class="text-red">*</span>
               <q-select
                 dense
                 outlined
                 class="q-mt-xs"
-                v-model="selectCategory"
+                v-model="categoryState"
                 :options="categoriesState"
                 behavior="menu"
                 popup-content-class="popup-category"
                 :rules="selectCategoryVal"
                 :no-error-icon="true"
                 ref="refSelectCat"
-                @blur="!selectCategory ? resetErrorCat() : ''"
+                @blur="!categoryState ? resetErrorCat() : ''"
                 :hide-bottom-space="
                   refSelectCat && refSelectCat.hasError ? false : true
                 "
@@ -66,10 +80,10 @@
               >
                 <!-- //++ Selected -->
                 <template v-slot:selected>
-                  <span v-if="!selectCategory" class="text-grey-6">
+                  <span v-if="!categoryState" class="text-grey-6">
                     Selecionar la categoria
                   </span>
-                  <span v-else>{{ selectCategory.name }}</span>
+                  <span v-else>{{ categoryState.name }}</span>
                 </template>
                 <!-- //++ Options -->
                 <template v-slot:option="{ itemProps, opt }">
@@ -83,30 +97,31 @@
             </div>
             <!-- //++ Subcategory ++ -->
             <div class="col-6 q-mt-md">
-              <span class="q-label-input">SubCategoria</span>
+              <span class="q-label-input">Subcategoria</span>
+              <span class="text-red">*</span>
               <q-select
                 dense
                 outlined
                 class="q-mt-xs"
-                v-model="selectSubcategory"
+                v-model="subcategoryState"
                 :options="subcategoriesState"
                 behavior="menu"
                 popup-content-class="popup-category"
                 :rules="selectSubcategoryVal"
                 :no-error-icon="true"
                 ref="refSelectSubcat"
-                @blur="!selectSubcategory ? resetErrorSubcat() : ''"
+                @blur="!subcategoryState ? resetErrorSubcat() : ''"
                 :hide-bottom-space="
                   refSelectSubcat && refSelectSubcat.hasError ? false : true
                 "
-                @update:model-value="updateSubcategory"
+                @update:model-value="updateSubcategoria"
               >
                 <!-- //++ Selected -->
                 <template v-slot:selected>
-                  <span v-if="!selectSubcategory" class="text-grey-6">
+                  <span v-if="!subcategoryState" class="text-grey-6">
                     Selecionar la subcategoria
                   </span>
-                  <span v-else>{{ selectSubcategory.name }}</span>
+                  <span v-else>{{ subcategoryState.name }}</span>
                 </template>
                 <!-- //++ Options -->
                 <template v-slot:option="{ itemProps, opt }">
@@ -129,8 +144,9 @@
             <!-- //++Editor++ -->
             <div class="col-12 q-mt-md">
               <span class="q-label-input">Cuerpo de la publicación</span>
+              <span class="text-red">*</span>
               <q-editor
-                v-model="dataSend.body"
+                v-model="descriptionState"
                 class="q-mt-xs"
                 :toolbar="[
                   [
@@ -146,14 +162,22 @@
                   ['upload', 'save'],
                 ]"
               />
+              <span v-if="descBackError" class="q-label-error">
+                {{ descBackError }}
+              </span>
             </div>
             <!-- //++Buttons Actions++ -->
             <div class="col-12 q-mt-md flex justify-center">
               <q-btn
                 no-caps
                 unelevated
+                :ripple="false"
                 color="primary"
-                label="Agregar publicación"
+                :label="
+                  !articleState.id
+                    ? 'Agregar publicación'
+                    : 'Actualizar publicación'
+                "
                 type="submit"
               />
             </div>
@@ -162,26 +186,46 @@
       </q-card-section>
     </q-card>
   </q-page>
+  <!-- //**************** INNER LOADING *************** -->
+  <q-inner-loading :showing="loadingPageState">
+    <q-spinner-bars size="35px" color="primary" />
+  </q-inner-loading>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import { useQuasar } from "quasar";
 import { useCategory } from "@stores/Category";
 import { useSubcategory } from "@stores/Subcategory";
+import { useArticle } from "@stores/Article";
 import { Category, Subcategory } from "@interfaces/interface-store";
-import { selectCategoryVal, selectSubcategoryVal } from "@utils/validation";
+import { createArticleAPI, updateArticleAPI } from "@services/api_rest";
+import {
+  selectCategoryVal,
+  selectSubcategoryVal,
+  titleArticleVal,
+} from "@utils/validation";
+import { AxiosError } from "axios";
+import { notify } from "@utils/notify";
+import { useRouter, useRoute } from "vue-router";
 
 // ********************* Constants ********************+
 const $q = useQuasar();
+const router = useRouter();
+const route = useRoute();
 const categoryStore = useCategory();
 const subcategoryStore = useSubcategory();
+const articleStore = useArticle();
 
 const dataSend = reactive({
   title: "",
   autor: "",
-  body: "",
+  description: "",
+  description_verify: "",
+  subcategory_id: "",
 });
+
+const descBackError = ref<string>("");
 
 const selectCategory = ref<Category>();
 const selectSubcategory = ref<Subcategory>();
@@ -189,12 +233,9 @@ const selectSubcategory = ref<Subcategory>();
 // ++Refs
 const refSelectCat = ref<any>(null);
 const refSelectSubcat = ref<any>(null);
+const refTitle = ref<any>(null);
 
 //************* Functions Template *************
-const onSubmitSection = async () => {
-  console.log(dataSend.body);
-};
-
 // ++ Errors
 const resetErrorCat = () => {
   refSelectCat.value.resetValidation();
@@ -204,21 +245,168 @@ const resetErrorSubcat = () => {
   refSelectSubcat.value.resetValidation();
 };
 
-// ++ Update Value Select ID
-const updateCategory = (value: Category) => {
-  // dataSend.category_id = String(value.id);
+const resetErrorTitle = () => {
+  refTitle.value.resetValidation();
 };
-const updateSubcategory = (value: Subcategory) => {
-  // dataSend.category_id = String(value.id);
+
+// ++ Update Value Select ID
+const updateCategory = async (cat: Category) => {
+  subcategoryStore.filterSubcategoriesStore(cat.id);
+  // -- Clean Select Subcategory
+  selectSubcategory.value = undefined;
+  await Promise.resolve();
+  resetErrorSubcat();
+};
+
+const updateSubcategoria = (subcat: Subcategory) => {
+  dataSend.subcategory_id = String(subcat.id);
 };
 
 //************* Functions Computed *************
 const categoriesState = computed(() => categoryStore.categories);
-const subcategoriesState = computed(() => subcategoryStore.subcategories);
+const subcategoriesState = computed(
+  () => subcategoryStore.subcategories_filter
+);
+const articleState = computed(() => articleStore.article);
+const loadingPageState = computed(() => articleStore.isLoadingPage);
+
+const titleState = computed({
+  get() {
+    return dataSend.title ? dataSend.title : articleState.value.title;
+  },
+  set(value: any) {
+    dataSend.title = value;
+  },
+});
+
+const autorState = computed({
+  get() {
+    return dataSend.autor ? dataSend.autor : articleState.value.autor;
+  },
+  set(value: any) {
+    dataSend.autor = value;
+  },
+});
+
+const categoryState = computed({
+  get() {
+    return selectCategory.value
+      ? selectCategory.value
+      : categoriesState.value.find(
+          (cat: Category) => cat.id == articleState.value.category_id
+        );
+  },
+  set(value: any) {
+    selectCategory.value = value;
+  },
+});
+
+const subcategoryState = computed({
+  get() {
+    return selectSubcategory.value
+      ? selectSubcategory.value
+      : subcategoriesState.value.find(
+          (subcat: Subcategory) =>
+            subcat.id == articleState.value.subcategory_id
+        );
+  },
+  set(value: any) {
+    selectSubcategory.value = value;
+  },
+});
+
+const descriptionState = computed({
+  get() {
+    return dataSend.description
+      ? dataSend.description
+      : articleState.value.description;
+  },
+  set(value: any) {
+    dataSend.description = value;
+  },
+});
+
+//**************** Functions API ****************
+// ++ Create Article
+const createArticle = async () => {
+  try {
+    await createArticleAPI({
+      title: dataSend.title,
+      autor: dataSend.autor,
+      description: dataSend.description,
+      subcategory_id: Number(dataSend.subcategory_id),
+    });
+    notify("success", "Articulo creado correctamente.");
+    router.push({ name: "ListArticlePage" });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      let descriptionError = error.response?.data.errors.description;
+      if (descriptionError) {
+        if (descriptionError[0] == 1005) {
+          descBackError.value =
+            "Por favor ingrese el cuerpo de la publicación.";
+        }
+      }
+      console.log(error.response?.data);
+    }
+  }
+};
+
+// ++ Updated Article
+const updateArticle = async () => {
+  try {
+    await updateArticleAPI(articleState.value.id, {
+      title: dataSend.title ? dataSend.title : articleState.value.title,
+      autor: dataSend.autor ? dataSend.autor : articleState.value.autor,
+      description: dataSend.description
+        ? dataSend.description
+        : articleState.value.description,
+      subcategory_id: dataSend.subcategory_id
+        ? Number(dataSend.subcategory_id)
+        : articleState.value.subcategory_id,
+    });
+    notify("success", "Articulo actualizado correctamente.");
+    router.push({ name: "ListArticlePage" });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      let descriptionError = error.response?.data.errors.description;
+      if (descriptionError) {
+        if (descriptionError[0] == 1005) {
+          descBackError.value =
+            "Por favor ingrese el cuerpo de la publicación.";
+        }
+      }
+      console.log(error.response?.data);
+    }
+  }
+};
+
+const onSubmitSection = async () => {
+  if (!articleState.value.id) {
+    createArticle();
+  } else {
+    updateArticle();
+  }
+};
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
   await categoryStore.getCategoriesStore();
+  await subcategoryStore.getSubCategoriesStore();
+
+  if (route.params.id) {
+    await articleStore.getArticleStore(Number(route.params.id));
+    await subcategoryStore.filterSubcategoriesStore(
+      articleState.value.category_id!
+    );
+  } else {
+    articleStore.isLoadingPage = false;
+  }
+});
+
+onUnmounted(() => {
+  articleStore.cleanArticleStore();
+  articleStore.isLoadingPage = true;
 });
 </script>
 
@@ -227,7 +415,7 @@ onMounted(async () => {
   a {
     color: $primary !important;
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 300;
     text-decoration: none;
   }
 }

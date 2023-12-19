@@ -3,7 +3,7 @@
     <div class="container-signin">
       <!-- //************* Title **************** -->
       <div class="q-mb-sm">
-        <span class="text-h6">Iniciar Sesión</span>
+        <span class="q-page-header">Iniciar Sesión</span>
       </div>
       <!-- //*************** Form Singin *************** -->
       <q-card flat bordered class="card-sigin">
