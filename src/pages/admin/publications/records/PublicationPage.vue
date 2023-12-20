@@ -84,6 +84,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
   articleStore.isLoadingPage = true;
+  subcategoryStore.isLoadingPage = true;
 });
 </script>
 
