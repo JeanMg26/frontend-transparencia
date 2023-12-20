@@ -82,12 +82,6 @@ const routes: RouteRecordRaw[] = [
             ],
           },
           {
-            path: "publicacion/:id?",
-            name: "OperationArticle",
-            component: () =>
-              import("pages/admin/operation/OperationArticle.vue"),
-          },
-          {
             path: "categorias",
             name: "CategoryPage",
             component: () => import("pages/admin/categories/CategoryPage.vue"),
