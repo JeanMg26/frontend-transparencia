@@ -14,6 +14,7 @@
         color="primary"
         size="0.8rem"
         @click="dialogOperationSubcat = !dialogOperationSubcat"
+        :disable="categoryState.length == 0 ? true : false"
       >
         <q-icon name="fa-solid fa-circle-plus" size="1rem" class="q-mr-sm" />
         <span>Agregar una subcategoria</span>
@@ -44,7 +45,7 @@
 
 <script setup lang="ts">
 import { useQuasar } from "quasar";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useSubcategory } from "@stores/Subcategory";
 import { useCategory } from "@stores/Category";
 
@@ -75,12 +76,18 @@ const openDialogDeleteSubcat = (subcat_id: number) => {
 };
 
 //************* Functions Computed *************
+const categoryState = computed(() => categoryStore.categories);
 const loadingPageState = computed(() => subcategoryStore.isLoadingPage);
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
   await subcategoryStore.getSubCategoriesStore();
   await categoryStore.getCategoriesStore();
+});
+
+onUnmounted(() => {
+  subcategoryStore.isLoadingPage = true;
+  categoryStore.isLoadingPage = true;
 });
 </script>
 

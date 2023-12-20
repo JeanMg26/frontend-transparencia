@@ -11,7 +11,7 @@
     <tbody>
       <!-- //++ Not Records ++ -->
       <template v-if="!subcategoriesState?.length">
-        <tr>
+        <tr class="q-tr--no-hover">
           <td colspan="4">
             <NoResults />
           </td>

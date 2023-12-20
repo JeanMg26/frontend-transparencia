@@ -3,7 +3,7 @@
     <!-- //************** Header ************** -->
     <div class="q-mb-md">
       <div class="container-link q-mb-md">
-        <router-link :to="{ name: 'ListArticlePage' }">
+        <router-link :to="{ name: 'PublicationPage' }">
           <q-icon
             name="fa-solid fa-chevron-left"
             size="0.7rem"
@@ -179,7 +179,12 @@
                     : 'Actualizar publicación'
                 "
                 type="submit"
-              />
+                :loading="loadingSubmit"
+              >
+                <template v-slot:loading>
+                  <q-spinner-bars size="20px" />
+                </template>
+              </q-btn>
             </div>
           </div>
         </q-form>
@@ -216,6 +221,7 @@ const route = useRoute();
 const categoryStore = useCategory();
 const subcategoryStore = useSubcategory();
 const articleStore = useArticle();
+const loadingSubmit = ref<boolean>(false);
 
 const dataSend = reactive({
   title: "",
@@ -319,7 +325,9 @@ const descriptionState = computed({
   get() {
     return dataSend.description
       ? dataSend.description
-      : articleState.value.description;
+      : articleState.value.description
+      ? articleState.value.description
+      : "";
   },
   set(value: any) {
     dataSend.description = value;
@@ -329,6 +337,7 @@ const descriptionState = computed({
 //**************** Functions API ****************
 // ++ Create Article
 const createArticle = async () => {
+  loadingSubmit.value = true;
   try {
     await createArticleAPI({
       title: dataSend.title,
@@ -337,7 +346,7 @@ const createArticle = async () => {
       subcategory_id: Number(dataSend.subcategory_id),
     });
     notify("success", "Articulo creado correctamente.");
-    router.push({ name: "ListArticlePage" });
+    router.push({ name: "PublicationPage" });
   } catch (error) {
     if (error instanceof AxiosError) {
       let descriptionError = error.response?.data.errors.description;
@@ -349,11 +358,14 @@ const createArticle = async () => {
       }
       console.log(error.response?.data);
     }
+  } finally {
+    loadingSubmit.value = false;
   }
 };
 
 // ++ Updated Article
 const updateArticle = async () => {
+  loadingSubmit.value = true;
   try {
     await updateArticleAPI(articleState.value.id, {
       title: dataSend.title ? dataSend.title : articleState.value.title,
@@ -366,7 +378,7 @@ const updateArticle = async () => {
         : articleState.value.subcategory_id,
     });
     notify("success", "Articulo actualizado correctamente.");
-    router.push({ name: "ListArticlePage" });
+    router.push({ name: "PublicationPage" });
   } catch (error) {
     if (error instanceof AxiosError) {
       let descriptionError = error.response?.data.errors.description;
@@ -378,6 +390,8 @@ const updateArticle = async () => {
       }
       console.log(error.response?.data);
     }
+  } finally {
+    loadingSubmit.value = false;
   }
 };
 

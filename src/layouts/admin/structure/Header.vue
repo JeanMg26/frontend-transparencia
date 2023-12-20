@@ -20,7 +20,7 @@
       <!-- //++Log out++ -->
       <div v-if="jwt_access" class="logout">
         <q-icon name="fa-solid fa-circle-user" size="1.1rem" />
-        <span>Usuario</span>
+        <span>{{ profileState.name }}</span>
         <q-menu :offset="[10, 15]">
           <q-list style="min-width: 150px">
             <!-- //++Profile++ -->
@@ -61,6 +61,8 @@
 import { LocalStorage } from "quasar";
 import { useDrawer } from "@stores/Sidebar";
 import { useRouter } from "vue-router";
+import { useProfile } from "@stores/Profile";
+import { computed } from "vue";
 
 // ++ Props
 defineProps({
@@ -73,6 +75,7 @@ defineProps({
 // ***************** Constants *****************
 const router = useRouter();
 const leftDrawerStore = useDrawer();
+const profileStore = useProfile();
 
 // **************** Function Template **************
 // ++ Toggle Drawer
@@ -84,6 +87,9 @@ const onLogout = () => {
   router.push({ name: "SignInPage" });
   LocalStorage.remove("jwt_access");
 };
+
+//************* Functions Computed *************
+const profileState = computed(() => profileStore.profile);
 </script>
 
 <style lang="scss" scoped>

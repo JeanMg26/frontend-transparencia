@@ -10,7 +10,7 @@
     <tbody>
       <!-- //++ Not Records ++ -->
       <template v-if="!categoriesState?.length">
-        <tr>
+        <tr class="q-tr--no-hover">
           <td colspan="3">
             <NoResults />
           </td>
@@ -68,6 +68,7 @@
   </q-markup-table>
   <!-- //++Pagination++ -->
   <q-pagination
+    v-if="categoriesState.length"
     size="0.8rem"
     class="fles justify-end q-mt-md"
     v-model="currentPage"

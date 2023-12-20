@@ -47,13 +47,8 @@ body {
   // background-color: #f5f5f5;
   // background-color: #fff;
   font-family: "Poppins";
-  color: #526484 !important;
-}
-
-.item-expand {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  // color: #526484 !important;
+  color: $grey-8 !important;
 }
 
 .container {
@@ -127,6 +122,31 @@ body {
 .q-item__section--avatar {
   &.icon-sidemenu {
     min-width: 30px !important;
+  }
+}
+
+.container-sidebar {
+  // background-color: $negative;
+  // background-color: rgba(255, 65, 65, 0.95);
+  background-color: $grey-2;
+  // color: #fff !important;
+
+  .item-subcategory {
+    &.q-hoverable {
+      .q-focus-helper {
+        // background-color: #fff !important;
+      }
+      //
+    }
+  }
+
+  .item-expand {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // .q-icon {
+    //   color: #fff !important;
+    // }
   }
 }
 

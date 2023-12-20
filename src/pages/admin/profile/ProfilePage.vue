@@ -343,15 +343,6 @@ const updateProfile = async () => {
     loadingSubmit.value = false;
   }
 };
-
-//************* Functions LifeCycle *************
-onMounted(async () => {
-  await profileStore.getProfileStore();
-});
-
-onMounted(() => {
-  profileStore.isLoadingPage = true;
-});
 </script>
 
 <style lang="scss" scoped>

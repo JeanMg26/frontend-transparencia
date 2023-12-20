@@ -1,5 +1,11 @@
 <template>
-  <q-drawer v-model="leftDrawerState" show-if-above bordered :breakpoint="1024">
+  <q-drawer
+    v-model="leftDrawerState"
+    show-if-above
+    bordered
+    :breakpoint="1024"
+    class="container-sidebar"
+  >
     <q-list>
       <q-item-label header class="text-center">
         <span class="header-title">Menu de Administración</span>
@@ -37,7 +43,11 @@
           </div>
         </template>
         <!-- //--Category-- -->
-        <q-item clickable :to="{ name: 'CategoryPage' }">
+        <q-item
+          class="item-subcategory"
+          clickable
+          :to="{ name: 'CategoryPage' }"
+        >
           <q-item-section>
             <q-item-label class="q-pl-30">
               <q-icon name="fa-solid fa-circle" size="0.4rem" class="q-mr-sm" />
@@ -46,7 +56,11 @@
           </q-item-section>
         </q-item>
         <!-- //--Sub Category-- -->
-        <q-item clickable :to="{ name: 'SubCategoryPage' }">
+        <q-item
+          class="item-subcategory"
+          clickable
+          :to="{ name: 'SubCategoryPage' }"
+        >
           <q-item-section>
             <q-item-label class="q-pl-30">
               <q-icon name="fa-solid fa-circle" size="0.4rem" class="q-mr-sm" />
@@ -54,7 +68,11 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable :to="{ name: 'ListArticlePage' }">
+        <q-item
+          class="item-subcategory"
+          clickable
+          :to="{ name: 'PublicationPage' }"
+        >
           <q-item-section>
             <q-item-label class="q-pl-30">
               <q-icon name="fa-solid fa-circle" size="0.4rem" class="q-mr-sm" />
@@ -93,5 +111,6 @@ const leftDrawerState = computed({
 .header-title {
   font-size: 1rem;
   font-weight: 300;
+  // color: #fff;
 }
 </style>

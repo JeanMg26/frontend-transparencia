@@ -1,5 +1,5 @@
 import { api } from "@boot/axios";
-import jwtAxios from "@services/jwt_axios";
+import jwtAxios from "@services/jwt_axios_interceptor";
 
 // ********************** AUTHENTICATE ************************
 const signInAPI = (data: any) => {
@@ -88,6 +88,10 @@ const resetUserAPI = (user_id: number) => {
   return jwtAxios.put("user/reset/" + user_id);
 };
 
+const changeStatusUserAPI = (user_id: number, status: number) => {
+  return jwtAxios.put("user/status/" + user_id, { active: status });
+};
+
 // ++ Category
 const updateCategoryAPI = (cat_id: number, data: any) => {
   return jwtAxios.put("cat/" + cat_id, data);
@@ -149,4 +153,5 @@ export {
   updateArticleAPI,
   getArticleAPI,
   deleteArticleAPI,
+  changeStatusUserAPI,
 };
