@@ -30,6 +30,38 @@
           <!-- //++Actions++ -->
           <td class="text-right">
             <div class="q-gutter-x-md">
+              <!-- //--Active / Desactive-- -->
+              <q-icon
+                v-if="user.active == 0"
+                name="fa-solid fa-circle-check"
+                color="positive"
+                class="cursor-pointer"
+                @click="openChangeStatusUser(user)"
+              >
+                <q-tooltip
+                  anchor="top middle"
+                  self="bottom middle"
+                  :offset="[10, 10]"
+                >
+                  <span>Habilitar</span>
+                </q-tooltip>
+              </q-icon>
+              <!-- !!!! -->
+              <q-icon
+                v-if="user.active == 1"
+                name="fa-solid fa-circle-xmark"
+                color="negative"
+                class="cursor-pointer"
+                @click="openChangeStatusUser(user)"
+              >
+                <q-tooltip
+                  anchor="top middle"
+                  self="bottom middle"
+                  :offset="[10, 10]"
+                >
+                  <span>Deshabilitar</span>
+                </q-tooltip>
+              </q-icon>
               <!-- //--Edit-- -->
               <q-icon
                 name="fa-solid fa-edit"
@@ -116,6 +148,10 @@ defineProps({
     required: true,
   },
   openDialogResetUser: {
+    type: Function,
+    required: true,
+  },
+  openChangeStatusUser: {
     type: Function,
     required: true,
   },

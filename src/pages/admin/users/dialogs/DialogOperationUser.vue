@@ -15,7 +15,8 @@
           />
         </div>
       </q-card-section>
-      <q-form @submit.prevent.stop="onSubmitUser" greedy no-error-focus>
+      <q-form @submit="onSubmitUser" greedy no-error-focus>
+        <!-- <q-form @submit.prevent.stop="onSubmitUser" greedy no-error-focus> -->
         <q-card-section class="q-pt-none">
           <div class="row">
             <div class="col-12">
@@ -32,7 +33,7 @@
                 :rules="usernameRequired"
                 :no-error-icon="true"
                 ref="refUsername"
-                @blur="resetErrorUsername()"
+                @blur="!usernameState ? resetErrorUsername() : ''"
                 :hide-bottom-space="
                   refUsername && refUsername.hasError ? false : true
                 "

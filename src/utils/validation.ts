@@ -12,10 +12,12 @@ const passwordRequired = [
 // ++Profile++
 const usernameRequired = [
   (val: any) => !!val || "Por favor ingrese su nombre de usuario.",
+  (val: any) => val.length >= 3 || "Ingrese como mínimo 3 caracteres.",
 ];
 
 const fullnameRequired = [
   (val: any) => !!val || "Por favor ingrese sus nombres completos.",
+  (val: any) => val.length >= 3 || "Ingrese como mínimo 3 caracteres.",
 ];
 
 const currentPasswordVal = [
@@ -27,13 +29,6 @@ const newPasswordVal = [
   (val: any) =>
     val.length >= 6 || "La contraseña debe tener al menos 6 caracteres.",
 ];
-
-// const newPasswordVal = (password: any) => {
-//   return [
-//     (val: any) =>
-//       (password && val == password) || "Las contraseñas no coinciden.",
-//   ];
-// };
 
 // ++ Categories
 const nameCategoryVal = [

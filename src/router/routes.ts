@@ -27,7 +27,7 @@ const routes: RouteRecordRaw[] = [
 
   // ************** MAIN *********************
   {
-    path: "/adminitration",
+    path: "/administration",
     component: () => import("layouts/admin/MainLayout.vue"),
     redirect: { name: "MainAdminPage" },
     children: [
@@ -55,38 +55,48 @@ const routes: RouteRecordRaw[] = [
             name: "ProfilePage",
             component: () => import("pages/admin/profile/ProfilePage.vue"),
           },
-          // ++Articles++
+          // ++Publications++
           {
-            path: "articles",
-            name: "ArticlePage",
-            component: () => import("pages/admin/articles/ArticlePage.vue"),
-            redirect: { name: "ListArticlePage" },
+            path: "publications",
+            name: "MainPublication",
+            component: () =>
+              import("pages/admin/publications/MainPublication.vue"),
+            redirect: { name: "PublicationPage" },
             children: [
               {
                 path: "",
-                name: "ListArticlePage",
+                name: "PublicationPage",
                 component: () =>
-                  import("pages/admin/articles/register/ListArticles.vue"),
+                  import(
+                    "pages/admin/publications/records/PublicationPage.vue"
+                  ),
               },
               {
-                path: "section/:id?",
-                name: "OperationArticle",
+                path: "operation/:id?",
+                name: "OperationPublication",
                 component: () =>
-                  import("pages/admin/articles/operation/OperationArticle.vue"),
-              },
-              {
-                path: "categorias",
-                name: "CategoryPage",
-                component: () =>
-                  import("pages/admin/categories/CategoryPage.vue"),
-              },
-              {
-                path: "subcategorias",
-                name: "SubCategoryPage",
-                component: () =>
-                  import("pages/admin/subcategories/SubCategoryPage.vue"),
+                  import(
+                    "pages/admin/publications/operation/OperationPublication.vue"
+                  ),
               },
             ],
+          },
+          {
+            path: "publicacion/:id?",
+            name: "OperationArticle",
+            component: () =>
+              import("pages/admin/operation/OperationArticle.vue"),
+          },
+          {
+            path: "categorias",
+            name: "CategoryPage",
+            component: () => import("pages/admin/categories/CategoryPage.vue"),
+          },
+          {
+            path: "subcategorias",
+            name: "SubCategoryPage",
+            component: () =>
+              import("pages/admin/subcategories/SubCategoryPage.vue"),
           },
         ],
       },

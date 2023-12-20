@@ -23,12 +23,18 @@
       :openDialogUpdateUser="openDialogUpdateUser"
       :openDialogDeleteUser="openDialogDeleteUser"
       :openDialogResetUser="openDialogResetUser"
+      :openChangeStatusUser="openChangeStatusUser"
     />
     <!-- //***************** DIALOGS *************** -->
     <!-- //++Dialog Operation++ -->
     <DialogOperationUser :openDialog="dialogUser" />
     <!-- //++Dialog Reset++ -->
     <DialogResetUser :openDialog="dialogResetUser" :userSelect="userSelect" />
+    <!-- //++Dialog Change Status++ -->
+    <DialogChangeStatusUser
+      :openDialog="dialogStatustUser"
+      :userSelect="userSelect"
+    />
     <!-- //++Dialog Delete++ -->
     <DialogDeleteUser :openDialog="dialogDeleteUser" :userSelect="userSelect" />
   </q-page>
@@ -48,12 +54,14 @@ import TableUserDesktop from "./tables/TableUserDesktop.vue";
 import DialogOperationUser from "./dialogs/DialogOperationUser.vue";
 import DialogDeleteUser from "./dialogs/DialogDeleteUser.vue";
 import DialogResetUser from "./dialogs/DialogResetUser.vue";
+import DialogChangeStatusUser from "./dialogs/DialogChangeStatusUser.vue";
 
 // ****************** Constans *******************
 const userStore = useUser();
 const dialogUser = ref<boolean>(false);
 const dialogDeleteUser = ref<boolean>(false);
 const dialogResetUser = ref<boolean>(false);
+const dialogStatustUser = ref<boolean>(false);
 
 const userSelect = ref<User>();
 
@@ -71,6 +79,11 @@ const openDialogDeleteUser = (user: User) => {
 const openDialogResetUser = (user: User) => {
   userSelect.value = user;
   dialogResetUser.value = !dialogResetUser.value;
+};
+
+const openChangeStatusUser = (user: User) => {
+  userSelect.value = user;
+  dialogStatustUser.value = !dialogStatustUser.value;
 };
 
 //************* Functions Computed *************

@@ -13,8 +13,8 @@
     <tbody>
       <!-- //++ Not Records ++ -->
       <template v-if="!articlesState?.length">
-        <tr>
-          <td colspan="4">
+        <tr class="q-tr--no-hover">
+          <td colspan="5">
             <NoResults />
           </td>
         </tr>
@@ -89,6 +89,7 @@
   </q-markup-table>
   <!-- //++Pagination++ -->
   <q-pagination
+    v-if="articlesState.length"
     size="0.8rem"
     class="fles justify-end q-mt-md"
     v-model="currentPage"
@@ -139,7 +140,7 @@ const loadingTableState = computed(() => articleStore.isLoadingTable);
 //************* Functions API *************
 const updateArticle = async (id: number) => {
   await articleStore.getArticleStore(id);
-  router.push({ name: "OperationArticle", params: { id } });
+  router.push({ name: "OperationPublication", params: { id } });
 };
 </script>
 

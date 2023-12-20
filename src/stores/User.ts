@@ -28,7 +28,7 @@ export const useUser = defineStore("user", {
         console.log(data);
       } catch (error) {
         if (error instanceof AxiosError) {
-          console.log(error);
+          console.log(error.response?.data);
         }
       }
     },
