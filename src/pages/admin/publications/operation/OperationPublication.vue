@@ -58,7 +58,7 @@
               />
             </div>
             <!-- //++ Category and Subcategory ++ -->
-            <div class="col-6 q-mt-md">
+            <div class="col-12 col-md-6 q-mt-md">
               <span class="q-label-input">Categoria</span>
               <span class="text-red">*</span>
               <q-select
@@ -96,7 +96,7 @@
               </q-select>
             </div>
             <!-- //++ Subcategory ++ -->
-            <div class="col-6 q-mt-md">
+            <div class="col-12 col-md-6 q-mt-md">
               <span class="q-label-input">Subcategoria</span>
               <span class="text-red">*</span>
               <q-select

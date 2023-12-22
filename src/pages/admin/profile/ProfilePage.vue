@@ -1,16 +1,16 @@
 <template>
   <q-page v-if="!loadingPageState" class="container">
     <!-- //***************  HEADER **************** -->
-    <div class="text-center">
+    <div class="text-center" :class="{ 'q-mt-md': $q.screen.width < 600 }">
       <span class="q-page-header">Perfil de Usuario</span>
     </div>
     <!-- //****************** FORM **************** -->
-    <q-card flat bordered class="card-profile">
+    <q-card flat :bordered="$q.screen.width > 600" class="card-profile">
       <q-card-section>
         <q-form @submit="updateProfile" greedy no-error-focus>
           <div class="row q-col-gutter-x-lg">
             <!-- //++UserName++ -->
-            <div class="col-5">
+            <div class="col-12 col-md-5">
               <span class="q-label-input">Nombre de Usuario</span>
               <span class="text-red q-ml-xs">*</span>
               <q-input
@@ -34,7 +34,10 @@
               </span>
             </div>
             <!-- //++Name and LastName++ -->
-            <div class="col-7">
+            <div
+              class="col-12 col-md-7"
+              :class="{ 'q-mt-md': $q.screen.width < 600 }"
+            >
               <span class="q-label-input">Nombres y Apellidos</span>
               <span class="text-red q-ml-xs">*</span>
               <q-input
@@ -81,7 +84,7 @@
               <q-separator />
             </div>
             <!-- //++ Current Password -->
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <span class="q-label-input">Contraseña Actual</span>
               <q-input
                 dense
@@ -121,7 +124,10 @@
               </span>
             </div>
             <!-- //++ New Password -->
-            <div class="col-6">
+            <div
+              class="col-12 col-md-6"
+              :class="{ 'q-mt-md': $q.screen.width < 600 }"
+            >
               <span class="q-label-input">Nueva Contraseña</span>
               <q-input
                 dense
@@ -349,5 +355,12 @@ const updateProfile = async () => {
 .card-profile {
   margin-top: 1rem;
   padding: 1rem 2rem;
+}
+
+@media (max-width: 600px) {
+  .card-profile {
+    margin-top: 0;
+    padding: 0;
+  }
 }
 </style>
