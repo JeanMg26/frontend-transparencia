@@ -24,14 +24,14 @@
             </q-menu>
           </q-icon>
           <q-img
-            src="@assets/img/logo-transparencia.svg"
-            class="img-logo-left"
+            src="@assets/img/logo-entidad.png"
+            class="img-logo-right"
             :no-spinner="true"
           />
         </div>
         <q-img
-          src="@assets/img/logo-entidad.png"
-          class="img-logo-right"
+          src="@assets/img/logo-transparencia.svg"
+          class="img-logo-left"
           :no-spinner="true"
         />
       </div>
@@ -39,7 +39,12 @@
       <div v-if="$q.screen.width > 600" class="col-12 section-category">
         <div class="row">
           <div class="col-2">
-            <q-item clickable class="item-category q-no-hover">
+            <q-item
+              v-for="(cat, index) in categoriesState"
+              :key="index"
+              clickable
+              class="item-category q-no-hover"
+            >
               <q-item-section>
                 <q-item-label>transparencia en la comunidad</q-item-label>
               </q-item-section>
@@ -87,11 +92,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useQuasar } from "quasar";
+import { useCategory } from "@stores/Category";
 
 //***************** Constants *****************
 const $q = useQuasar();
+const categoryStore = useCategory();
+
+//************* Functions Computed *************
+const categoriesState = computed(() => categoryStore.categories);
+
+//************* Functions LifeCycle *************
+onMounted(async () => {
+  await categoryStore.getCategoriesStore();
+});
 </script>
 
 <style lang="scss" scoped>
