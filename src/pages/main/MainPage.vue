@@ -67,7 +67,7 @@
               <!-- // ++ Header - Title ++ -->
               <div class="col-12 menu-title">
                 <div>
-                  <span> GOREA GERENCIA GENERAL </span>
+                  <span> Gerencia General Gobierno Regional de Amazonas</span>
                 </div>
                 <div>
                   <span>
@@ -108,7 +108,12 @@
                       <q-icon name="fa-brands fa-youtube" size="1.5rem" />
                     </q-avatar>
                   </q-btn>
-                  <q-btn round color="white">
+                  <q-btn
+                    round
+                    color="white"
+                    href="https://twitter.com/GERENCIAGGOREA"
+                    target="_blank"
+                  >
                     <q-avatar size="45px">
                       <q-icon name="fa-brands fa-x-twitter" size="1.5rem" />
                     </q-avatar>
@@ -240,6 +245,7 @@ import { ref } from "vue";
 //***************** Constants *****************
 const $q = useQuasar();
 const showMenuMobile = ref<boolean>(false);
+const tabMenu = ref<string>("mails");
 </script>
 
 <style lang="scss" scoped>
@@ -268,7 +274,7 @@ const showMenuMobile = ref<boolean>(false);
       }
     }
     .menu-title {
-      margin-top: 3.5rem;
+      margin-top: 2rem;
       padding-right: 3rem;
       div {
         &:first-child {
