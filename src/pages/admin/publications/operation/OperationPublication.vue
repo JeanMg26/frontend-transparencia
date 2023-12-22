@@ -37,7 +37,7 @@
                 :rules="titleArticleVal"
                 :no-error-icon="true"
                 ref="refTitle"
-                @blur="!titleState ? resetErrorTitle() : ''"
+                @blur="!dataSend.title ? resetErrorTitle() : ''"
                 :hide-bottom-space="
                   refTitle && refTitle.hasError ? false : true
                 "
@@ -57,7 +57,7 @@
                 class="q-mt-xs"
               />
             </div>
-            <!-- //++ Category and Subcategory ++ -->
+            <!-- //++ Category ++ -->
             <div class="col-12 col-md-6 q-mt-md">
               <span class="q-label-input">Categoria</span>
               <span class="text-red">*</span>
@@ -95,51 +95,25 @@
                 </template>
               </q-select>
             </div>
-            <!-- //++ Subcategory ++ -->
+            <!-- //++ Route Publication ++ -->
             <div class="col-12 col-md-6 q-mt-md">
-              <span class="q-label-input">Subcategoria</span>
+              <span class="q-label-input">Ruta de la publicación</span>
               <span class="text-red">*</span>
-              <q-select
+              <q-input
                 dense
                 outlined
+                v-model="routeState"
+                type="text"
+                placeholder="Ingresar una ruta sin espacios"
                 class="q-mt-xs"
-                v-model="subcategoryState"
-                :options="subcategoriesState"
-                behavior="menu"
-                popup-content-class="popup-category"
-                :rules="selectSubcategoryVal"
+                :rules="routeValidation"
                 :no-error-icon="true"
-                ref="refSelectSubcat"
-                @blur="!subcategoryState ? resetErrorSubcat() : ''"
+                ref="refRoute"
+                @blur="!routeState ? resetErrorRoute() : ''"
                 :hide-bottom-space="
-                  refSelectSubcat && refSelectSubcat.hasError ? false : true
+                  refRoute && refRoute.hasError ? false : true
                 "
-                @update:model-value="updateSubcategoria"
-              >
-                <!-- //++ Selected -->
-                <template v-slot:selected>
-                  <span v-if="!subcategoryState" class="text-grey-6">
-                    Selecionar la subcategoria
-                  </span>
-                  <span v-else>{{ subcategoryState.name }}</span>
-                </template>
-                <!-- //++ Options -->
-                <template v-slot:option="{ itemProps, opt }">
-                  <q-item dense v-bind="itemProps">
-                    <q-item-section>
-                      <q-item-label>{{ opt.name }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </template>
-                <!-- //--No Options -- -->
-                <template v-slot:no-option>
-                  <q-item>
-                    <q-item-section class="text-grey">
-                      Sin resultados
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
+              />
             </div>
             <!-- //++Editor++ -->
             <div class="col-12 q-mt-md">
@@ -201,14 +175,13 @@
 import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import { useQuasar } from "quasar";
 import { useCategory } from "@stores/Category";
-import { useSubcategory } from "@stores/Subcategory";
 import { useArticle } from "@stores/Article";
-import { Category, Subcategory } from "@interfaces/interface-store";
+import { Category } from "@interfaces/interface-store";
 import { createArticleAPI, updateArticleAPI } from "@services/api_rest";
 import {
   selectCategoryVal,
-  selectSubcategoryVal,
   titleArticleVal,
+  routeValidation,
 } from "@utils/validation";
 import { AxiosError } from "axios";
 import { notify } from "@utils/notify";
@@ -219,7 +192,6 @@ const $q = useQuasar();
 const router = useRouter();
 const route = useRoute();
 const categoryStore = useCategory();
-const subcategoryStore = useSubcategory();
 const articleStore = useArticle();
 const loadingSubmit = ref<boolean>(false);
 
@@ -227,18 +199,18 @@ const dataSend = reactive({
   title: "",
   autor: "",
   description: "",
+  route: "",
   description_verify: "",
-  subcategory_id: "",
+  category_id: "",
 });
 
 const descBackError = ref<string>("");
 
 const selectCategory = ref<Category>();
-const selectSubcategory = ref<Subcategory>();
 
 // ++Refs
 const refSelectCat = ref<any>(null);
-const refSelectSubcat = ref<any>(null);
+const refRoute = ref<any>(null);
 const refTitle = ref<any>(null);
 
 //************* Functions Template *************
@@ -247,38 +219,30 @@ const resetErrorCat = () => {
   refSelectCat.value.resetValidation();
 };
 
-const resetErrorSubcat = () => {
-  refSelectSubcat.value.resetValidation();
+const resetErrorRoute = () => {
+  refRoute.value.resetValidation();
 };
 
 const resetErrorTitle = () => {
   refTitle.value.resetValidation();
 };
 
-// ++ Update Value Select ID
-const updateCategory = async (cat: Category) => {
-  subcategoryStore.filterSubcategoriesStore(cat.id);
-  // -- Clean Select Subcategory
-  selectSubcategory.value = undefined;
-  await Promise.resolve();
-  resetErrorSubcat();
-};
-
-const updateSubcategoria = (subcat: Subcategory) => {
-  dataSend.subcategory_id = String(subcat.id);
+const updateCategory = (cat: Category) => {
+  dataSend.category_id = String(cat.id);
 };
 
 //************* Functions Computed *************
 const categoriesState = computed(() => categoryStore.categories);
-const subcategoriesState = computed(
-  () => subcategoryStore.subcategories_filter
-);
 const articleState = computed(() => articleStore.article);
 const loadingPageState = computed(() => articleStore.isLoadingPage);
 
 const titleState = computed({
   get() {
-    return dataSend.title ? dataSend.title : articleState.value.title;
+    return articleState.value.title
+      ? articleState.value.title
+      : dataSend.title
+      ? dataSend.title
+      : "";
   },
   set(value: any) {
     dataSend.title = value;
@@ -287,7 +251,11 @@ const titleState = computed({
 
 const autorState = computed({
   get() {
-    return dataSend.autor ? dataSend.autor : articleState.value.autor;
+    return articleState.value.autor
+      ? articleState.value.autor
+      : dataSend.autor
+      ? dataSend.autor
+      : "";
   },
   set(value: any) {
     dataSend.autor = value;
@@ -307,17 +275,16 @@ const categoryState = computed({
   },
 });
 
-const subcategoryState = computed({
+const routeState = computed({
   get() {
-    return selectSubcategory.value
-      ? selectSubcategory.value
-      : subcategoriesState.value.find(
-          (subcat: Subcategory) =>
-            subcat.id == articleState.value.subcategory_id
-        );
+    return articleState.value.route
+      ? articleState.value.route
+      : dataSend.route
+      ? dataSend.route
+      : "";
   },
   set(value: any) {
-    selectSubcategory.value = value;
+    dataSend.route = value;
   },
 });
 
@@ -342,8 +309,9 @@ const createArticle = async () => {
     await createArticleAPI({
       title: dataSend.title,
       autor: dataSend.autor,
+      route: dataSend.route,
       description: dataSend.description,
-      subcategory_id: Number(dataSend.subcategory_id),
+      category_id: Number(dataSend.category_id),
     });
     notify("success", "Articulo creado correctamente.");
     router.push({ name: "PublicationPage" });
@@ -370,12 +338,13 @@ const updateArticle = async () => {
     await updateArticleAPI(articleState.value.id, {
       title: dataSend.title ? dataSend.title : articleState.value.title,
       autor: dataSend.autor ? dataSend.autor : articleState.value.autor,
+      route: dataSend.route ? dataSend.route : articleState.value.route,
       description: dataSend.description
         ? dataSend.description
         : articleState.value.description,
-      subcategory_id: dataSend.subcategory_id
-        ? Number(dataSend.subcategory_id)
-        : articleState.value.subcategory_id,
+      category_id: dataSend.category_id
+        ? Number(dataSend.category_id)
+        : articleState.value.category_id,
     });
     notify("success", "Articulo actualizado correctamente.");
     router.push({ name: "PublicationPage" });
@@ -406,13 +375,9 @@ const onSubmitSection = async () => {
 //************* Functions LifeCycle *************
 onMounted(async () => {
   await categoryStore.getCategoriesStore();
-  await subcategoryStore.getSubCategoriesStore();
 
   if (route.params.id) {
     await articleStore.getArticleStore(Number(route.params.id));
-    await subcategoryStore.filterSubcategoriesStore(
-      articleState.value.category_id!
-    );
   } else {
     articleStore.isLoadingPage = false;
   }

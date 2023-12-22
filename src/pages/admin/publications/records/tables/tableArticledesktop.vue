@@ -3,6 +3,7 @@
   <q-markup-table flat bordered>
     <thead class="bg-grey-2">
       <tr>
+        <th class="text-left">Categoria</th>
         <th class="text-left">Título</th>
         <th class="text-left">Autor</th>
         <th class="text-left">Fecha de creación</th>
@@ -21,6 +22,7 @@
       </template>
       <template v-else>
         <tr v-for="(article, index) in articlesState" :key="index">
+          <td class="text-left">{{ article.category }}</td>
           <td class="text-left">{{ article.title }}</td>
           <td class="text-left">{{ article.autor }}</td>
           <td class="text-left">

@@ -55,6 +55,12 @@ const routes: RouteRecordRaw[] = [
             name: "ProfilePage",
             component: () => import("pages/admin/profile/ProfilePage.vue"),
           },
+          // ++Categories++
+          {
+            path: "categorias",
+            name: "CategoryPage",
+            component: () => import("pages/admin/categories/CategoryPage.vue"),
+          },
           // ++Publications++
           {
             path: "publications",
@@ -80,17 +86,6 @@ const routes: RouteRecordRaw[] = [
                   ),
               },
             ],
-          },
-          {
-            path: "categorias",
-            name: "CategoryPage",
-            component: () => import("pages/admin/categories/CategoryPage.vue"),
-          },
-          {
-            path: "subcategorias",
-            name: "SubCategoryPage",
-            component: () =>
-              import("pages/admin/subcategories/SubCategoryPage.vue"),
           },
         ],
       },
@@ -120,6 +115,11 @@ const routes: RouteRecordRaw[] = [
         path: "transparencia",
         name: "BlogPage",
         component: () => import("pages/blog/BlogPage.vue"),
+      },
+      {
+        path: "transparencia/:publication",
+        name: "BlogPublication",
+        component: () => import("pages/blog/publication/BlogPublication.vue"),
       },
     ],
   },

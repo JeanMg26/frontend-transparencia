@@ -38,7 +38,7 @@
       <!-- //++ Categories ++ -->
       <div v-if="$q.screen.width > 600" class="col-12 section-category">
         <div class="row">
-          <div class="col-12 column-category">
+          <div class="col-2 column-category">
             <q-item
               v-for="(cat, index) in categoriesState"
               :key="index"
@@ -57,7 +57,7 @@
                     clickable
                     v-close-popup
                     class="item-subcategory q-no-hover"
-                    @click="getSubcategory(subcat)"
+                    :to="{ name: 'SignInPage' }"
                   >
                     <q-item-section v-if="subcat">
                       <q-item-label>{{ subcat.name }}</q-item-label>
@@ -79,27 +79,14 @@ import { useQuasar } from "quasar";
 import { useCategory } from "@stores/Category";
 import { useSubcategory } from "@stores/Subcategory";
 
-import { useRouter } from "vue-router";
-import { Subcategory } from "@interfaces/interface-store";
-
 //***************** Constants *****************
 const $q = useQuasar();
-const router = useRouter();
 const categoryStore = useCategory();
 const subcategoryStore = useSubcategory();
 
 //************* Functions Computed *************
 const categoriesState = computed(() => categoryStore.categories);
-
-//**************** Functions API ****************
-const getSubcategory = async (subcat: Subcategory) => {
-  await subcategoryStore.getSubcategoryStore(subcat.id);
-  router.push({
-    name: "BlogPublication",
-    params: { publication: subcat.name },
-  });
-  $q.localStorage.set("subcat", subcat);
-};
+const subcategoriesState = computed(() => subcategoryStore.subcategories);
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
@@ -120,7 +107,6 @@ onMounted(async () => {
   background-color: $blue-grey-1;
   padding: 0 4rem;
   .item-category {
-    max-width: 250px;
     user-select: none;
     .q-item__label {
       text-transform: uppercase;

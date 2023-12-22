@@ -11,15 +11,7 @@ export interface User {
 export interface Category {
   id: number;
   name: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface Subcategory {
-  id: number;
-  name: string;
-  category_id: number;
-  category?: string;
+  subcategory: any;
   created_at: string;
   updated_at: string;
 }
@@ -38,10 +30,9 @@ export interface Article {
   title: string;
   autor: string;
   description: string;
-  category?: string;
-  category_id?: number;
-  subcategory: string;
-  subcategory_id: number;
+  route: string;
+  category: string;
+  category_id: number;
   created_at: string;
   updated_at: string;
 }

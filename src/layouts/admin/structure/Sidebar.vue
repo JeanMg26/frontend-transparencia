@@ -55,19 +55,6 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <!-- //--Sub Category-- -->
-        <q-item
-          class="item-subcategory"
-          clickable
-          :to="{ name: 'SubCategoryPage' }"
-        >
-          <q-item-section>
-            <q-item-label class="q-pl-30">
-              <q-icon name="fa-solid fa-circle" size="0.4rem" class="q-mr-sm" />
-              <span class="q-item-text">SubCategorias </span>
-            </q-item-label>
-          </q-item-section>
-        </q-item>
         <q-item
           class="item-subcategory"
           clickable

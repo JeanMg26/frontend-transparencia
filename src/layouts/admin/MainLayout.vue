@@ -36,6 +36,7 @@ const loadingProfileState = computed(() => profileStore.isLoadingPage);
 onMounted(async () => {
   await profileStore.getProfileStore();
   jwt_access.value = $q.localStorage.has("jwt_access");
+  profileStore.isLoadingPage = false;
 });
 
 onUpdated(() => {

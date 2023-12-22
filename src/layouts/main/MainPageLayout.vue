@@ -2,11 +2,11 @@
   <q-layout
     view="lHh lpr lFf"
     style="height: 400px"
-    v-if="!loadingPage"
+    v-if="!loadingPageState"
     @scroll="getPosition"
   >
     <!-- //*************** HEADER ************** -->
-    <Header v-if="route.name == 'BlogPage'" />
+    <Header v-if="route.name != 'MainPage'" />
     <q-page-container>
       <router-view></router-view>
       <!-- //++Button Floating++ -->
@@ -26,21 +26,26 @@
       </q-page-sticky>
     </q-page-container>
   </q-layout>
-  <q-inner-loading :showing="loadingPage" class="loading-page">
+  <!-- //************** INNER LOADING ***************** -->
+  <q-inner-loading :showing="loadingPageState" class="loading-page">
     <q-spinner-bars size="35px" color="primary" />
   </q-inner-loading>
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
+import { useCategory } from "@stores/Category";
+import { useSubcategory } from "@stores/Subcategory";
+
 // ++ Components
 import Header from "./structure/Header.vue";
-import { onMounted, ref } from "vue";
 
 //***************** Constants *****************
 const route = useRoute();
-const loadingPage = ref<boolean>(true);
 const positionScroll = ref<number>(0);
+const categoryStore = useCategory();
+const subcategoryStore = useSubcategory();
 
 //************* Functions Template *************
 const getPosition = (value: any) => {
@@ -54,10 +59,12 @@ const goScrollTop = () => {
   });
 };
 
+//************* Functions Computed *************
+const loadingPageState = computed(() => categoryStore.isLoadingPage);
+
 //************* Functions LifeCycle *************
-onMounted(() => {
-  setTimeout(() => {
-    loadingPage.value = false;
-  }, 500);
+onMounted(async () => {
+  await categoryStore.getCategoriesStore();
+  await subcategoryStore.getSubCategoriesStore();
 });
 </script>

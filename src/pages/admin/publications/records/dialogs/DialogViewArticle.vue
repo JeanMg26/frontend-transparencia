@@ -35,13 +35,6 @@
           <div class="col-6 q-mt-sm">
             <span>{{ articleState.category }}</span>
           </div>
-          <!-- //++ Subcategoria  ++ -->
-          <div class="col-6 q-mt-sm">
-            <span class="q-label-input">Subcategoria</span>
-          </div>
-          <div class="col-6 q-mt-sm">
-            <span>{{ articleState.subcategory }}</span>
-          </div>
           <!-- //++ Cuerpo de publicación  ++ -->
           <div class="col-6 q-mt-sm">
             <span class="q-label-input">Cuerpo</span>

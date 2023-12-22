@@ -20,11 +20,13 @@ export const useCategory = defineStore("category", {
   actions: {
     async getCategoriesStore() {
       try {
-        const { data } = await getCategoriesAPI();
-        this.categories = data.items;
+        const {
+          data: { data },
+        } = await getCategoriesAPI();
+        this.categories = data;
         this.isLoadingPage = false;
         this.isLoadingTable = false;
-        console.log(data);
+        console.log("cat", data);
       } catch (error) {
         if (error instanceof AxiosError) {
           console.log(error.response?.data);

@@ -39,23 +39,8 @@ const nameCategoryVal = [
     val.length <= 30 || "La categoria debe de tener como máximo 30 caracteres.",
 ];
 
-// ++ Subcategories
-const nameSubcategoryVal = [
-  (val: any) => !!val || "Por favor ingrese el nombre de la subcategoria.",
-  (val: any) =>
-    val.length >= 6 ||
-    "La subcategoria debe de tener como mínimo 6 caracteres.",
-  (val: any) =>
-    val.length <= 30 ||
-    "La subcategoria debe de tener como máximo 30 caracteres.",
-];
-
 const selectCategoryVal = [
   (val: any) => !!val || "Por seleccionar una categoria.",
-];
-
-const selectSubcategoryVal = [
-  (val: any) => !!val || "Por seleccionar una subcategoria.",
 ];
 
 // ++Section
@@ -74,6 +59,13 @@ const descArticleVal = [
     val.length >= 6 || "La descripción debe tener como mínimo 6 carácteres.",
 ];
 
+const routeValidation = [
+  (val: any) => !!val || "Por ingresa la ruta de la publicación.",
+  (val: any) =>
+    val.length >= 6 ||
+    "La ruta de la publicación debe tener como mínimo 6 carácteres.",
+];
+
 export {
   emailRequired,
   passwordRequired,
@@ -82,9 +74,8 @@ export {
   currentPasswordVal,
   newPasswordVal,
   nameCategoryVal,
-  nameSubcategoryVal,
   selectCategoryVal,
-  selectSubcategoryVal,
+  routeValidation,
   titleArticleVal,
   descArticleVal,
 };

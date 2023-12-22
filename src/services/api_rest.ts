@@ -34,15 +34,6 @@ const getCategoryAPI = (cat_id: number) => {
   return jwtAxios.get("cat/" + cat_id);
 };
 
-// ++ SubCategories
-const getSubcategoriesAPI = () => {
-  return jwtAxios.get("subcats");
-};
-
-const getSubcategoryAPI = (subcat_id: number) => {
-  return jwtAxios.get("subcat/" + subcat_id);
-};
-
 // ++ Articles
 const getListArticlesAPI = () => {
   return jwtAxios.get("articles");
@@ -61,11 +52,6 @@ const createUserAPI = (data: any) => {
 // ++ Categories
 const createCategoryAPI = (data: any) => {
   return jwtAxios.post("cat", data);
-};
-
-// ++ Subcategories
-const createSubcategoryAPI = (data: any) => {
-  return jwtAxios.post("subcat", data);
 };
 
 // ++ Articles
@@ -97,11 +83,6 @@ const updateCategoryAPI = (cat_id: number, data: any) => {
   return jwtAxios.put("cat/" + cat_id, data);
 };
 
-// ++ Subcategory
-const updateSubcategoryAPI = (subcat_id: number, data: any) => {
-  return jwtAxios.put("subcat/" + subcat_id, data);
-};
-
 // ++ Articles
 const updateArticleAPI = (article_id: number, data: any) => {
   return jwtAxios.put("article/" + article_id, data);
@@ -116,11 +97,6 @@ const deleteUserAPI = (user_id: number) => {
 // ++ Category
 const deleteCategoryAPI = (cat_id: number) => {
   return jwtAxios.delete("cat/" + cat_id);
-};
-
-// ++ Subcategory
-const deleteSubcategoryAPI = (subcat_id: number) => {
-  return jwtAxios.delete("subcat/" + subcat_id);
 };
 
 // ++ Articles
@@ -143,11 +119,6 @@ export {
   getCategoryAPI,
   updateCategoryAPI,
   deleteCategoryAPI,
-  getSubcategoriesAPI,
-  createSubcategoryAPI,
-  getSubcategoryAPI,
-  updateSubcategoryAPI,
-  deleteSubcategoryAPI,
   getListArticlesAPI,
   createArticleAPI,
   updateArticleAPI,
