@@ -1,10 +1,72 @@
 <template>
   <q-page>
-    <q-img
-      src="@assets/img/img-body.jpg"
-      style="height: 280px"
-      :no-spinner="true"
-    />
+    <div class="section-front">
+      <div class="row">
+        <div class="col-12 col-sm-10 column-search">
+          <q-input
+            dense
+            outlined
+            v-model="searchPage"
+            type="text"
+            class="input-search"
+          >
+            <template v-slot:append>
+              <q-btn
+                round
+                dense
+                flat
+                :ripple="false"
+                icon="fa-solid fa-search"
+                size="0.8rem"
+                class="q-no-hover"
+              />
+            </template>
+          </q-input>
+          <!-- //++ Redes ++ -->
+          <div class="btn-redes">
+            <q-btn
+              round
+              color="white"
+              text-color="primary"
+              href="https://www.facebook.com/gerenciageneralgorea"
+              target="_blank"
+            >
+              <q-avatar size="45px">
+                <q-icon name="fa-brands fa-facebook-f" size="1.5rem" />
+              </q-avatar>
+            </q-btn>
+            <q-btn round color="white" text-color="primary">
+              <q-avatar size="45px">
+                <q-icon name="fa-brands fa-instagram" size="1.5rem" />
+              </q-avatar>
+            </q-btn>
+            <q-btn
+              round
+              color="white"
+              text-color="primary"
+              href="https://www.youtube.com/@gerenciageneralgorea"
+              target="_blank"
+            >
+              <q-avatar size="45px">
+                <q-icon name="fa-brands fa-youtube" size="1.5rem" />
+              </q-avatar>
+            </q-btn>
+            <q-btn
+              round
+              color="white"
+              text-color="primary"
+              href="https://twitter.com/GERENCIAGGOREA"
+              target="_blank"
+            >
+              <q-avatar size="45px">
+                <q-icon name="fa-brands fa-x-twitter" size="1.5rem" />
+              </q-avatar>
+            </q-btn>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="section-body bg-main">
       <span>Lo más destacado</span>
     </div>
@@ -411,6 +473,9 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+
+//***************** Constants *****************
+const searchPage = ref<string>("");
 </script>
 
 <style lang="scss" scoped>
@@ -441,7 +506,31 @@ import { onMounted, ref } from "vue";
   }
 }
 
-//
+.section-front {
+  background-image: url("@assets/img/img-body.jpg");
+  height: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .row {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .column-search {
+      display: flex;
+      align-items: center;
+      .input-search {
+        background-color: #fff;
+      }
+      .btn-redes {
+        .q-btn {
+          margin-left: 1rem;
+        }
+      }
+    }
+  }
+}
 
 .section-body {
   padding: 0.7rem;
@@ -548,7 +637,33 @@ import { onMounted, ref } from "vue";
   border-top: 6px solid $blue-4;
 }
 
+// *******************************************************
+// ****************** MEDIA QUERYS ***********************
+// *******************************************************
 @media (max-width: 600px) {
+  .section-front {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .row {
+      .column-search {
+        padding: 1rem;
+        display: block;
+        .input-search {
+          background-color: #fff;
+        }
+        .btn-redes {
+          display: flex;
+          justify-content: space-around;
+          margin-top: 1rem;
+          .q-btn {
+            margin-left: 1rem;
+          }
+        }
+      }
+    }
+  }
+
   .section-destacado {
     padding: 0;
     .item-destacado {
