@@ -36,7 +36,6 @@
 import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useCategory } from "@stores/Category";
-import { useSubcategory } from "@stores/Subcategory";
 
 // ++ Components
 import Header from "./structure/Header.vue";
@@ -45,7 +44,6 @@ import Header from "./structure/Header.vue";
 const route = useRoute();
 const positionScroll = ref<number>(0);
 const categoryStore = useCategory();
-const subcategoryStore = useSubcategory();
 
 //************* Functions Template *************
 const getPosition = (value: any) => {
@@ -65,6 +63,5 @@ const loadingPageState = computed(() => categoryStore.isLoadingPage);
 //************* Functions LifeCycle *************
 onMounted(async () => {
   await categoryStore.getCategoriesStore();
-  await subcategoryStore.getSubCategoriesStore();
 });
 </script>

@@ -1,29 +1,39 @@
 <template>
   <q-page>
     <div class="header-publication">
-      <span>Página principal</span>
+      <span @click="goBackMain()">Página principal</span>
       <q-icon name="fa-solid fa-chevron-right" size="0.6rem" />
-      <span>{{ subcategoryLS.name }}</span>
+      <span>{{ articleLS.title }}</span>
     </div>
     <!-- //++Body++ -->
     <div class="section-body">
-      <div class="row q-col-gutter-x-lg">
+      <div class="row">
         <div class="col-4">
-          <q-list bordered class="list-subcat">
+          <q-list bordered class="list-articles">
             <q-item
-              v-for="(subcat, index) in subcategoriesState"
+              v-for="(article, index) in articlesState"
               :key="index"
               clickable
-              :active="subcat.id == subcategoryLS.id"
-              active-class="subcat-active"
+              :active="article.id == articleState.id"
+              active-class="article-active"
+              @click="goArticle(article)"
             >
               <q-item-section>
-                <span>{{ subcat.name }}</span>
+                <span>{{ article.title }}</span>
               </q-item-section>
             </q-item>
           </q-list>
         </div>
-        <div class="col-8">Notice</div>
+        <div class="col-8">
+          <q-card flat bordered>
+            <q-card-section>
+              <div class="title-article">
+                <span>{{ articleState.title }}</span>
+              </div>
+            </q-card-section>
+            <q-card-section v-html="articleState.description" />
+          </q-card>
+        </div>
       </div>
     </div>
   </q-page>
@@ -31,23 +41,41 @@
 
 <script setup lang="ts">
 import { useQuasar } from "quasar";
-import { useSubcategory } from "@stores/Subcategory";
 import { computed, onMounted, ref } from "vue";
 import { useArticle } from "@stores/Article";
+import { Article } from "@interfaces/interface-store";
+import { useRouter } from "vue-router";
 
 //***************** Constants *****************
 const $q = useQuasar();
-const subcategoryStore = useSubcategory();
-const subcategoryLS = ref<any>($q.localStorage.getItem("subcat"));
-const publicationStore = useArticle();
+const router = useRouter();
+const articleLS = ref<any>($q.localStorage.getItem("article"));
+const articleStore = useArticle();
+
+//************* Functions Template *************
+const goBackMain = () => {
+  router.push({
+    name: "BlogPage",
+  });
+};
 
 //************* Functions Computed *************
-const subcategoriesState = computed(() => subcategoryStore.subcategories);
-// const subcategoriesState = computed(() => subcategoryStore.subcategories);
+const articlesState = computed(() => articleStore.articles);
+const articleState = computed(() => articleStore.article);
+
+//**************** Functions API ****************
+const goArticle = async (article: Article) => {
+  await articleStore.getArticleStore(article.id);
+  router.push({
+    name: "BlogPublication",
+    params: { publication: article.route },
+  });
+};
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
-  await subcategoryStore.getSubcategoryStore(subcategoryLS.id);
+  await articleStore.getListArticlesStore();
+  await articleStore.getArticleStore(articleLS.value.id);
   // await publicationStore.getArticleStore();
 });
 </script>
@@ -81,8 +109,8 @@ onMounted(async () => {
 
 .section-body {
   padding: 2rem 6rem;
-  .list-subcat {
-    width: 300px;
+  .list-articles {
+    width: 350px;
     background-color: $grey-2;
     .q-item {
       background-color: #fff;
@@ -96,8 +124,19 @@ onMounted(async () => {
   }
 }
 
-.subcat-active {
+.article-active {
   background-color: #264081 !important;
   color: #fff;
+}
+
+.title-article {
+  span {
+    &:last-child {
+      font-size: 2rem;
+      font-weight: 300;
+      border-left: 0.5rem solid #264081;
+      padding-left: 0.5rem;
+    }
+  }
 }
 </style>

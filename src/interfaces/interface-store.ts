@@ -11,7 +11,7 @@ export interface User {
 export interface Category {
   id: number;
   name: string;
-  subcategory: any;
+  article: any;
   created_at: string;
   updated_at: string;
 }

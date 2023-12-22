@@ -49,18 +49,18 @@
                 <q-item-label>{{ cat.name }}</q-item-label>
               </q-item-section>
               <!-- //-- Menu -- -->
-              <q-menu v-if="cat.subcategory" square class="q-menu-subcategory">
+              <q-menu v-if="cat.article" square class="q-menu-subcategory">
                 <q-list bordered>
                   <q-item
-                    v-for="(subcat, index) in cat.subcategory"
+                    v-for="(article, index) in cat.article"
                     :key="index"
                     clickable
                     v-close-popup
                     class="item-subcategory q-no-hover"
-                    @click="getSubcategory(subcat)"
+                    @click="getArticle(article)"
                   >
-                    <q-item-section v-if="subcat">
-                      <q-item-label>{{ subcat.name }}</q-item-label>
+                    <q-item-section v-if="article">
+                      <q-item-label>{{ article.title }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -77,28 +77,28 @@
 import { computed, onMounted, ref } from "vue";
 import { useQuasar } from "quasar";
 import { useCategory } from "@stores/Category";
-import { useSubcategory } from "@stores/Subcategory";
+import { useArticle } from "@stores/Article";
 
 import { useRouter } from "vue-router";
-import { Subcategory } from "@interfaces/interface-store";
+import { Article } from "@interfaces/interface-store";
 
 //***************** Constants *****************
 const $q = useQuasar();
 const router = useRouter();
 const categoryStore = useCategory();
-const subcategoryStore = useSubcategory();
+const articleStore = useArticle();
 
 //************* Functions Computed *************
 const categoriesState = computed(() => categoryStore.categories);
 
 //**************** Functions API ****************
-const getSubcategory = async (subcat: Subcategory) => {
-  await subcategoryStore.getSubcategoryStore(subcat.id);
+const getArticle = async (article: Article) => {
+  await articleStore.getArticleStore(article.id);
   router.push({
     name: "BlogPublication",
-    params: { publication: subcat.name },
+    params: { publication: article.route },
   });
-  $q.localStorage.set("subcat", subcat);
+  $q.localStorage.set("article", article);
 };
 
 //************* Functions LifeCycle *************
