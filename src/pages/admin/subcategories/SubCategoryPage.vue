@@ -23,7 +23,6 @@
     <!-- //**************** TABLES *************** -->
     <div>
       <TableDesktopSubcategory
-        v-if="$q.screen.width >= 1024"
         :openDialogUpdateSubcat="openDialogUpdateSubcat"
         :openDialogDeleteSubcat="openDialogDeleteSubcat"
       />

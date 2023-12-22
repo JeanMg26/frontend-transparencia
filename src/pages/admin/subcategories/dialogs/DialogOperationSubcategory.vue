@@ -1,5 +1,10 @@
 <template>
-  <q-dialog v-model="dialogOperation" persistent ref="refDialog">
+  <q-dialog
+    v-model="dialogOperation"
+    persistent
+    ref="refDialog"
+    :position="$q.screen.width < 600 ? 'bottom' : 'standard'"
+  >
     <q-card class="card-add-category">
       <q-card-section>
         <div class="flex justify-between items-center">

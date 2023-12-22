@@ -1,5 +1,10 @@
 <template>
-  <q-dialog v-model="dialogUser" persistent ref="refDialog">
+  <q-dialog
+    v-model="dialogUser"
+    persistent
+    ref="refDialog"
+    :position="$q.screen.width < 600 ? 'bottom' : 'standard'"
+  >
     <q-card class="card-user">
       <q-card-section>
         <div class="flex justify-between items-center">
@@ -16,7 +21,6 @@
         </div>
       </q-card-section>
       <q-form @submit="onSubmitUser" greedy no-error-focus>
-        <!-- <q-form @submit.prevent.stop="onSubmitUser" greedy no-error-focus> -->
         <q-card-section class="q-pt-none">
           <div class="row">
             <div class="col-12">
@@ -118,6 +122,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from "vue";
+import { useQuasar } from "quasar";
 import { createUserAPI, updateUserAPI } from "@services/api_rest";
 import { AxiosError } from "axios";
 import { useUser } from "@stores/User";
@@ -137,6 +142,7 @@ const props = defineProps({
 });
 
 // ***************** Constants *****************
+const $q = useQuasar();
 const userStore = useUser();
 const dialogUser = ref<boolean>(false);
 const refDialog = ref<any>(null);

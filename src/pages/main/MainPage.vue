@@ -1,6 +1,7 @@
 <template>
   <q-page>
     <div class="row">
+      <!-- //**************** HEADER ************* -->
       <div class="col-12 header-main">
         <div class="row">
           <!-- //**************** COLUMN LEFT ************* -->
@@ -82,7 +83,12 @@
                   <span> Redes Sociales </span>
                 </div>
                 <div class="btn-redes">
-                  <q-btn round color="white">
+                  <q-btn
+                    round
+                    color="white"
+                    href="https://www.facebook.com/gerenciageneralgorea"
+                    target="_blank"
+                  >
                     <q-avatar size="45px">
                       <q-icon name="fa-brands fa-facebook-f" size="1.5rem" />
                     </q-avatar>
@@ -92,9 +98,14 @@
                       <q-icon name="fa-brands fa-instagram" size="1.5rem" />
                     </q-avatar>
                   </q-btn>
-                  <q-btn round color="white">
+                  <q-btn
+                    round
+                    color="white"
+                    href="https://www.youtube.com/@gerenciageneralgorea"
+                    target="_blank"
+                  >
                     <q-avatar size="45px">
-                      <q-icon name="fa-brands fa-tiktok" size="1.5rem" />
+                      <q-icon name="fa-brands fa-youtube" size="1.5rem" />
                     </q-avatar>
                   </q-btn>
                   <q-btn round color="white">
@@ -121,7 +132,7 @@
       <!-- //++ BODY ++ -->
       <div class="col-12 column-body">
         <div class="row">
-          <!-- //++ Title ++ -->
+          <!-- //++ Title Activity ++ -->
           <div class="col-12">
             <div class="title-body">
               <span>Actividades</span>
@@ -152,6 +163,62 @@
                       NUEVO HOSPITAL DE RODRÍGUEZ DE MENDOZA
                     </div>
                   </q-img>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- //++ Title Informacion General ++ -->
+          <div class="col-12">
+            <div class="title-body">
+              <span>Información institucional</span>
+            </div>
+          </div>
+          <!-- //++ Informacion General ++ -->
+          <div class="col-12 column-info">
+            <div class="row q-col-gutter-x-xl">
+              <!-- //!!Que hacemos!! -->
+              <div class="col-12 col-lg-6">
+                <span class="title-info">¿Qué hacemos?</span>
+                <div class="q-mt-md">
+                  <p>
+                    Somos un organismo público descentralizado que, de forma
+                    concertada, promueve el desarrollo integral y sostenible de
+                    la región Amazonas. Mantenemos una cultura de ética, basada
+                    en el fomento y la práctica de los valores de honestidad,
+                    equidad, transparencia y solidaridad, al utilizar los
+                    recursos y las competencias asignadas con eficiencia y
+                    eficacia.
+                  </p>
+                  <p>
+                    Contribuimos al bienestar de nuestra población y, para ello,
+                    organizamos y conducimos la gestión pública regional, a fin
+                    de lograr el desarrollo sostenible de nuestra región en el
+                    marco de las políticas nacionales y sectoriales.
+                  </p>
+                  <p>
+                    Promovemos la inversión pública y privada, el empleo, y
+                    garantizamos el ejercicio pleno de los derechos e igualdad
+                    de oportunidades de sus habitantes.
+                  </p>
+                </div>
+              </div>
+              <!-- //!!Mision y Vision -->
+              <div class="col-12 col-lg-6">
+                <div>
+                  <span class="title-info">Misión</span>
+                  <p>
+                    Promover el desarrollo social, económico y ambiental en el
+                    departamento de Amazonas de manera sostenible, competitiva,
+                    integral e igualitaria.
+                  </p>
+                </div>
+                <div>
+                  <span class="title-info">Visión</span>
+                  <p>
+                    Ser una sociedad multicultural, inclusiva, así como un
+                    destino turístico, generador de energías limpias y con
+                    economía verde diversificada.
+                  </p>
                 </div>
               </div>
             </div>
@@ -275,9 +342,9 @@ const showMenuMobile = ref<boolean>(false);
 
 .column-body {
   background-image: url("@assets/img/main-page/pattern02.jpg");
-  padding-bottom: 2rem;
+  // padding-bottom: 2rem;
   .title-body {
-    margin-top: 3rem;
+    margin-top: 2rem;
     text-align: center;
     span {
       background: #264081;
@@ -302,6 +369,20 @@ const showMenuMobile = ref<boolean>(false);
         font-style: italic;
         background-color: rgba(38, 64, 129, 0.5);
       }
+    }
+  }
+  .column-info {
+    margin-top: 2rem;
+    background-color: $grey-2;
+    padding: 2rem 4rem;
+    .title-info {
+      font-size: 2rem;
+      font-weight: 300;
+      color: #264081;
+    }
+    p {
+      font-size: 1rem;
+      text-align: justify;
     }
   }
 }
@@ -417,13 +498,16 @@ const showMenuMobile = ref<boolean>(false);
   }
 }
 
-//
-
-.q-hoverable {
-  &:hover {
-    .q-focus-helper {
-      background: none !important;
-      opacity: 1 !important;
+@media (max-width: 600px) {
+  .column-body {
+    .column-info {
+      padding: 1rem 2rem;
+      .title-info {
+        font-size: 1.5rem;
+      }
+      p {
+        font-size: 0.9rem;
+      }
     }
   }
 }
