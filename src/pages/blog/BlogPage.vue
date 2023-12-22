@@ -461,7 +461,7 @@
           <span>|</span>
           <span>RRSS</span>
           <span>|</span>
-          <span>Accesibilidad</span>
+          <span @click="goSignIn()">Iniciar Sesión</span>
         </div>
       </div>
       <div class="text-center q-mt-md all-rights">
@@ -473,9 +473,16 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
 //***************** Constants *****************
+const router = useRouter();
 const searchPage = ref<string>("");
+
+//************* Functions Template *************
+const goSignIn = () => {
+  router.push({ name: "SignInPage" });
+};
 </script>
 
 <style lang="scss" scoped>
