@@ -66,6 +66,10 @@ const routeValidation = [
     "La ruta de la publicación debe tener como mínimo 6 carácteres.",
 ];
 
+// const imageValidation = [
+//   (val: any) => !!val || "Por ingresa la ruta de la publicación.",
+// ];
+
 export {
   emailRequired,
   passwordRequired,

@@ -56,7 +56,11 @@ const createCategoryAPI = (data: any) => {
 
 // ++ Articles
 const createArticleAPI = (data: any) => {
-  return jwtAxios.post("article", data);
+  return jwtAxios.post("article", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 // *********************** API-UPDATE ****************************

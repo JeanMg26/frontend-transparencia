@@ -417,3 +417,12 @@ body {
     }
   }
 }
+
+.btn-upload-file {
+  height: 80px;
+  width: 100px;
+  .q-btn__content {
+    display: flex;
+    flex-direction: column;
+  }
+}

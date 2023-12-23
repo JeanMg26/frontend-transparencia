@@ -31,6 +31,7 @@ export interface Article {
   autor: string;
   description: string;
   route: string;
+  image: string;
   category: string;
   category_id: number;
   created_at: string;

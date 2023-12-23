@@ -115,6 +115,10 @@
                 "
               />
             </div>
+            <!-- //++ Upload Image ++ -->
+            <div class="col-12">
+              <UploadImage @emitImageUpload="getEmitImageUpload" />
+            </div>
             <!-- //++Editor++ -->
             <div class="col-12 q-mt-md">
               <span class="q-label-input">Cuerpo de la publicación</span>
@@ -187,6 +191,9 @@ import { AxiosError } from "axios";
 import { notify } from "@utils/notify";
 import { useRouter, useRoute } from "vue-router";
 
+// ++Components
+import UploadImage from "./components/UploadImage.vue";
+
 // ********************* Constants ********************+
 const $q = useQuasar();
 const router = useRouter();
@@ -200,6 +207,7 @@ const dataSend = reactive({
   autor: "",
   description: "",
   route: "",
+  image: "",
   description_verify: "",
   category_id: "",
 });
@@ -229,6 +237,12 @@ const resetErrorTitle = () => {
 
 const updateCategory = (cat: Category) => {
   dataSend.category_id = String(cat.id);
+};
+
+// ++Emits
+const getEmitImageUpload = (value: any) => {
+  dataSend.image = value;
+  console.log(value);
 };
 
 //************* Functions Computed *************
@@ -304,15 +318,17 @@ const descriptionState = computed({
 //**************** Functions API ****************
 // ++ Create Article
 const createArticle = async () => {
+  const formdata = new FormData();
+  formdata.append("image", dataSend.image);
+  formdata.append("title", dataSend.title);
+  formdata.append("autor", dataSend.autor);
+  formdata.append("route", dataSend.route);
+  formdata.append("description", dataSend.description);
+  formdata.append("category_id", dataSend.category_id);
+
   loadingSubmit.value = true;
   try {
-    await createArticleAPI({
-      title: dataSend.title,
-      autor: dataSend.autor,
-      route: dataSend.route,
-      description: dataSend.description,
-      category_id: Number(dataSend.category_id),
-    });
+    await createArticleAPI(formdata);
     notify("success", "Articulo creado correctamente.");
     router.push({ name: "PublicationPage" });
   } catch (error) {
