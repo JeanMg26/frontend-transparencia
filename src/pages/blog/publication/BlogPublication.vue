@@ -8,7 +8,7 @@
     <!-- //++Body++ -->
     <div class="section-body">
       <div class="row q-col-gutter-x-md">
-        <div v-if="$q.screen.width >= 1024" class="col-md-4">
+        <div v-if="$q.screen.width >= 1024" class="col-md-4 col-xl-3">
           <q-list bordered class="list-articles">
             <q-item
               v-for="(article, index) in articlesState"
@@ -24,7 +24,7 @@
             </q-item>
           </q-list>
         </div>
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-8 col-xl-9">
           <q-card flat bordered>
             <q-card-section>
               <!-- //++ Image ++ -->
@@ -203,6 +203,12 @@ onMounted(async () => {
 @media (min-width: 1500px) {
   .section-body {
     padding: 2rem 6rem;
+  }
+}
+
+@media (min-width: 1700px) {
+  .section-body {
+    padding: 2rem 8rem;
   }
 }
 
