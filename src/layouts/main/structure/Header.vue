@@ -1,9 +1,9 @@
 <template>
-  <q-header bordered reveal>
+  <q-header bordered>
     <!-- //++ Logos ++ -->
     <div class="row">
       <div class="col-12 header-blog bg-white">
-        <!-- //-------- Icon Menu Mobile -------- -->
+        <!-- //-------- Menu Mobile -------- -->
         <div>
           <q-icon
             v-if="$q.screen.width < 600"
@@ -11,15 +11,40 @@
             size="1.5rem"
             class="icon-menu-mobile"
           >
-            <q-menu square :offset="[0, 22]">
+            <q-menu square :offset="[0, 23]">
               <q-list class="list-menu-mobile">
-                <q-item clickable v-close-popup :to="{ name: 'SignInPage' }">
-                  <q-item-section>Transparencia en la comunidad</q-item-section>
-                </q-item>
+                <q-expansion-item
+                  expand-separator
+                  header-class="menu-expansion-article"
+                  style="border-bottom: 4px solid #264081"
+                  v-for="(cat, index) in categoriesState"
+                  :key="index"
+                >
+                  <template v-slot:header>
+                    <span>{{ cat.name }}</span>
+                  </template>
+                  <template v-if="cat.article">
+                    <q-list
+                      bordered
+                      separator
+                      :class="{ 'list-expasion': cat.article.length > 4 }"
+                    >
+                      <q-item
+                        v-for="(article, index) in cat.article"
+                        :key="index"
+                        clickable
+                        v-close-popup
+                        @click="getArticle(article)"
+                      >
+                        <q-item-section>
+                          <q-item-label>{{ article.title }}</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </template>
+                </q-expansion-item>
+                <!-- </div> -->
                 <q-separator />
-                <q-item clickable v-close-popup :to="{ name: 'SignInPage' }">
-                  <q-item-section>Transparencia en la comunidad</q-item-section>
-                </q-item>
               </q-list>
             </q-menu>
           </q-icon>
@@ -103,7 +128,7 @@ const getArticle = async (article: Article) => {
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
-  // await categoryStore.getCategoriesStore();
+  await categoryStore.getCategoriesStore();
 });
 </script>
 
@@ -167,6 +192,17 @@ onMounted(async () => {
   width: 4rem;
 }
 
+@media (max-width: 1024px) {
+  .list-menu-mobile {
+    .q-item {
+      &:hover {
+        background-color: #264081;
+        color: #fff;
+      }
+    }
+  }
+}
+
 @media (max-width: 600px) {
   .header-blog {
     padding: 0.5rem;
@@ -189,7 +225,7 @@ onMounted(async () => {
   }
 
   .list-menu-mobile {
-    min-width: 95vw !important;
+    min-width: 90vw !important;
   }
 }
 </style>

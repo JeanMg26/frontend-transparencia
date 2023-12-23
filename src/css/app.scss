@@ -353,6 +353,48 @@ body {
   }
 }
 
+@media (max-width: 1024px) {
+  .menu-expansion-article {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .list-menu-mobile {
+    .list-expasion {
+      height: 300px;
+      overflow-y: scroll !important;
+      background-color: $grey-2;
+      &::-webkit-scrollbar {
+        width: 0.5rem; /* width of the entire scrollbar */
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #e5e9f2; /* color of the tracking area */
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #b7c2d0; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+      }
+    }
+  }
+
+  // list-menu-mobile
+  .list-menu-mobile::-webkit-scrollbar {
+    width: 0.5rem; /* width of the entire scrollbar */
+  }
+
+  .list-menu-mobile::-webkit-scrollbar-track {
+    background: #e5e9f2; /* color of the tracking area */
+  }
+
+  .list-menu-mobile::-webkit-scrollbar-thumb {
+    background-color: #b7c2d0; /* color of the scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+  }
+}
+
 @media (max-width: 991px) {
   .gorea {
     width: 150%;
