@@ -7,8 +7,8 @@
     </div>
     <!-- //++Body++ -->
     <div class="section-body">
-      <div class="row">
-        <div v-if="$q.screen.width >= 1024" class="col-lg-4">
+      <div class="row q-col-gutter-x-md">
+        <div v-if="$q.screen.width >= 1024" class="col-md-4">
           <q-list bordered class="list-articles">
             <q-item
               v-for="(article, index) in articlesState"
@@ -24,7 +24,7 @@
             </q-item>
           </q-list>
         </div>
-        <div class="col-12 col-8">
+        <div class="col-12 col-md-8">
           <q-card flat bordered>
             <q-card-section>
               <!-- //++ Image ++ -->
@@ -47,205 +47,7 @@
       </div>
     </div>
     <!-- //++ Footer ++ -->
-    <div class="container-footer bg-danger">
-      <div class="row">
-        <!--  -->
-        <template v-if="$q.screen.width < 600">
-          <div class="col-12">
-            <q-list>
-              <template v-for="(item, index) in 4" :key="index">
-                <q-expansion-item
-                  expand-separator
-                  :label="`Categoria ${item}`"
-                  expand-icon="fa-solid fa-plus"
-                  expand-icon-class="text-white"
-                >
-                  <q-card class="bg-danger">
-                    <q-card-section class="q-px-none q-pt-none">
-                      <q-item dense>
-                        <q-item-section>
-                          <q-item-label>Subcategoria 1</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item dense>
-                        <q-item-section>
-                          <q-item-label>Subcategoria 2</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item dense>
-                        <q-item-section>
-                          <q-item-label>Subcategoria 3</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item dense>
-                        <q-item-section>
-                          <q-item-label>Subcategoria 4</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                    </q-card-section>
-                  </q-card>
-                </q-expansion-item>
-              </template>
-            </q-list>
-          </div>
-        </template>
-        <!--  -->
-        <template v-if="$q.screen.width >= 600">
-          <div class="col-2">
-            <span class="title-category">Categoria 1</span>
-            <q-list dense class="q-mt-md">
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 1 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 2 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 3 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 4 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 5 </q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </div>
-          <!--  -->
-          <div class="col-2">
-            <span class="title-category">Categoria 2</span>
-            <q-list dense class="q-mt-md">
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 1 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 2 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 3 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 4 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 5 </q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </div>
-          <!--  -->
-          <div class="col-2">
-            <span class="title-category">Categoria 3</span>
-            <q-list dense class="q-mt-md">
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 1 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 2 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 3 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 4 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 5 </q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </div>
-          <!--  -->
-          <div class="col-2">
-            <span class="title-category">Categoria 4</span>
-            <q-list dense class="q-mt-md">
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 1 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 2 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 3 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 4 </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="title-subcategory">
-                <q-item-section>
-                  <q-item-label> Subategora 5 </q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </div>
-        </template>
-      </div>
-      <!-- //++ Separator ++ -->
-      <div v-if="$q.screen.width > 600" class="col-12">
-        <div class="row justify-center">
-          <div class="col-10">
-            <q-separator color="white" class="q-my-md" />
-          </div>
-        </div>
-      </div>
-      <!-- //++ Sub Footer ++ -->
-      <div class="col-12">
-        <div class="sub-header q-gutter-md">
-          <span>Resultados</span>
-          <span>|</span>
-          <span>Aviso Legal</span>
-          <span>|</span>
-          <span>Privacidad</span>
-          <span>|</span>
-          <span>Sugerencias y quejas</span>
-          <span>|</span>
-          <span>Mapa web</span>
-          <span>|</span>
-          <span>RRSS</span>
-          <span>|</span>
-          <span @click="goSignIn()">Iniciar Sesión</span>
-        </div>
-      </div>
-      <div class="text-center q-mt-md all-rights">
-        <span>Todos los Portales de la Comunidad de Madrid</span>
-      </div>
-    </div>
+    <Footer />
   </q-page>
 
   <!-- //****************** INNER LOADING ***************** -->
@@ -260,6 +62,9 @@ import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useArticle } from "@stores/Article";
 import { Article } from "@interfaces/interface-store";
+
+// ++Componens
+import Footer from "../components/Footer.vue";
 
 //***************** Constants *****************
 const $q = useQuasar();
@@ -329,7 +134,7 @@ onMounted(async () => {
 }
 
 .section-body {
-  padding: 2rem 6rem;
+  padding: 2rem 2rem;
   .list-articles {
     width: 350px;
     background-color: $grey-2;
@@ -395,6 +200,12 @@ onMounted(async () => {
 }
 
 // **************** Media Querys ***********************
+@media (min-width: 1500px) {
+  .section-body {
+    padding: 2rem 6rem;
+  }
+}
+
 @media (max-width: 1023px) {
   .section-body {
     padding: 2rem 1rem;
