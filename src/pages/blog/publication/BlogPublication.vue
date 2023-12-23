@@ -27,6 +27,16 @@
         <div class="col-8">
           <q-card flat bordered>
             <q-card-section>
+              <!-- //++ Image ++ -->
+              <div class="text-center q-mt-md">
+                <q-img
+                  :src="articleState.image"
+                  spinner-color="primary"
+                  spinner-size="82px"
+                  class="image-publication"
+                />
+              </div>
+              <!-- //++ Title++ -->
               <div class="title-article">
                 <span>{{ articleState.title }}</span>
               </div>
@@ -129,7 +139,13 @@ onMounted(async () => {
   color: #fff;
 }
 
+.image-publication {
+  width: 400px;
+  // width: 400px;
+}
+
 .title-article {
+  margin-top: 1rem;
   span {
     &:last-child {
       font-size: 2rem;
