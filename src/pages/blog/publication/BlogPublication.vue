@@ -28,14 +28,14 @@
           <q-card flat bordered>
             <q-card-section>
               <!-- //++ Image ++ -->
-              <div v-if="articleState.image" class="text-center q-mt-md">
+              <!-- <div v-if="articleState.image" class="text-center q-mt-md">
                 <q-img
                   :src="articleState.image"
                   spinner-color="primary"
                   spinner-size="82px"
                   class="image-publication"
                 />
-              </div>
+              </div> -->
               <!-- //++ Title++ -->
               <div class="title-article">
                 <span>{{ articleState.title }}</span>

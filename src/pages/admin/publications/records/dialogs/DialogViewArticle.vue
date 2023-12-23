@@ -41,6 +41,7 @@
           </div>
           <div class="col-12 q-mt-md">
             <q-card flat bordered>
+              <q-img :src="articleState.image" style="max-width: 150px" />
               <q-card-section v-html="articleState.description" />
             </q-card>
           </div>
