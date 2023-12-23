@@ -44,23 +44,6 @@
           no-caps
           :ripple="false"
           outline
-          color="grey-6"
-          class="btn-card full-width"
-          style="box-shadow: inset 0 4px 0 grey"
-          :to="{ name: 'SubCategoryPage' }"
-        >
-          <div class="content-section">
-            <q-icon name="fa-solid fa-user" />
-            <span>Crear una Nueva Subcategoria</span>
-          </div>
-        </q-btn>
-      </div>
-      <div class="col-12 col-sm-6 col-md-4">
-        <q-btn
-          unelevated
-          no-caps
-          :ripple="false"
-          outline
           color="amber"
           class="btn-card full-width"
           style="box-shadow: inset 0 4px 0 yellow"
