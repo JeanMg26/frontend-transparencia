@@ -1,5 +1,5 @@
 <template>
-  <q-page v-if="!loadingPageState">
+  <q-page v-if="!loadingListArticleState && !loadingSingleArticleState">
     <div class="header-publication">
       <span @click="goBackMain()">Página principal</span>
       <q-icon name="fa-solid fa-chevron-right" size="0.6rem" />
@@ -51,7 +51,9 @@
   </q-page>
 
   <!-- //****************** INNER LOADING ***************** -->
-  <q-inner-loading :showing="loadingPageState">
+  <q-inner-loading
+    :showing="loadingListArticleState && loadingSingleArticleState"
+  >
     <q-spinner-bars size="35px" color="primary" />
   </q-inner-loading>
 </template>
@@ -82,7 +84,11 @@ const goBackMain = () => {
 //************* Functions Computed *************
 const articlesState = computed(() => articleStore.articles);
 const articleState = computed(() => articleStore.article);
-const loadingPageState = computed(() => articleStore.isLoadingPage);
+const loadingListArticleState = computed(() => articleStore.isLoadingPageList);
+const loadingSingleArticleState = computed(
+  () => articleStore.isLoadingPageSingle
+);
+// const loadingArticleState = computed(() => cate.isLoadingPage);
 
 //**************** Functions API ****************
 const goArticle = async (article: Article) => {
@@ -100,8 +106,8 @@ const goSignIn = () => {
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
-  await articleStore.getListArticlesStore();
   await articleStore.getArticleStore(articleLS.value.id);
+  await articleStore.getListArticlesStore();
   // await publicationStore.getArticleStore();
 });
 </script>

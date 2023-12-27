@@ -2,7 +2,7 @@
   <!-- //++ Footer ++ -->
   <div class="container-footer bg-danger">
     <div class="row">
-      <!--  -->
+      <!-- // -- Lsit Mobile -- -->
       <template v-if="$q.screen.width < 600">
         <div class="col-12">
           <q-list>
@@ -33,7 +33,7 @@
           </q-list>
         </div>
       </template>
-      <!--  -->
+      <!-- //-- List Desktop -- -->
       <template v-if="$q.screen.width >= 600">
         <div class="col-3" v-for="(cat, index) in categoriesState" :key="index">
           <span class="title-category">{{ cat.name }}</span>
@@ -41,8 +41,9 @@
             <q-item
               v-for="(article, index) in cat.article"
               :key="index"
-              clickable
+              @click="getArticle(article)"
               class="title-subcategory q-no-hover"
+              clickable
             >
               <q-item-section>
                 <q-item-label> {{ article.title }} </q-item-label>
@@ -79,7 +80,7 @@
       </div>
     </div>
     <div class="text-center q-mt-md all-rights">
-      <span>Todos los Portales de la Comunidad de Madrid</span>
+      <span>© Copyright Gobierno Regional de Amazonas 2023</span>
     </div>
   </div>
 </template>

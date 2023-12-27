@@ -6,7 +6,8 @@ import { AxiosError } from "axios";
 interface ArticleState {
   articles: Article[];
   article: Article;
-  isLoadingPage: boolean;
+  isLoadingPageList: boolean;
+  isLoadingPageSingle: boolean;
   isLoadingTable: boolean;
 }
 
@@ -14,7 +15,8 @@ export const useArticle = defineStore("article", {
   state: (): ArticleState => ({
     articles: [],
     article: {} as Article,
-    isLoadingPage: true,
+    isLoadingPageList: true,
+    isLoadingPageSingle: true,
     isLoadingTable: true,
   }),
   actions: {
@@ -24,7 +26,7 @@ export const useArticle = defineStore("article", {
           data: { data },
         } = await getListArticlesAPI();
         this.articles = data;
-        this.isLoadingPage = false;
+        this.isLoadingPageList = false;
         this.isLoadingTable = false;
         console.log(data);
       } catch (error) {
@@ -40,7 +42,7 @@ export const useArticle = defineStore("article", {
           data: { data },
         } = await getArticleAPI(id);
         this.article = data;
-        this.isLoadingPage = false;
+        this.isLoadingPageSingle = false;
         this.isLoadingTable = false;
         console.log(data);
       } catch (error) {
