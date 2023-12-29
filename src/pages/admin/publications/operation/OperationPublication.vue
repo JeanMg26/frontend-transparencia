@@ -279,7 +279,7 @@ const getEmitImageUpload = (value: any) => {
 //************* Functions Computed *************
 const categoriesState = computed(() => categoryStore.categories);
 const articleState = computed(() => articleStore.article);
-const loadingPageState = computed(() => articleStore.isLoadingPage);
+const loadingPageState = computed(() => articleStore.isLoadingPageSingle);
 
 const titleState = computed({
   get() {
@@ -426,13 +426,13 @@ onMounted(async () => {
   if (route.params.id) {
     await articleStore.getArticleStore(Number(route.params.id));
   } else {
-    articleStore.isLoadingPage = false;
+    articleStore.isLoadingPageSingle = false;
   }
 });
 
 onUnmounted(() => {
   articleStore.cleanArticleStore();
-  articleStore.isLoadingPage = true;
+  articleStore.isLoadingPageSingle = true;
 });
 </script>
 
