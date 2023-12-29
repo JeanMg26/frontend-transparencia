@@ -22,7 +22,7 @@
                     </q-item-section>
                   </q-item>
                   <q-item class="cursor-pointer">
-                    <q-item-section>
+                    <q-item-section @click="goNosotros()">
                       <q-item-label>nosotros</q-item-label>
                     </q-item-section>
                   </q-item>
@@ -93,7 +93,12 @@
                       <q-icon name="fa-brands fa-facebook-f" size="1.5rem" />
                     </q-avatar>
                   </q-btn>
-                  <q-btn round color="white">
+                  <q-btn
+                    round
+                    color="white"
+                    href="https://www.instagram.com/gerenciageneralgorea"
+                    target="_blank"
+                  >
                     <q-avatar size="45px">
                       <q-icon name="fa-brands fa-instagram" size="1.5rem" />
                     </q-avatar>
@@ -116,6 +121,16 @@
                   >
                     <q-avatar size="45px">
                       <q-icon name="fa-brands fa-x-twitter" size="1.5rem" />
+                    </q-avatar>
+                  </q-btn>
+                  <q-btn
+                    round
+                    color="white"
+                    href="https://www.linkedin.com/in/gerenciageneralgorea"
+                    target="_blank"
+                  >
+                    <q-avatar size="45px">
+                      <q-icon name="fa-brands fa-linkedin-in" size="1.5rem" />
                     </q-avatar>
                   </q-btn>
                 </div>
@@ -245,7 +260,11 @@ import { ref } from "vue";
 //***************** Constants *****************
 const $q = useQuasar();
 const showMenuMobile = ref<boolean>(false);
-const tabMenu = ref<string>("mails");
+
+//************* Functions Template *************
+const goNosotros = () => {
+  window.scrollTo(0, document.body.scrollHeight);
+};
 </script>
 
 <style lang="scss" scoped>

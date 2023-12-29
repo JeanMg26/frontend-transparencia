@@ -62,11 +62,21 @@
                 <q-icon name="fa-brands fa-x-twitter" size="1.5rem" />
               </q-avatar>
             </q-btn>
+            <q-btn
+              round
+              color="white"
+              text-color="primary"
+              href="https://www.linkedin.com/in/gerenciageneralgorea"
+              target="_blank"
+            >
+              <q-avatar size="45px">
+                <q-icon name="fa-brands fa-linkedin-in" size="1.5rem" />
+              </q-avatar>
+            </q-btn>
           </div>
         </div>
       </div>
     </div>
-
     <div class="section-body bg-main">
       <span>Lo más destacado</span>
     </div>
@@ -92,7 +102,7 @@
             <q-icon name="fa-solid fa-angles-right" size="1.5rem" />
           </div>
           <div class="item-info">
-            <span>Información desplazados de Ucrania</span>
+            <span>Información desplazados de Amazonas</span>
             <span>
               Acceda a datos sobre el portal y la gestión de solicitudes de
               acceso
@@ -223,7 +233,7 @@
           <q-card-section class="section-info-reciente">
             <q-item>
               <q-item-section class="q-section-notice">
-                <span> Información desplazados de Ucrania </span>
+                <span> Información desplazados de Amazonas </span>
                 <span>
                   La Comunidad de Madrid ha habilitado una red de puntos de
                   atención para facilitar a los...
@@ -232,7 +242,7 @@
             </q-item>
             <q-item>
               <q-item-section class="q-section-notice">
-                <span> Información desplazados de Ucrania </span>
+                <span> Información desplazados de Amazonas </span>
                 <span>
                   La Comunidad de Madrid ha habilitado una red de puntos de
                   atención para facilitar a los...
@@ -241,7 +251,7 @@
             </q-item>
             <q-item>
               <q-item-section class="q-section-notice">
-                <span> Información desplazados de Ucrania </span>
+                <span> Información desplazados de Amazonas </span>
                 <span>
                   La Comunidad de Madrid ha habilitado una red de puntos de
                   atención para facilitar a los...
@@ -250,7 +260,7 @@
             </q-item>
             <q-item>
               <q-item-section class="q-section-notice">
-                <span> Información desplazados de Ucrania </span>
+                <span> Información desplazados de Amazonas </span>
                 <span>
                   La Comunidad de Madrid ha habilitado una red de puntos de
                   atención para facilitar a los...
