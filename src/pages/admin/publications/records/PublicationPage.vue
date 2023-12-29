@@ -73,7 +73,7 @@ const opendialogShowArticle = async (article_id: number) => {
 //************* Functions Computed *************
 const articlesState = computed(() => articleStore.articles);
 const categoriesState = computed(() => categoryStore.categories);
-const loadingPageState = computed(() => articleStore.isLoadingPage);
+const loadingPageState = computed(() => articleStore.isLoadingPageList);
 const loadingTableState = computed(() => articleStore.isLoadingTable);
 
 //************* Functions LifeCycle *************
@@ -83,7 +83,7 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-  articleStore.isLoadingPage = true;
+  articleStore.isLoadingPageList = true;
   categoryStore.isLoadingPage = true;
 });
 </script>
