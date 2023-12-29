@@ -235,7 +235,7 @@
               <q-item-section class="q-section-notice">
                 <span> Información desplazados de Amazonas </span>
                 <span>
-                  La Comunidad de Madrid ha habilitado una red de puntos de
+                  El Departamento de Amazonas ha habilitado una red de puntos de
                   atención para facilitar a los...
                 </span>
               </q-item-section>
@@ -244,7 +244,7 @@
               <q-item-section class="q-section-notice">
                 <span> Información desplazados de Amazonas </span>
                 <span>
-                  La Comunidad de Madrid ha habilitado una red de puntos de
+                  El Departamento de Amazonas ha habilitado una red de puntos de
                   atención para facilitar a los...
                 </span>
               </q-item-section>
@@ -253,7 +253,7 @@
               <q-item-section class="q-section-notice">
                 <span> Información desplazados de Amazonas </span>
                 <span>
-                  La Comunidad de Madrid ha habilitado una red de puntos de
+                  El Departamento de Amazonas ha habilitado una red de puntos de
                   atención para facilitar a los...
                 </span>
               </q-item-section>
@@ -262,7 +262,7 @@
               <q-item-section class="q-section-notice">
                 <span> Información desplazados de Amazonas </span>
                 <span>
-                  La Comunidad de Madrid ha habilitado una red de puntos de
+                  El Departamento de Amazonas ha habilitado una red de puntos de
                   atención para facilitar a los...
                 </span>
               </q-item-section>
