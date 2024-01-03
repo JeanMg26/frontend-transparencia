@@ -7,7 +7,7 @@
           <!-- //**************** COLUMN LEFT ************* -->
           <div class="col-12 col-md-6 column-left">
             <div class="row">
-              <!-- // ++ Logo +  Menu ++  -->
+              <!-- //++ Logo +  Menu ++ -->
               <div class="col-12 column-header">
                 <q-img
                   src="@assets/img/main-page/logo.png"
@@ -41,7 +41,7 @@
                   <q-icon name="fa-solid fa-bars"> </q-icon>
                 </div>
               </div>
-              <!-- //-----Menu Mobile------ -->
+              <!-- //++ Menu Mobile++ -->
               <div
                 v-if="$q.screen.width < 1024 && showMenuMobile"
                 class="col-12"
@@ -64,7 +64,7 @@
                   </q-item>
                 </q-list>
               </div>
-              <!-- // ++ Header - Title ++ -->
+              <!-- //++ Header - Title ++ -->
               <div class="col-12 menu-title">
                 <div>
                   <span> Gerencia General Gobierno Regional de Amazonas</span>
@@ -77,11 +77,11 @@
                   </span>
                 </div>
               </div>
+
               <!-- //++ Redes ++ -->
               <div class="col-12 menu-redes">
-                <div>
-                  <span> Redes Sociales </span>
-                </div>
+                <span class="title-welcome">Bienvenidos</span>
+                <span class="title-redes"> Redes Sociales </span>
                 <div class="btn-redes">
                   <q-btn
                     round
@@ -133,6 +133,16 @@
                       <q-icon name="fa-brands fa-linkedin-in" size="1.5rem" />
                     </q-avatar>
                   </q-btn>
+                </div>
+              </div>
+              <!-- //++Menu Adicional++ -->
+              <div class="col-12">
+                <div class="menu-adicional">
+                  <span class="menu-item">Prensa</span>
+                  <span>|</span>
+                  <span class="menu-item">BOCM</span>
+                  <span>|</span>
+                  <span class="menu-item">Atención al ciudadano</span>
                 </div>
               </div>
             </div>
@@ -269,7 +279,8 @@ const goNosotros = () => {
 
 <style lang="scss" scoped>
 .header-main {
-  background-image: url("@assets/img/main-page/pattern.png");
+  // background-image: url("@assets/img/main-page/pattern.png");
+  background-color: #1b3674;
   max-height: 83vh;
   overflow: hidden;
   .column-left {
@@ -314,15 +325,20 @@ const goNosotros = () => {
       }
     }
     .menu-redes {
-      margin-top: 4rem;
-      div {
-        &:first-child {
-          span {
-            color: #fff;
-            background-color: #c51e1f;
-            padding: 0.5rem;
-          }
-        }
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      .title-welcome {
+        font-size: 2.2rem;
+        color: #fff;
+        font-weight: 300;
+      }
+      .title-redes {
+        color: #fff;
+        background-color: #c51e1f;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
       }
       .btn-redes {
         margin-top: 1.5rem;
@@ -330,9 +346,25 @@ const goNosotros = () => {
           margin-right: 0.5rem;
         }
         .q-icon {
-          color: #264081;
+          color: #1b3674;
           &:hover {
             color: #2640c8;
+          }
+        }
+      }
+    }
+    .menu-adicional {
+      margin-top: 1.5rem;
+      color: #fff;
+      font-size: 1rem;
+      span {
+        margin-right: 1rem;
+        &.menu-item {
+          text-decoration: underline;
+          text-underline-offset: 0.2rem;
+          cursor: pointer;
+          &:hover {
+            color: $indigo-2;
           }
         }
       }
@@ -355,24 +387,25 @@ const goNosotros = () => {
 .q-separator {
   &.first-separator {
     margin-top: 1rem;
-    background: #264081;
+    background: #1b3674;
     height: 1rem;
   }
   &.second-separator {
     margin-top: 0.5rem;
-    background: #264081;
+    background: #1b3674;
     height: 0.5rem;
   }
 }
 
 .column-body {
-  background-image: url("@assets/img/main-page/pattern02.jpg");
+  // background-image: url("@assets/img/main-page/pattern02.jpg");
+  background-color: #fff;
   // padding-bottom: 2rem;
   .title-body {
     margin-top: 2rem;
     text-align: center;
     span {
-      background: #264081;
+      background: #1b3674;
       color: #fff;
       font-size: 1.2rem;
       font-weight: 300;
@@ -386,7 +419,7 @@ const goNosotros = () => {
     padding-left: 7rem;
     padding-right: 7rem;
     .row {
-      border: 2px solid #264081;
+      border: 2px solid #1b3674;
       .img-caption {
         text-transform: uppercase;
         font-size: 1.1rem;
@@ -403,7 +436,7 @@ const goNosotros = () => {
     .title-info {
       font-size: 2rem;
       font-weight: 300;
-      color: #264081;
+      color: #1b3674;
     }
     p {
       font-size: 1rem;
