@@ -52,6 +52,7 @@
             src="@assets/img/logo-entidad.png"
             class="img-logo-right"
             :no-spinner="true"
+            @click="goMainPage()"
           />
         </div>
         <q-img
@@ -126,6 +127,10 @@ const getArticle = async (article: Article) => {
   $q.localStorage.set("article", article);
 };
 
+const goMainPage = () => {
+  router.push({ name: "MainPage" });
+};
+
 //************* Functions LifeCycle *************
 onMounted(async () => {
   await categoryStore.getCategoriesStore();
@@ -190,6 +195,7 @@ onMounted(async () => {
 }
 .img-logo-right {
   width: 4rem;
+  cursor: pointer;
 }
 
 @media (max-width: 1024px) {

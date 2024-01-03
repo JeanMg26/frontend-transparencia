@@ -138,7 +138,7 @@
               <!-- //++Menu Adicional++ -->
               <div class="col-12">
                 <div class="menu-adicional">
-                  <span class="menu-item">Prensa</span>
+                  <span class="menu-item" @click="goPrensa()">Prensa</span>
                   <span>|</span>
                   <span class="menu-item">BOCM</span>
                   <span>|</span>
@@ -265,15 +265,21 @@
 
 <script setup lang="ts">
 import { useQuasar } from "quasar";
+import { useRouter } from "vue-router";
 import { ref } from "vue";
 
 //***************** Constants *****************
 const $q = useQuasar();
+const router = useRouter();
 const showMenuMobile = ref<boolean>(false);
 
 //************* Functions Template *************
 const goNosotros = () => {
   window.scrollTo(0, document.body.scrollHeight);
+};
+
+const goPrensa = () => {
+  router.push({ name: "BlogPrensa" });
 };
 </script>
 

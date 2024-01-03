@@ -2,7 +2,28 @@
   <q-page>
     <div class="section-front">
       <div class="row">
-        <div class="col-12 col-sm-10 column-search">
+        <!-- //++Slider++ -->
+        <div class="col-12">
+          <q-carousel
+            animated
+            v-model="slide"
+            arrows
+            infinite
+            :autoplay="autoplay"
+            transition-prev="slide-right"
+            transition-next="slide-left"
+            @mouseenter="autoplay = false"
+            @mouseleave="autoplay = true"
+            class="slider-main"
+          >
+            <q-carousel-slide :name="1" img-src="@assets/img/imagen1.jpg" />
+            <q-carousel-slide :name="2" img-src="@assets/img/imagen2.jpg" />
+            <q-carousel-slide :name="3" img-src="@assets/img/imagen3.jpg" />
+            <q-carousel-slide :name="4" img-src="@assets/img/imagen4.jpg" />
+          </q-carousel>
+        </div>
+        <!-- //++ Search + Redes++ -->
+        <div class="col-12 col-lg-10 column-search">
           <q-input
             dense
             outlined
@@ -277,7 +298,6 @@
         </q-card>
       </div>
     </div>
-
     <!-- //++ Footer ++ -->
     <Footer />
   </q-page>
@@ -293,6 +313,8 @@ import Footer from "./components/Footer.vue";
 //***************** Constants *****************
 const router = useRouter();
 const searchPage = ref<string>("");
+const slide = ref<number>(1);
+const autoplay = ref(true);
 
 //************* Functions Template *************
 const goSignIn = () => {
@@ -329,11 +351,12 @@ const goSignIn = () => {
 }
 
 .section-front {
-  background-image: url("@assets/img/img-body.jpg");
-  height: 280px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // background-image: url("@assets/img/img-body.jpg");
+  // height: 280px;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  background-color: #eceff1;
   .row {
     flex-grow: 1;
     display: flex;
@@ -342,6 +365,7 @@ const goSignIn = () => {
     .column-search {
       display: flex;
       align-items: center;
+      padding: 0.5rem;
       .input-search {
         background-color: #fff;
       }
@@ -468,6 +492,9 @@ const goSignIn = () => {
     justify-content: center;
     align-items: center;
     .row {
+      .slider-main {
+        max-height: 200px;
+      }
       .column-search {
         padding: 1rem;
         display: block;
@@ -479,7 +506,9 @@ const goSignIn = () => {
           justify-content: space-around;
           margin-top: 1rem;
           .q-btn {
-            margin-left: 1rem;
+            &:first-child {
+              margin-left: 0;
+            }
           }
         }
       }
