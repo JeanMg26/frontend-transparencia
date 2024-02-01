@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="dialogView" persistent>
-    <q-card class="card-user">
+    <q-card class="card-activity">
       <q-card-section>
         <div class="flex justify-between items-center">
           <span class="text-header">Detalles de la actividad</span>
@@ -34,7 +34,9 @@
           </div>
           <div class="col-12 q-mt-md">
             <q-card flat bordered>
-              <q-img :src="activityState.image" style="max-width: 150px" />
+              <q-card-section class="text-center">
+                <q-img :src="activityState.image" style="max-width: 300px" />
+              </q-card-section>
               <q-card-section v-html="activityState.description" />
             </q-card>
           </div>
@@ -73,8 +75,9 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.card-user {
-  width: 600px;
+.card-activity {
+  max-width: 800px;
+  width: 100%;
 }
 .text-header {
   font-size: 1.1rem;
