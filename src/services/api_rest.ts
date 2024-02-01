@@ -43,6 +43,15 @@ const getArticleAPI = (id: number) => {
   return jwtAxios.get("article/" + id);
 };
 
+// ++ Activities
+const getListActivitiesAPI = () => {
+  return jwtAxios.get("activities");
+};
+
+const getActivityAPI = (id: number) => {
+  return jwtAxios.get("activity/" + id);
+};
+
 // *********************** API-POST ****************************
 // ++ Users
 const createUserAPI = (data: any) => {
@@ -57,6 +66,15 @@ const createCategoryAPI = (data: any) => {
 // ++ Articles
 const createArticleAPI = (data: any) => {
   return jwtAxios.post("article", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+// ++ Activities
+const createActivityAPI = (data: any) => {
+  return jwtAxios.post("activity", data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -92,6 +110,11 @@ const updateArticleAPI = (article_id: number, data: any) => {
   return jwtAxios.put("article/" + article_id, data);
 };
 
+// ++ Activity
+const updateActivityAPI = (activity_id: number, data: any) => {
+  return jwtAxios.put("activity/" + activity_id, data);
+};
+
 // *********************** API-DELETE ****************************
 // ++ Users
 const deleteUserAPI = (user_id: number) => {
@@ -106,6 +129,11 @@ const deleteCategoryAPI = (cat_id: number) => {
 // ++ Articles
 const deleteArticleAPI = (article_id: number) => {
   return jwtAxios.delete("article/" + article_id);
+};
+
+// ++ Activity
+const deleteActivityAPI = (activity_id: number) => {
+  return jwtAxios.delete("activity/" + activity_id);
 };
 
 export {
@@ -129,4 +157,9 @@ export {
   getArticleAPI,
   deleteArticleAPI,
   changeStatusUserAPI,
+  getListActivitiesAPI,
+  getActivityAPI,
+  deleteActivityAPI,
+  createActivityAPI,
+  updateActivityAPI,
 };

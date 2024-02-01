@@ -87,6 +87,29 @@ const routes: RouteRecordRaw[] = [
               },
             ],
           },
+          // ++Actividades++
+          {
+            path: "activities",
+            name: "MainActivity",
+            component: () => import("pages/admin/activities/MainActivity.vue"),
+            redirect: { name: "ActivityPage" },
+            children: [
+              {
+                path: "",
+                name: "ActivityPage",
+                component: () =>
+                  import("pages/admin/activities/records/ActivityPage.vue"),
+              },
+              {
+                path: "operation/:id?",
+                name: "OperationActivity",
+                component: () =>
+                  import(
+                    "pages/admin/activities/operation/OperationActivity.vue"
+                  ),
+              },
+            ],
+          },
         ],
       },
     ],

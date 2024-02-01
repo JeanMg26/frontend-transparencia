@@ -37,3 +37,13 @@ export interface Article {
   created_at: string;
   updated_at: string;
 }
+
+export interface Activity {
+  id: number;
+  title: string;
+  autor: string;
+  description: string;
+  image: string;
+  created_at: string;
+  updated_at: string;
+}

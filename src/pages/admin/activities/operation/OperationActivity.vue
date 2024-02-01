@@ -3,7 +3,7 @@
     <!-- //************** Header ************** -->
     <div class="q-mb-md">
       <div class="container-link q-mb-md">
-        <router-link :to="{ name: 'PublicationPage' }">
+        <router-link :to="{ name: 'ActivityPage' }">
           <q-icon
             name="fa-solid fa-chevron-left"
             size="0.7rem"
@@ -13,15 +13,15 @@
         </router-link>
       </div>
       <div class="text-center">
-        <span v-if="!articleState.id" class="q-page-header">
-          Añadir una Publicación
+        <span v-if="!activityState.id" class="q-page-header">
+          Añadir una Actividad
         </span>
-        <span v-else class="q-page-header"> Actualizar Publicación </span>
+        <span v-else class="q-page-header"> Actualizar Actividad </span>
       </div>
     </div>
     <q-card flat bordered class="card-article">
       <q-card-section>
-        <q-form @submit="onSubmitSection" greedy no-error-focus>
+        <q-form @submit="onSubmitActivity" greedy no-error-focus>
           <div class="row q-col-gutter-x-lg">
             <!-- //++Title++ -->
             <div class="col-12">
@@ -34,7 +34,7 @@
                 type="text"
                 placeholder="Ingresar el título"
                 class="q-mt-xs"
-                :rules="titleArticleVal"
+                :rules="titleActivityVal"
                 :no-error-icon="true"
                 ref="refTitle"
                 @blur="!dataSend.title ? resetErrorTitle() : ''"
@@ -46,6 +46,7 @@
             <!-- //++Autor++ -->
             <div class="col-12 q-mt-md">
               <span class="q-label-input">Autor</span>
+              <span class="q-ml-xs" style="font-size: 0.8rem">(opcional)</span>
               <q-input
                 outlined
                 autogrow
@@ -55,64 +56,6 @@
                 type="textarea"
                 placeholder="Ingresar el nombre del autor"
                 class="q-mt-xs"
-              />
-            </div>
-            <!-- //++ Category ++ -->
-            <div class="col-12 col-md-6 q-mt-md">
-              <span class="q-label-input">Categoria</span>
-              <span class="text-red">*</span>
-              <q-select
-                dense
-                outlined
-                class="q-mt-xs"
-                v-model="categoryState"
-                :options="categoriesState"
-                behavior="menu"
-                popup-content-class="popup-category"
-                :rules="selectCategoryVal"
-                :no-error-icon="true"
-                ref="refSelectCat"
-                @blur="!categoryState ? resetErrorCat() : ''"
-                :hide-bottom-space="
-                  refSelectCat && refSelectCat.hasError ? false : true
-                "
-                @update:model-value="updateCategory"
-              >
-                <!-- //++ Selected -->
-                <template v-slot:selected>
-                  <span v-if="!categoryState" class="text-grey-6">
-                    Selecionar la categoria
-                  </span>
-                  <span v-else>{{ categoryState.name }}</span>
-                </template>
-                <!-- //++ Options -->
-                <template v-slot:option="{ itemProps, opt }">
-                  <q-item dense v-bind="itemProps">
-                    <q-item-section>
-                      <q-item-label>{{ opt.name }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
-            </div>
-            <!-- //++ Route Publication ++ -->
-            <div class="col-12 col-md-6 q-mt-md">
-              <span class="q-label-input">Ruta de la publicación</span>
-              <span class="text-red">*</span>
-              <q-input
-                dense
-                outlined
-                v-model="routeState"
-                type="text"
-                placeholder="Ingresar una ruta sin espacios"
-                class="q-mt-xs"
-                :rules="routeValidation"
-                :no-error-icon="true"
-                ref="refRoute"
-                @blur="!routeState ? resetErrorRoute() : ''"
-                :hide-bottom-space="
-                  refRoute && refRoute.hasError ? false : true
-                "
               />
             </div>
             <!-- //++ Upload Image ++ -->
@@ -126,6 +69,7 @@
               <q-editor
                 v-model="descriptionState"
                 class="q-mt-xs"
+                @update:model-value="updateDescription"
                 :toolbar="[
                   [
                     {
@@ -172,8 +116,22 @@
                   ['viewsource'],
                 ]"
               />
-              <span v-if="descBackError" class="q-label-error">
-                {{ descBackError }}
+              <!-- //--Description Verify-- -->
+              <q-input
+                dense
+                outlined
+                v-model="dataSend.description_verify"
+                type="text"
+                placeholder="Ingresar el título"
+                class="q-mt-xs hidden"
+                :rules="descRequired"
+                ref="refDescription"
+              />
+              <span
+                v-if="refDescription && refDescription.hasError"
+                class="q-label-error"
+              >
+                Por favor, ingrese una descripción para la publicación.
               </span>
             </div>
             <!-- //++Buttons Actions++ -->
@@ -184,9 +142,9 @@
                 :ripple="false"
                 color="primary"
                 :label="
-                  !articleState.id
-                    ? 'Agregar publicación'
-                    : 'Actualizar publicación'
+                  !activityState.id
+                    ? 'Agregar actividad'
+                    : 'Actualizar actividad'
                 "
                 type="submit"
                 :loading="loadingSubmit"
@@ -210,15 +168,9 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import { useQuasar } from "quasar";
-import { useCategory } from "@stores/Category";
-import { useArticle } from "@stores/Article";
-import { Category } from "@interfaces/interface-store";
-import { createArticleAPI, updateArticleAPI } from "@services/api_rest";
-import {
-  selectCategoryVal,
-  titleArticleVal,
-  routeValidation,
-} from "@utils/validation";
+import { useActivity } from "@stores/Activity";
+import { createActivityAPI, updateActivityAPI } from "@services/api_rest";
+import { titleActivityVal, descRequired } from "@utils/validation";
 import { AxiosError } from "axios";
 import { notify } from "@utils/notify";
 import { useRouter, useRoute } from "vue-router";
@@ -230,45 +182,27 @@ import UploadImage from "./components/UploadImage.vue";
 const $q = useQuasar();
 const router = useRouter();
 const route = useRoute();
-const categoryStore = useCategory();
-const articleStore = useArticle();
+const activityStore = useActivity();
 const loadingSubmit = ref<boolean>(false);
 
 const dataSend = reactive({
   title: "",
   autor: "",
   description: "",
-  route: "",
   image: "",
   description_verify: "",
-  category_id: "",
 });
 
 const descBackError = ref<string>("");
 
-const selectCategory = ref<Category>();
-
 // ++Refs
-const refSelectCat = ref<any>(null);
-const refRoute = ref<any>(null);
 const refTitle = ref<any>(null);
+const refDescription = ref<any>(null);
 
 //************* Functions Template *************
 // ++ Errors
-const resetErrorCat = () => {
-  refSelectCat.value.resetValidation();
-};
-
-const resetErrorRoute = () => {
-  refRoute.value.resetValidation();
-};
-
 const resetErrorTitle = () => {
   refTitle.value.resetValidation();
-};
-
-const updateCategory = (cat: Category) => {
-  dataSend.category_id = String(cat.id);
 };
 
 // ++Emits
@@ -277,15 +211,19 @@ const getEmitImageUpload = (value: any) => {
   console.log(value);
 };
 
+// ++Update
+const updateDescription = (value: any) => {
+  dataSend.description_verify = value;
+};
+
 //************* Functions Computed *************
-const categoriesState = computed(() => categoryStore.categories);
-const articleState = computed(() => articleStore.article);
-const loadingPageState = computed(() => articleStore.isLoadingPageSingle);
+const activityState = computed(() => activityStore.activity);
+const loadingPageState = computed(() => activityStore.isLoadingPageSingle);
 
 const titleState = computed({
   get() {
-    return articleState.value.title
-      ? articleState.value.title
+    return activityState.value.title
+      ? activityState.value.title
       : dataSend.title
       ? dataSend.title
       : "";
@@ -297,8 +235,8 @@ const titleState = computed({
 
 const autorState = computed({
   get() {
-    return articleState.value.autor
-      ? articleState.value.autor
+    return activityState.value.autor
+      ? activityState.value.autor
       : dataSend.autor
       ? dataSend.autor
       : "";
@@ -308,38 +246,12 @@ const autorState = computed({
   },
 });
 
-const categoryState = computed({
-  get() {
-    return selectCategory.value
-      ? selectCategory.value
-      : categoriesState.value.find(
-          (cat: Category) => cat.id == articleState.value.category_id
-        );
-  },
-  set(value: any) {
-    selectCategory.value = value;
-  },
-});
-
-const routeState = computed({
-  get() {
-    return articleState.value.route
-      ? articleState.value.route
-      : dataSend.route
-      ? dataSend.route
-      : "";
-  },
-  set(value: any) {
-    dataSend.route = value;
-  },
-});
-
 const descriptionState = computed({
   get() {
     return dataSend.description
       ? dataSend.description
-      : articleState.value.description
-      ? articleState.value.description
+      : activityState.value.description
+      ? activityState.value.description
       : "";
   },
   set(value: any) {
@@ -349,27 +261,24 @@ const descriptionState = computed({
 
 //**************** Functions API ****************
 // ++ Create Article
-const createArticle = async () => {
+const createActivity = async () => {
   const formdata = new FormData();
   formdata.append("image", dataSend.image);
   formdata.append("title", dataSend.title);
   formdata.append("autor", dataSend.autor);
-  formdata.append("route", dataSend.route);
   formdata.append("description", dataSend.description);
-  formdata.append("category_id", dataSend.category_id);
 
   loadingSubmit.value = true;
   try {
-    await createArticleAPI(formdata);
-    notify("success", "Articulo creado correctamente.");
-    router.push({ name: "PublicationPage" });
+    await createActivityAPI(formdata);
+    notify("success", "Actividad creada correctamente.");
+    router.push({ name: "ActivityPage" });
   } catch (error) {
     if (error instanceof AxiosError) {
       let descriptionError = error.response?.data.errors.description;
       if (descriptionError) {
         if (descriptionError[0] == 1005) {
-          descBackError.value =
-            "Por favor ingrese el cuerpo de la publicación.";
+          descBackError.value = "Por favor ingrese el cuerpo de la actividad.";
         }
       }
       console.log(error.response?.data);
@@ -383,26 +292,21 @@ const createArticle = async () => {
 const updateArticle = async () => {
   loadingSubmit.value = true;
   try {
-    await updateArticleAPI(articleState.value.id, {
-      title: dataSend.title ? dataSend.title : articleState.value.title,
-      autor: dataSend.autor ? dataSend.autor : articleState.value.autor,
-      route: dataSend.route ? dataSend.route : articleState.value.route,
+    await updateActivityAPI(activityState.value.id, {
+      title: dataSend.title ? dataSend.title : activityState.value.title,
+      autor: dataSend.autor ? dataSend.autor : activityState.value.autor,
       description: dataSend.description
         ? dataSend.description
-        : articleState.value.description,
-      category_id: dataSend.category_id
-        ? Number(dataSend.category_id)
-        : articleState.value.category_id,
+        : activityState.value.description,
     });
-    notify("success", "Articulo actualizado correctamente.");
-    router.push({ name: "PublicationPage" });
+    notify("success", "Actividad actualizado correctamente.");
+    router.push({ name: "ActivityPage" });
   } catch (error) {
     if (error instanceof AxiosError) {
       let descriptionError = error.response?.data.errors.description;
       if (descriptionError) {
         if (descriptionError[0] == 1005) {
-          descBackError.value =
-            "Por favor ingrese el cuerpo de la publicación.";
+          descBackError.value = "Por favor ingrese el cuerpo de la actividad.";
         }
       }
       console.log(error.response?.data);
@@ -412,28 +316,29 @@ const updateArticle = async () => {
   }
 };
 
-const onSubmitSection = async () => {
-  if (!articleState.value.id) {
-    createArticle();
+const onSubmitActivity = async () => {
+  // console.log(activityState.value);
+  if (!activityState.value.id) {
+    console.log("create");
+    createActivity();
   } else {
-    updateArticle();
+    // Imagen revidar
+    // updateArticle();
   }
 };
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
-  await categoryStore.getCategoriesStore();
-
   if (route.params.id) {
-    await articleStore.getArticleStore(Number(route.params.id));
+    await activityStore.getActivityStore(Number(route.params.id));
   } else {
-    articleStore.isLoadingPageSingle = false;
+    activityStore.isLoadingPageSingle = false;
   }
 });
 
 onUnmounted(() => {
-  articleStore.cleanArticleStore();
-  articleStore.isLoadingPageSingle = true;
+  activityStore.cleanActivityStore();
+  activityStore.isLoadingPageSingle = true;
 });
 </script>
 

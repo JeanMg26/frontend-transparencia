@@ -55,6 +55,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <!-- //--Publication-- -->
         <q-item
           class="item-subcategory"
           clickable
@@ -64,6 +65,19 @@
             <q-item-label class="q-pl-30">
               <q-icon name="fa-solid fa-circle" size="0.4rem" class="q-mr-sm" />
               <span class="q-item-text">Publicaciones</span>
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <!-- //--Activities-- -->
+        <q-item
+          class="item-subcategory"
+          clickable
+          :to="{ name: 'ActivityPage' }"
+        >
+          <q-item-section>
+            <q-item-label class="q-pl-30">
+              <q-icon name="fa-solid fa-circle" size="0.4rem" class="q-mr-sm" />
+              <span class="q-item-text">Actividades</span>
             </q-item-label>
           </q-item-section>
         </q-item>

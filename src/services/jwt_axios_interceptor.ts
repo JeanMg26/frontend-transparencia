@@ -40,12 +40,8 @@ jwtAxios.interceptors.response.use(
       const code = error.response.data.code;
       // console.log("desde axios", error.response.data.code);
 
-      switch (code) {
-        case 1010:
-          removeTokenNotFound();
-          break;
-        default:
-          break;
+      if (code == 1010) {
+        removeTokenNotFound();
       }
     }
     return Promise.reject(error);

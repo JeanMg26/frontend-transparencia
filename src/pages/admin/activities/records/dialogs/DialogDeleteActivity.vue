@@ -9,7 +9,7 @@
             size="2.5rem"
             class="q-mb-md"
           />
-          <span>¿Esta seguro que desea eliminar esta publicación?</span>
+          <span>¿Esta seguro que desea eliminar esta actividad?</span>
         </div>
         <div class="btn-actions q-gutter-x-md q-mt-md">
           <q-btn
@@ -29,7 +29,7 @@
             size="0.9rem"
             type="submit"
             :loading="loadingSubmit"
-            @click="deleteArticle()"
+            @click="deleteActivity()"
           >
             <template v-slot:loading>
               <q-spinner-bars size="20px" />
@@ -42,10 +42,10 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from "vue";
-import { deleteArticleAPI } from "@services/api_rest";
+import { ref, watch } from "vue";
+import { deleteActivityAPI } from "@services/api_rest";
 import { notify } from "@utils/notify";
-import { useArticle } from "@stores/Article";
+import { useActivity } from "@stores/Activity";
 import { AxiosError } from "axios";
 
 // ++Props
@@ -54,27 +54,27 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
-  articleID: {
+  activityID: {
     type: Number,
     required: false,
   },
 });
 
 // ***************** Constants *****************
-const articleStore = useArticle();
+const activityStore = useActivity();
 const dialogDelete = ref<boolean>(false);
 const loadingSubmit = ref<boolean>(false);
 const refDialog = ref<any>(null);
 
 // ****************** Functions API *******************
-const deleteArticle = async () => {
+const deleteActivity = async () => {
   loadingSubmit.value = true;
   try {
-    await deleteArticleAPI(props.articleID!);
-    notify("success", "Publicación eliminada correctamente");
+    await deleteActivityAPI(props.activityID!);
+    notify("success", "Actividad eliminada correctamente");
     refDialog.value.hide();
-    articleStore.isLoadingTable = true;
-    await articleStore.getListArticlesStore();
+    activityStore.isLoadingTable = true;
+    await activityStore.getListActivitiesStore();
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(error.response?.data);

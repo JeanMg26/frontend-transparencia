@@ -1,37 +1,58 @@
 <template>
+  <!-- //******************** TABLE **************** -->
   <q-markup-table flat bordered>
     <thead class="bg-grey-2">
       <tr>
+        <th class="text-left">Título</th>
+        <th class="text-left">Autor</th>
         <th class="text-left">Fecha de creación</th>
-        <th class="text-left">Nombre</th>
+        <th class="text-left">Fecha de modificación</th>
         <th class="text-right">Acciones</th>
       </tr>
     </thead>
     <tbody>
       <!-- //++ Not Records ++ -->
-      <template v-if="!categoriesState?.length">
+      <template v-if="!activitiesState?.length">
         <tr class="q-tr--no-hover">
-          <td colspan="3">
+          <td colspan="5">
             <NoResults />
           </td>
         </tr>
       </template>
-      <!-- //++ Full Records ++ -->
       <template v-else>
-        <tr v-for="(cat, index) in categoriesState" :key="index">
+        <tr v-for="(activity, index) in activitiesState" :key="index">
+          <td class="text-left">{{ activity.title }}</td>
+          <td class="text-left">{{ activity.autor }}</td>
           <td class="text-left">
-            {{ date.formatDate(cat.created_at, "DD-MM-YYYY HH:mm:ss") }}
+            {{ date.formatDate(activity.created_at, "DD-MM-YYYY HH:mm:ss") }}
           </td>
-          <td class="text-left">{{ cat.name }}</td>
-          <!-- //++ Actions ++ -->
+          <td class="text-left">
+            {{ date.formatDate(activity.updated_at, "DD-MM-YYYY HH:mm:ss") }}
+          </td>
+          <!-- //++Actions++ -->
           <td class="text-right">
             <div class="q-gutter-x-md">
+              <!-- //--View-- -->
+              <q-icon
+                name="fa-solid fa-eye"
+                color="positive"
+                class="cursor-pointer"
+                @click="opendialogShowActivity(activity.id)"
+              >
+                <q-tooltip
+                  anchor="top middle"
+                  self="bottom middle"
+                  :offset="[10, 10]"
+                >
+                  <span>Ver</span>
+                </q-tooltip>
+              </q-icon>
               <!-- //--Edit-- -->
               <q-icon
                 name="fa-solid fa-edit"
                 color="primary"
                 class="cursor-pointer"
-                @click="openDialogUpdateCat(cat.id)"
+                @click="updateArticle(activity.id)"
               >
                 <q-tooltip
                   anchor="top middle"
@@ -43,11 +64,10 @@
               </q-icon>
               <!-- //--Eliminar-- -->
               <q-icon
-                v-if="cat.article.length <= 0"
                 name="fa-regular fa-trash-can"
                 color="red"
                 class="cursor-pointer"
-                @click="openDialogDeleteCat(cat.id)"
+                @click="opendialogDeleteActivity(activity.id)"
               >
                 <q-tooltip
                   anchor="top middle"
@@ -61,7 +81,7 @@
           </td>
         </tr>
       </template>
-      <!-- //++ INNER LOADING ++ -->
+      <!-- //++ Inner Loafing ++ -->
       <q-inner-loading :showing="loadingTableState">
         <q-spinner-bars size="35px" color="primary" />
       </q-inner-loading>
@@ -69,7 +89,7 @@
   </q-markup-table>
   <!-- //++Pagination++ -->
   <q-pagination
-    v-if="categoriesState.length"
+    v-if="activitiesState.length"
     size="0.8rem"
     class="fles justify-end q-mt-md"
     v-model="currentPage"
@@ -84,32 +104,44 @@
 </template>
 
 <script setup lang="ts">
+import { PropType, computed, ref } from "vue";
 import { date } from "quasar";
-import { useCategory } from "@stores/Category";
-import { computed, ref } from "vue";
+import { Activity } from "@interfaces/interface-store";
+import { useRouter } from "vue-router";
+import { useActivity } from "@stores/Activity";
 
 // ++ Components
 import NoResults from "@components/others/NoResults.vue";
 
 // ++Props
 defineProps({
-  openDialogUpdateCat: {
+  opendialogDeleteActivity: {
     type: Function,
     required: true,
   },
-  openDialogDeleteCat: {
+  opendialogShowActivity: {
     type: Function,
+    required: true,
+  },
+  activitiesState: {
+    type: Object as PropType<Activity[]>,
     required: true,
   },
 });
 
-//***************** Constants *****************
-const categoryStore = useCategory();
+// ****************** Constants *****************
+const router = useRouter();
 const currentPage = ref<number>(1);
+const activityStore = useActivity();
 
 //************* Functions Computed *************
-const categoriesState = computed(() => categoryStore.categories);
-const loadingTableState = computed(() => categoryStore.isLoadingTable);
+const loadingTableState = computed(() => activityStore.isLoadingTable);
+
+//************* Functions API *************
+const updateArticle = async (id: number) => {
+  await activityStore.getActivityStore(id);
+  router.push({ name: "OperationActivity", params: { id } });
+};
 </script>
 
 <style lang="scss" scoped>

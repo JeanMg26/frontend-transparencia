@@ -1,22 +1,22 @@
 // ++SignIn++
 const emailRequired = [
-  (val: any) => !!val || "Por favor ingrese su correo electrónico.",
+  (val: any) => !!val || "Por favor, ingrese su correo electrónico.",
   (val: any, rules: any) =>
     rules.email(val) || "Ingrese un correo electrónico válido",
 ];
 
 const passwordRequired = [
-  (val: any) => !!val || "Por favor ingrese su contraseña.",
+  (val: any) => !!val || "Por favor, ingrese su contraseña.",
 ];
 
 // ++Profile++
 const usernameRequired = [
-  (val: any) => !!val || "Por favor ingrese su nombre de usuario.",
+  (val: any) => !!val || "Por favor, ingrese su nombre de usuario.",
   (val: any) => val.length >= 3 || "Ingrese como mínimo 3 caracteres.",
 ];
 
 const fullnameRequired = [
-  (val: any) => !!val || "Por favor ingrese sus nombres completos.",
+  (val: any) => !!val || "Por favor, ingrese sus nombres completos.",
   (val: any) => val.length >= 3 || "Ingrese como mínimo 3 caracteres.",
 ];
 
@@ -45,7 +45,7 @@ const selectCategoryVal = [
 
 // ++Section
 const titleArticleVal = [
-  (val: any) => !!val || "Por ingrese un titulo.",
+  (val: any) => !!val || "Por favor, ingrese un titulo.",
   (val: any) =>
     val.length >= 6 || "El título tiene que tener como mínimo 6 carácteres.",
   (val: any) =>
@@ -54,13 +54,14 @@ const titleArticleVal = [
 ];
 
 const descArticleVal = [
-  (val: any) => !!val || "Por ingrese una descripción para la publicación.",
+  (val: any) =>
+    !!val || "Por favor, ingrese una descripción para la publicación.",
   (val: any) =>
     val.length >= 6 || "La descripción debe tener como mínimo 6 carácteres.",
 ];
 
 const routeValidation = [
-  (val: any) => !!val || "Por ingresa la ruta de la publicación.",
+  (val: any) => !!val || "Por favor, ingresa la ruta de la publicación.",
   (val: any) =>
     val.length >= 6 ||
     "La ruta de la publicación debe tener como mínimo 6 carácteres.",
@@ -69,6 +70,29 @@ const routeValidation = [
 // const imageValidation = [
 //   (val: any) => !!val || "Por ingresa la ruta de la publicación.",
 // ];
+
+// ++Activity
+const titleActivityVal = [
+  (val: any) => !!val || "Por favor, ingrese un titulo.",
+  (val: any) =>
+    val.length >= 6 || "El título tiene que tener como mínimo 6 carácteres.",
+  (val: any) =>
+    val.length <= 100 ||
+    "El título tiene que tener como máximo 100 carácteres.",
+];
+
+// const imagenRequired = [
+//   (val: any) => !!val || "Por favor, seleccione una imagen.",
+// ];
+
+const descRequired = [
+  (val: any) =>
+    !!val || "Por favor, ingrese una descripción para la publicación.",
+];
+
+const imagenRequired = [
+  (val: any) => !!val || "Por favor, seleccione una imagen.",
+];
 
 export {
   emailRequired,
@@ -82,4 +106,7 @@ export {
   routeValidation,
   titleArticleVal,
   descArticleVal,
+  titleActivityVal,
+  imagenRequired,
+  descRequired,
 };
