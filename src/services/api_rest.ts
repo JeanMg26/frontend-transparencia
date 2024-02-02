@@ -72,13 +72,18 @@ const createArticleAPI = (data: any) => {
   });
 };
 
-// ++ Activities
-const createActivityAPI = (data: any) => {
-  return jwtAxios.post("activity", data, {
+// ++Upload
+const uploadImageAPI = (data: any) => {
+  return jwtAxios.post("upload", data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
+};
+
+// ++ Activities
+const createActivityAPI = (data: any) => {
+  return jwtAxios.post("activity", data);
 };
 
 // *********************** API-UPDATE ****************************
@@ -162,4 +167,5 @@ export {
   deleteActivityAPI,
   createActivityAPI,
   updateActivityAPI,
+  uploadImageAPI,
 };

@@ -19,6 +19,8 @@
         <span v-else class="q-page-header"> Actualizar Actividad </span>
       </div>
     </div>
+    <!-- //***************** FORM ***************** -->
+    {{ descriptionState }}
     <q-card flat bordered class="card-article">
       <q-card-section>
         <q-form @submit="onSubmitActivity" greedy no-error-focus>
@@ -169,7 +171,11 @@
 import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import { useQuasar } from "quasar";
 import { useActivity } from "@stores/Activity";
-import { createActivityAPI, updateActivityAPI } from "@services/api_rest";
+import {
+  createActivityAPI,
+  updateActivityAPI,
+  uploadImageAPI,
+} from "@services/api_rest";
 import { titleActivityVal, descRequired } from "@utils/validation";
 import { AxiosError } from "axios";
 import { notify } from "@utils/notify";
@@ -192,8 +198,6 @@ const dataSend = reactive({
   image: "",
   description_verify: "",
 });
-
-const descBackError = ref<string>("");
 
 // ++Refs
 const refTitle = ref<any>(null);
@@ -222,10 +226,10 @@ const loadingPageState = computed(() => activityStore.isLoadingPageSingle);
 
 const titleState = computed({
   get() {
-    return activityState.value.title
-      ? activityState.value.title
-      : dataSend.title
+    return dataSend.title
       ? dataSend.title
+      : activityState.value
+      ? activityState.value.title
       : "";
   },
   set(value: any) {
@@ -235,10 +239,10 @@ const titleState = computed({
 
 const autorState = computed({
   get() {
-    return activityState.value.autor
-      ? activityState.value.autor
-      : dataSend.autor
+    return dataSend.autor
       ? dataSend.autor
+      : activityState.value
+      ? activityState.value.autor
       : "";
   },
   set(value: any) {
@@ -250,7 +254,7 @@ const descriptionState = computed({
   get() {
     return dataSend.description
       ? dataSend.description
-      : activityState.value.description
+      : activityState.value
       ? activityState.value.description
       : "";
   },
@@ -260,27 +264,20 @@ const descriptionState = computed({
 });
 
 //**************** Functions API ****************
-// ++ Create Article
-const createActivity = async () => {
-  const formdata = new FormData();
-  formdata.append("image", dataSend.image);
-  formdata.append("title", dataSend.title);
-  formdata.append("autor", dataSend.autor);
-  formdata.append("description", dataSend.description);
-
+// ++ Save Create Article
+const saveCreateActivity = async (id_image: number) => {
   loadingSubmit.value = true;
   try {
-    await createActivityAPI(formdata);
+    await createActivityAPI({
+      title: dataSend.title,
+      autor: dataSend.autor,
+      storage_id: id_image,
+      description: dataSend.description,
+    });
     notify("success", "Actividad creada correctamente.");
     router.push({ name: "ActivityPage" });
   } catch (error) {
     if (error instanceof AxiosError) {
-      let descriptionError = error.response?.data.errors.description;
-      if (descriptionError) {
-        if (descriptionError[0] == 1005) {
-          descBackError.value = "Por favor ingrese el cuerpo de la actividad.";
-        }
-      }
       console.log(error.response?.data);
     }
   } finally {
@@ -288,13 +285,14 @@ const createActivity = async () => {
   }
 };
 
-// ++ Updated Article
-const updateArticle = async () => {
+// ++ Save Updated Article
+const saveUpdateArticle = async (id_image?: number) => {
   loadingSubmit.value = true;
   try {
     await updateActivityAPI(activityState.value.id, {
       title: dataSend.title ? dataSend.title : activityState.value.title,
       autor: dataSend.autor ? dataSend.autor : activityState.value.autor,
+      storage_id: id_image ? id_image : activityState.value.id_img,
       description: dataSend.description
         ? dataSend.description
         : activityState.value.description,
@@ -303,12 +301,6 @@ const updateArticle = async () => {
     router.push({ name: "ActivityPage" });
   } catch (error) {
     if (error instanceof AxiosError) {
-      let descriptionError = error.response?.data.errors.description;
-      if (descriptionError) {
-        if (descriptionError[0] == 1005) {
-          descBackError.value = "Por favor ingrese el cuerpo de la actividad.";
-        }
-      }
       console.log(error.response?.data);
     }
   } finally {
@@ -316,14 +308,53 @@ const updateArticle = async () => {
   }
 };
 
+// ++ Create
+const createActivity = async () => {
+  // --Get ID Image
+  const formdata = new FormData();
+  formdata.append("path", dataSend.image);
+  try {
+    const {
+      data: { id_image },
+    } = await uploadImageAPI(formdata);
+    // -- Create Activity
+    await saveCreateActivity(id_image);
+    console.log(id_image);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data);
+    }
+  }
+};
+
+// ++ Update
+const updateActivity = async () => {
+  // --Get ID Image
+  const formdata = new FormData();
+  formdata.append("path", dataSend.image);
+  try {
+    const {
+      data: { id_image },
+    } = await uploadImageAPI(formdata);
+    // -- Create Activity
+    await saveUpdateArticle(id_image);
+    console.log(id_image);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data);
+    }
+  }
+};
+
 const onSubmitActivity = async () => {
-  // console.log(activityState.value);
   if (!activityState.value.id) {
-    console.log("create");
     createActivity();
   } else {
-    // Imagen revidar
-    // updateArticle();
+    if (dataSend.image) {
+      updateActivity();
+    } else {
+      saveUpdateArticle();
+    }
   }
 };
 
@@ -331,6 +362,7 @@ const onSubmitActivity = async () => {
 onMounted(async () => {
   if (route.params.id) {
     await activityStore.getActivityStore(Number(route.params.id));
+    dataSend.description_verify = activityState.value.description;
   } else {
     activityStore.isLoadingPageSingle = false;
   }

@@ -17,6 +17,18 @@
     </q-icon>
     <!-- //++Preview Image -->
     <div class="q-mt-xs q-gutter-sm">
+      <template v-if="activityState.url_img && !previewFile">
+        <q-img class="image-preview" :src="activityState.url_img">
+          <q-icon
+            class="icon-remove"
+            size="1.2rem"
+            name="fa-solid fa-circle-xmark"
+            color="primary"
+            @click="onRemoveImage"
+          >
+          </q-icon>
+        </q-img>
+      </template>
       <template v-if="previewFile">
         <q-img class="image-preview" :src="previewFile">
           <q-icon
@@ -50,7 +62,7 @@
       ref="refUploadImage"
       accept=".jpg,.jpeg,.png"
       @update:model-value="onPreviewImage"
-      :rules="imagenRequired"
+      :rules="!activityState.id ? imagenRequired : []"
       :no-error-icon="true"
       @blur="!imageUpload ? resetErrorImage() : ''"
       :hide-bottom-space="
@@ -65,13 +77,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { imagenRequired } from "@utils/validation";
+import { useActivity } from "@stores/Activity";
 
 // ++Emits
 const emits = defineEmits(["emitImageUpload"]);
 
 // ***************** Constants ******************
+const activityOrder = useActivity();
 const previewFile = ref<any>();
 const imageUpload = ref<any>(null);
 const refUploadImage = ref<any>(null);
@@ -86,6 +100,7 @@ const onUploadFile = () => {
 const onRemoveImage = () => {
   previewFile.value = "";
   refUploadImage.value.removeFile();
+  activityOrder.activity.url_img = "";
 };
 
 // ++ Preview Image
@@ -96,9 +111,6 @@ const onPreviewImage = async (newFile: any) => {
     previewFile.value = e.target.result;
   };
   reader.readAsDataURL(newFile);
-
-  // console.log("image", previewFile.value);
-
   emits("emitImageUpload", newFile);
 };
 
@@ -106,6 +118,9 @@ const onPreviewImage = async (newFile: any) => {
 const resetErrorImage = () => {
   refUploadImage.value.resetValidation();
 };
+
+//************* Functions Computed *************
+const activityState = computed(() => activityOrder.activity);
 </script>
 
 <style lang="scss" scoped>

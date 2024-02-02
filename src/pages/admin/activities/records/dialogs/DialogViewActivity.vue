@@ -35,7 +35,7 @@
           <div class="col-12 q-mt-md">
             <q-card flat bordered>
               <q-card-section class="text-center">
-                <q-img :src="activityState.image" style="max-width: 300px" />
+                <q-img :src="activityState.url_img" style="max-width: 300px" />
               </q-card-section>
               <q-card-section v-html="activityState.description" />
             </q-card>

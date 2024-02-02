@@ -43,7 +43,8 @@ export interface Activity {
   title: string;
   autor: string;
   description: string;
-  image: string;
+  url_img: string;
+  id_img: number;
   created_at: string;
   updated_at: string;
 }
