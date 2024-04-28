@@ -284,14 +284,12 @@ const uploadRegisterStore = () => {
   dataSend.title = activityState.value.title;
   dataSend.autor = activityState.value.autor;
   dataSend.description = activityState.value.description;
-  // dataSend.autor = activityState.value.autor
 };
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
   if (route.params.id) {
     await activityStore.getActivityStore(Number(route.params.id));
-    // await Promise.resolve();
     uploadRegisterStore();
     dataSend.description_verify = activityState.value.description;
   } else {

@@ -70,7 +70,6 @@ const opendialogShowActivity = async (article_id: number) => {
 //************* Functions Computed *************
 const activitiesState = computed(() => activityStore.activities);
 const loadingPageState = computed(() => activityStore.isLoadingPageList);
-const loadingTableState = computed(() => activityStore.isLoadingTable);
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
