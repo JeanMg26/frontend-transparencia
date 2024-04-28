@@ -100,9 +100,11 @@ import { usernameRequired, passwordRequired } from "@utils/validation";
 import { useRouter } from "vue-router";
 import { signInAPI } from "@services/api_rest";
 import { AxiosError } from "axios";
+import { useJWTstore } from "@stores/JWT";
 
 // ***************** Constants ***************
 const router = useRouter();
+const JWTStore = useJWTstore();
 
 const dataSignin = reactive({
   username: "",
@@ -138,6 +140,7 @@ const onSignIn = async () => {
       password: dataSignin.password,
     });
     LocalStorage.set("jwt_access", data.jwt);
+    JWTStore.setJWTStore(data.jwt);
     router.push({ name: "Dashboard" });
     console.log(data);
   } catch (error) {

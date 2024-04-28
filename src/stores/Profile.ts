@@ -18,12 +18,13 @@ export const useProfile = defineStore("profile", {
       try {
         const { data } = await getProfileAPI();
         this.profile = data.data;
-        this.isLoadingPage = false;
         console.log(data);
       } catch (error) {
         if (error instanceof AxiosError) {
           console.log(error.response?.data);
         }
+      } finally {
+        this.isLoadingPage = false;
       }
     },
   },
