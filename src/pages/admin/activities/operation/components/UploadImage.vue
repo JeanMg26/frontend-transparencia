@@ -80,6 +80,8 @@
 import { computed, ref } from "vue";
 import { imagenRequired } from "@utils/validation";
 import { useActivity } from "@stores/Activity";
+import { uploadImageAPI } from "@services/api_rest";
+import { AxiosError } from "axios";
 
 // ++Emits
 const emits = defineEmits(["emitImageUpload"]);
@@ -89,9 +91,15 @@ const activityOrder = useActivity();
 const previewFile = ref<any>();
 const imageUpload = ref<any>(null);
 const refUploadImage = ref<any>(null);
+const idImage = ref<number>();
 
 // ***************** Functions Template ******************
-// ++ Open Window to Upload Image
+// ++Errors
+const resetErrorImage = () => {
+  refUploadImage.value.resetValidation();
+};
+
+// ++Open Window to Upload Image
 const onUploadFile = () => {
   refUploadImage.value.pickFiles();
 };
@@ -103,7 +111,7 @@ const onRemoveImage = () => {
   activityOrder.activity.url_img = "";
 };
 
-// ++ Preview Image
+// ++Preview Image
 const onPreviewImage = async (newFile: any) => {
   console.log(newFile);
   let reader = new FileReader();
@@ -111,12 +119,26 @@ const onPreviewImage = async (newFile: any) => {
     previewFile.value = e.target.result;
   };
   reader.readAsDataURL(newFile);
-  emits("emitImageUpload", newFile);
+  // --Upload Image
+  uploadImage();
+  emits("emitImageUpload", idImage);
 };
 
-// ++ Errors
-const resetErrorImage = () => {
-  refUploadImage.value.resetValidation();
+// ++Upload Image
+const uploadImage = async () => {
+  // --Get ID Image
+  const formdata = new FormData();
+  formdata.append("path", imageUpload.value);
+  try {
+    const {
+      data: { id_image },
+    } = await uploadImageAPI(formdata);
+    idImage.value = id_image;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data);
+    }
+  }
 };
 
 //************* Functions Computed *************

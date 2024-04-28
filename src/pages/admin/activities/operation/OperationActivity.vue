@@ -20,7 +20,6 @@
       </div>
     </div>
     <!-- //***************** FORM ***************** -->
-    {{ descriptionState }}
     <q-card flat bordered class="card-article">
       <q-card-section>
         <q-form @submit="onSubmitActivity" greedy no-error-focus>
@@ -32,7 +31,7 @@
               <q-input
                 dense
                 outlined
-                v-model="titleState"
+                v-model="dataSend.title"
                 type="text"
                 placeholder="Ingresar el título"
                 class="q-mt-xs"
@@ -54,7 +53,7 @@
                 autogrow
                 dense
                 rows="2"
-                v-model="autorState"
+                v-model="dataSend.autor"
                 type="textarea"
                 placeholder="Ingresar el nombre del autor"
                 class="q-mt-xs"
@@ -69,7 +68,7 @@
               <span class="q-label-input">Cuerpo de la publicación</span>
               <span class="text-red">*</span>
               <q-editor
-                v-model="descriptionState"
+                v-model="dataSend.description"
                 class="q-mt-xs"
                 @update:model-value="updateDescription"
                 :toolbar="[
@@ -195,7 +194,7 @@ const dataSend = reactive({
   title: "",
   autor: "",
   description: "",
-  image: "",
+  id_image: "",
   description_verify: "",
 });
 
@@ -211,7 +210,7 @@ const resetErrorTitle = () => {
 
 // ++Emits
 const getEmitImageUpload = (value: any) => {
-  dataSend.image = value;
+  dataSend.id_image = value;
   console.log(value);
 };
 
@@ -224,54 +223,15 @@ const updateDescription = (value: any) => {
 const activityState = computed(() => activityStore.activity);
 const loadingPageState = computed(() => activityStore.isLoadingPageSingle);
 
-const titleState = computed({
-  get() {
-    return dataSend.title
-      ? dataSend.title
-      : activityState.value
-      ? activityState.value.title
-      : "";
-  },
-  set(value: any) {
-    dataSend.title = value;
-  },
-});
-
-const autorState = computed({
-  get() {
-    return dataSend.autor
-      ? dataSend.autor
-      : activityState.value
-      ? activityState.value.autor
-      : "";
-  },
-  set(value: any) {
-    dataSend.autor = value;
-  },
-});
-
-const descriptionState = computed({
-  get() {
-    return dataSend.description
-      ? dataSend.description
-      : activityState.value
-      ? activityState.value.description
-      : "";
-  },
-  set(value: any) {
-    dataSend.description = value;
-  },
-});
-
 //**************** Functions API ****************
-// ++ Save Create Article
-const saveCreateActivity = async (id_image: number) => {
+// ++Create Article
+const createActivity = async () => {
   loadingSubmit.value = true;
   try {
     await createActivityAPI({
       title: dataSend.title,
       autor: dataSend.autor,
-      storage_id: id_image,
+      storage_id: dataSend.id_image,
       description: dataSend.description,
     });
     notify("success", "Actividad creada correctamente.");
@@ -285,14 +245,16 @@ const saveCreateActivity = async (id_image: number) => {
   }
 };
 
-// ++ Save Updated Article
-const saveUpdateArticle = async (id_image?: number) => {
+// ++Updated Article
+const updateActivity = async () => {
   loadingSubmit.value = true;
   try {
     await updateActivityAPI(activityState.value.id, {
       title: dataSend.title ? dataSend.title : activityState.value.title,
       autor: dataSend.autor ? dataSend.autor : activityState.value.autor,
-      storage_id: id_image ? id_image : activityState.value.id_img,
+      storage_id: dataSend.id_image
+        ? dataSend.id_image
+        : activityState.value.id_img,
       description: dataSend.description
         ? dataSend.description
         : activityState.value.description,
@@ -308,60 +270,29 @@ const saveUpdateArticle = async (id_image?: number) => {
   }
 };
 
-// ++ Create
-const createActivity = async () => {
-  // --Get ID Image
-  const formdata = new FormData();
-  formdata.append("path", dataSend.image);
-  try {
-    const {
-      data: { id_image },
-    } = await uploadImageAPI(formdata);
-    // -- Create Activity
-    await saveCreateActivity(id_image);
-    console.log(id_image);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data);
-    }
-  }
-};
-
-// ++ Update
-const updateActivity = async () => {
-  // --Get ID Image
-  const formdata = new FormData();
-  formdata.append("path", dataSend.image);
-  try {
-    const {
-      data: { id_image },
-    } = await uploadImageAPI(formdata);
-    // -- Create Activity
-    await saveUpdateArticle(id_image);
-    console.log(id_image);
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data);
-    }
-  }
-};
-
 const onSubmitActivity = async () => {
   if (!activityState.value.id) {
     createActivity();
   } else {
-    if (dataSend.image) {
-      updateActivity();
-    } else {
-      saveUpdateArticle();
-    }
+    updateActivity();
   }
+};
+
+// ************ Upload Data Store ***************
+// ++Upload DataStore
+const uploadRegisterStore = () => {
+  dataSend.title = activityState.value.title;
+  dataSend.autor = activityState.value.autor;
+  dataSend.description = activityState.value.description;
+  // dataSend.autor = activityState.value.autor
 };
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
   if (route.params.id) {
     await activityStore.getActivityStore(Number(route.params.id));
+    // await Promise.resolve();
+    uploadRegisterStore();
     dataSend.description_verify = activityState.value.description;
   } else {
     activityStore.isLoadingPageSingle = false;
