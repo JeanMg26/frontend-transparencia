@@ -20,7 +20,7 @@
     </div>
     <!-- //*************** TABLES ******************* -->
     <div>
-      <tableActivityDesktop
+      <TableActivityDesk
         :opendialogDeleteActivity="opendialogDeleteActivity"
         :opendialogShowActivity="opendialogShowActivity"
         :activitiesState="activitiesState"
@@ -46,7 +46,7 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useActivity } from "@stores/Activity";
 
 // ++Components
-import tableActivityDesktop from "./tables/tableActivityDesktop.vue";
+import TableActivityDesk from "./tables/TableActivityDesk.vue";
 import DialogDeleteActivity from "./dialogs/DialogDeleteActivity.vue";
 import DialogViewActivity from "./dialogs/DialogViewActivity.vue";
 

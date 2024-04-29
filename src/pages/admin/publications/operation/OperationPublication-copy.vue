@@ -30,7 +30,7 @@
               <q-input
                 dense
                 outlined
-                v-model="dataSend.title"
+                v-model="titleState"
                 type="text"
                 placeholder="Ingresar el título"
                 class="q-mt-xs"
@@ -51,7 +51,7 @@
                 autogrow
                 dense
                 rows="2"
-                v-model="dataSend.autor"
+                v-model="autorState"
                 type="textarea"
                 placeholder="Ingresar el nombre del autor"
                 class="q-mt-xs"
@@ -65,14 +65,14 @@
                 dense
                 outlined
                 class="q-mt-xs"
-                v-model="selectCategory"
+                v-model="categoryState"
                 :options="categoriesState"
                 behavior="menu"
                 popup-content-class="popup-category"
                 :rules="selectCategoryVal"
                 :no-error-icon="true"
                 ref="refSelectCat"
-                @blur="!selectCategory ? resetErrorCat() : ''"
+                @blur="!categoryState ? resetErrorCat() : ''"
                 :hide-bottom-space="
                   refSelectCat && refSelectCat.hasError ? false : true
                 "
@@ -80,10 +80,10 @@
               >
                 <!-- //++ Selected -->
                 <template v-slot:selected>
-                  <span v-if="!selectCategory" class="text-grey-6">
+                  <span v-if="!categoryState" class="text-grey-6">
                     Selecionar la categoria
                   </span>
-                  <span v-else>{{ selectCategory.name }}</span>
+                  <span v-else>{{ categoryState.name }}</span>
                 </template>
                 <!-- //++ Options -->
                 <template v-slot:option="{ itemProps, opt }">
@@ -102,14 +102,14 @@
               <q-input
                 dense
                 outlined
-                v-model="dataSend.route"
+                v-model="routeState"
                 type="text"
                 placeholder="Ingresar una ruta sin espacios"
                 class="q-mt-xs"
                 :rules="routeValidation"
                 :no-error-icon="true"
                 ref="refRoute"
-                @blur="!dataSend.route ? resetErrorRoute() : ''"
+                @blur="!routeState ? resetErrorRoute() : ''"
                 :hide-bottom-space="
                   refRoute && refRoute.hasError ? false : true
                 "
@@ -117,17 +117,14 @@
             </div>
             <!-- //++ Upload Image ++ -->
             <div class="col-12">
-              <UploadImage
-                :articleState="articleState"
-                @emitImageUpload="getEmitImageUpload"
-              />
+              <UploadImage @emitImageUpload="getEmitImageUpload" />
             </div>
             <!-- //++Editor++ -->
             <div class="col-12 q-mt-md">
               <span class="q-label-input">Cuerpo de la publicación</span>
               <span class="text-red">*</span>
               <q-editor
-                v-model="dataSend.description"
+                v-model="descriptionState"
                 class="q-mt-xs"
                 :toolbar="[
                   [
@@ -242,7 +239,7 @@ const dataSend = reactive({
   autor: "",
   description: "",
   route: "",
-  id_image: "",
+  image: "",
   description_verify: "",
   category_id: "",
 });
@@ -272,12 +269,11 @@ const resetErrorTitle = () => {
 
 const updateCategory = (cat: Category) => {
   dataSend.category_id = String(cat.id);
-  console.log(cat);
 };
 
 // ++Emits
 const getEmitImageUpload = (value: any) => {
-  dataSend.id_image = value;
+  dataSend.image = value;
   console.log(value);
 };
 
@@ -285,6 +281,32 @@ const getEmitImageUpload = (value: any) => {
 const categoriesState = computed(() => categoryStore.categories);
 const articleState = computed(() => articleStore.article);
 const loadingPageState = computed(() => articleStore.isLoadingPageSingle);
+
+const titleState = computed({
+  get() {
+    return articleState.value.title
+      ? articleState.value.title
+      : dataSend.title
+      ? dataSend.title
+      : "";
+  },
+  set(value: any) {
+    dataSend.title = value;
+  },
+});
+
+const autorState = computed({
+  get() {
+    return articleState.value.autor
+      ? articleState.value.autor
+      : dataSend.autor
+      ? dataSend.autor
+      : "";
+  },
+  set(value: any) {
+    dataSend.autor = value;
+  },
+});
 
 const categoryState = computed({
   get() {
@@ -299,19 +321,46 @@ const categoryState = computed({
   },
 });
 
+const routeState = computed({
+  get() {
+    return articleState.value.route
+      ? articleState.value.route
+      : dataSend.route
+      ? dataSend.route
+      : "";
+  },
+  set(value: any) {
+    dataSend.route = value;
+  },
+});
+
+const descriptionState = computed({
+  get() {
+    return dataSend.description
+      ? dataSend.description
+      : articleState.value.description
+      ? articleState.value.description
+      : "";
+  },
+  set(value: any) {
+    dataSend.description = value;
+  },
+});
+
 //**************** Functions API ****************
 // ++ Create Article
 const createArticle = async () => {
+  const formdata = new FormData();
+  formdata.append("image", dataSend.image);
+  formdata.append("title", dataSend.title);
+  formdata.append("autor", dataSend.autor);
+  formdata.append("route", dataSend.route);
+  formdata.append("description", dataSend.description);
+  formdata.append("category_id", dataSend.category_id);
+
   loadingSubmit.value = true;
   try {
-    await createArticleAPI({
-      title: dataSend.title,
-      autor: dataSend.autor,
-      route: dataSend.route,
-      description: dataSend.description,
-      category_id: dataSend.category_id,
-      storage_id: dataSend.id_image,
-    });
+    await createArticleAPI(formdata);
     notify("success", "Articulo creado correctamente.");
     router.push({ name: "PublicationPage" });
   } catch (error) {
@@ -344,9 +393,6 @@ const updateArticle = async () => {
       category_id: dataSend.category_id
         ? Number(dataSend.category_id)
         : articleState.value.category_id,
-      storage_id: dataSend.id_image
-        ? dataSend.id_image
-        : articleState.value.id_img,
     });
     notify("success", "Articulo actualizado correctamente.");
     router.push({ name: "PublicationPage" });
@@ -374,26 +420,15 @@ const onSubmitSection = async () => {
   }
 };
 
-// ************** Upload Data Store ***************
-const uploadArticleStore = () => {
-  dataSend.title = articleState.value.title;
-  dataSend.autor = articleState.value.autor;
-  dataSend.route = articleState.value.route;
-  dataSend.description = articleState.value.description;
-  selectCategory.value = categoriesState.value.find(
-    (cat: Category) => cat.id == articleState.value.category_id
-  );
-};
-
 //************* Functions LifeCycle *************
 onMounted(async () => {
+  await categoryStore.getCategoriesStore();
+
   if (route.params.id) {
     await articleStore.getArticleStore(Number(route.params.id));
-    uploadArticleStore();
   } else {
     articleStore.isLoadingPageSingle = false;
   }
-  await categoryStore.getCategoriesStore();
 });
 
 onUnmounted(() => {

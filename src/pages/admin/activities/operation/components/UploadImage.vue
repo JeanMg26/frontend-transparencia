@@ -91,7 +91,6 @@ const activityOrder = useActivity();
 const previewFile = ref<any>();
 const imageUpload = ref<any>(null);
 const refUploadImage = ref<any>(null);
-const idImage = ref<number>();
 
 // ***************** Functions Template ******************
 // ++Errors
@@ -121,7 +120,6 @@ const onPreviewImage = async (newFile: any) => {
   reader.readAsDataURL(newFile);
   // --Upload Image
   uploadImage();
-  emits("emitImageUpload", idImage);
 };
 
 // ++Upload Image
@@ -133,7 +131,7 @@ const uploadImage = async () => {
     const {
       data: { id_image },
     } = await uploadImageAPI(formdata);
-    idImage.value = id_image;
+    emits("emitImageUpload", id_image);
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(error.response?.data);

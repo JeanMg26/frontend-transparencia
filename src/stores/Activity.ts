@@ -42,9 +42,7 @@ export const useActivity = defineStore("activity", {
           data: { data },
         } = await getActivityAPI(id);
         this.activity = data;
-        setTimeout(() => {
-          this.isLoadingPageSingle = false;
-        }, 1000);
+        this.isLoadingPageSingle = false;
         this.isLoadingTable = false;
         console.log(data);
       } catch (error) {

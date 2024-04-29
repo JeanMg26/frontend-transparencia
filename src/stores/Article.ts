@@ -42,7 +42,9 @@ export const useArticle = defineStore("article", {
           data: { data },
         } = await getArticleAPI(id);
         this.article = data;
-        this.isLoadingPageSingle = false;
+        setTimeout(() => {
+          this.isLoadingPageSingle = false;
+        }, 1000);
         this.isLoadingTable = false;
         console.log(data);
       } catch (error) {

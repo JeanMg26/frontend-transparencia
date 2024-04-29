@@ -21,7 +21,7 @@
     </div>
     <!-- //*************** TABLES ******************* -->
     <div>
-      <TableArticleDesktop
+      <TableArticleDesk
         :opendialogDeleteArticle="opendialogDeleteArticle"
         :opendialogShowArticle="opendialogShowArticle"
         :articlesState="articlesState"
@@ -48,7 +48,7 @@ import { useArticle } from "@stores/Article";
 import { useCategory } from "@stores/Category";
 
 // ++Components
-import TableArticleDesktop from "./tables/tableArticledesktop.vue";
+import TableArticleDesk from "./tables/TableDeskArticle.vue";
 import DialogDeleteArticle from "./dialogs/DialogDeleteArticle.vue";
 import DialogViewArticle from "./dialogs/DialogViewArticle.vue";
 

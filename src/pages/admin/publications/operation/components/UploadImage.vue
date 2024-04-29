@@ -16,6 +16,18 @@
     </q-icon>
     <!-- //++Preview Image -->
     <div class="q-mt-xs q-gutter-sm">
+      <template v-if="articleState.url_img && !previewFile">
+        <q-img class="image-preview" :src="articleState.url_img">
+          <q-icon
+            class="icon-remove"
+            size="1.2rem"
+            name="fa-solid fa-circle-xmark"
+            color="primary"
+            @click="onRemoveImage"
+          >
+          </q-icon>
+        </q-img>
+      </template>
       <template v-if="previewFile">
         <q-img class="image-preview" :src="previewFile">
           <q-icon
@@ -55,11 +67,21 @@
 </template>
 
 <script setup lang="ts">
-import { emit } from "process";
-import { ref } from "vue";
+import { Article } from "@interfaces/interface-store";
+import { uploadImageAPI } from "@services/api_rest";
+import { AxiosError } from "axios";
+import { ref, PropType } from "vue";
 
 // ++Emits
 const emits = defineEmits(["emitImageUpload"]);
+
+// ++Props
+defineProps({
+  articleState: {
+    type: Object as PropType<Article>,
+    required: true,
+  },
+});
 
 // ***************** Constants ******************
 const previewFile = ref<any>();
@@ -86,10 +108,24 @@ const onPreviewImage = async (newFile: any) => {
     previewFile.value = e.target.result;
   };
   reader.readAsDataURL(newFile);
+  uploadImage();
+};
 
-  // console.log("image", previewFile.value);
-
-  emits("emitImageUpload", newFile);
+// ++Upload Image
+const uploadImage = async () => {
+  // --Get ID Image
+  const formdata = new FormData();
+  formdata.append("path", imageUpload.value);
+  try {
+    const {
+      data: { id_image },
+    } = await uploadImageAPI(formdata);
+    emits("emitImageUpload", id_image);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data);
+    }
+  }
 };
 </script>
 

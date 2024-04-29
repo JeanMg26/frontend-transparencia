@@ -141,7 +141,6 @@ const loadingTableState = computed(() => articleStore.isLoadingTable);
 
 //************* Functions API *************
 const updateArticle = async (id: number) => {
-  await articleStore.getArticleStore(id);
   router.push({ name: "OperationPublication", params: { id } });
 };
 </script>

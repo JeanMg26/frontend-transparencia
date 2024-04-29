@@ -139,7 +139,6 @@ const loadingTableState = computed(() => activityStore.isLoadingTable);
 
 //************* Functions API *************
 const updateArticle = async (id: number) => {
-  await activityStore.getActivityStore(id);
   router.push({ name: "OperationActivity", params: { id } });
 };
 </script>
