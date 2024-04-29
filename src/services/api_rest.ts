@@ -35,8 +35,8 @@ const getCategoryAPI = (cat_id: number) => {
 };
 
 // ++ Articles
-const getListArticlesAPI = () => {
-  return jwtAxios.get("articles");
+const getListArticlesAPI = (page: number) => {
+  return jwtAxios.get("articles?page=" + page);
 };
 
 const getArticleAPI = (id: number) => {
@@ -44,8 +44,8 @@ const getArticleAPI = (id: number) => {
 };
 
 // ++ Activities
-const getListActivitiesAPI = () => {
-  return jwtAxios.get("activities");
+const getListActivitiesAPI = (page: number) => {
+  return jwtAxios.get("activities?page=" + page);
 };
 
 const getActivityAPI = (id: number) => {

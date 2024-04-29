@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page v-if="!loadingPageState">
     <div class="row">
       <!-- //**************** HEADER ************* -->
       <div class="col-12 header-main">
@@ -171,28 +171,36 @@
           <!-- //++ News ++ -->
           <div class="col-12 column-news">
             <div class="row">
-              <div class="col-12 col-md-6">
-                <q-img src="@assets/img/main-page/img-01.jpg">
-                  <div class="absolute-bottom img-caption">
-                    GERENTE GENERAL REALIZA ENTREGA DE PRESENTES Y UN
-                    RECONOCIMIENTO A JÓVEN ATLETA AMAZONENSE
-                  </div>
-                </q-img>
+              <!-- //--First Activity-- -->
+              <div class="col-12" :class="{ 'col-md-6': listActivityState[1] }">
+                <template v-if="listActivityState[0]">
+                  <q-img
+                    :src="listActivityState[0].url_img"
+                    class="first-image"
+                  >
+                    <div class="absolute-bottom img-caption">
+                      {{ listActivityState[0].title }}
+                    </div>
+                  </q-img>
+                </template>
               </div>
+              <!-- //--Second - Thirst Activity-- -->
               <div class="col-12 col-md-6">
                 <div class="div">
-                  <q-img src="@assets/img/main-page/img-02.jpg">
-                    <div class="absolute-bottom img-caption">
-                      GERENTE GENERAL PRESENTÓ AL CONSEJO REGIONAL LOS NUEVOS
-                      LINEAMIENTOS ESTRATÉGICOS INSTITUCIONALES
-                    </div>
-                  </q-img>
-                  <q-img src="@assets/img/main-page/img-03.jpg">
-                    <div class="absolute-bottom img-caption">
-                      GERENTE GENERAL SUPERVISA AVANCES EN CONSTRUCCIÓN DEL
-                      NUEVO HOSPITAL DE RODRÍGUEZ DE MENDOZA
-                    </div>
-                  </q-img>
+                  <template v-if="listActivityState[1]">
+                    <q-img :src="listActivityState[1].url_img">
+                      <div class="absolute-bottom img-caption">
+                        {{ listActivityState[1].title }}
+                      </div>
+                    </q-img>
+                  </template>
+                  <template v-if="listActivityState[2]">
+                    <q-img :src="listActivityState[2].url_img">
+                      <div class="absolute-bottom img-caption">
+                        {{ listActivityState[2].title }}
+                      </div>
+                    </q-img>
+                  </template>
                 </div>
               </div>
             </div>
@@ -261,17 +269,21 @@
       </div>
     </div>
   </q-page>
+  <!-- //************** INNER LOADING ************* -->
+  <q-inner-loading :showing="loadingPageState">
+    <q-spinner-bars size="35px" color="primary" />
+  </q-inner-loading>
 </template>
 
 <script setup lang="ts">
-import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
+import { useActivity } from "@stores/Activity";
 
 //***************** Constants *****************
-const $q = useQuasar();
 const router = useRouter();
 const showMenuMobile = ref<boolean>(false);
+const activityStore = useActivity();
 
 //************* Functions Template *************
 const goNosotros = () => {
@@ -281,11 +293,19 @@ const goNosotros = () => {
 const goPrensa = () => {
   router.push({ name: "BlogPrensa" });
 };
+
+//************* Functions Computed *************
+const listActivityState = computed(() => activityStore.activities);
+const loadingPageState = computed(() => activityStore.isLoadingPageList);
+
+//************* Functions LifeCycle *************
+onMounted(async () => {
+  await activityStore.getListActivitiesStore(1);
+});
 </script>
 
 <style lang="scss" scoped>
 .header-main {
-  // background-image: url("@assets/img/main-page/pattern.png");
   background-color: #1b3674;
   max-height: 83vh;
   overflow: hidden;
@@ -426,6 +446,10 @@ const goPrensa = () => {
     padding-right: 7rem;
     .row {
       border: 2px solid #1b3674;
+      .first-image {
+        height: 100%;
+        position: relative;
+      }
       .img-caption {
         text-transform: uppercase;
         font-size: 1.1rem;

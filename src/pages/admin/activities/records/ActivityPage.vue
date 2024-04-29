@@ -25,6 +25,21 @@
         :opendialogShowActivity="opendialogShowActivity"
         :activitiesState="activitiesState"
       />
+      <!-- //++PAGINATION++ -->
+      <q-pagination
+        v-if="activitiesState.length"
+        size="0.8rem"
+        class="fles justify-end q-mt-md"
+        v-model="currentPage"
+        :max="totalPageState"
+        direction-links
+        outline
+        color="primary"
+        active-design="unelevated"
+        active-color="primary"
+        active-text-color="white"
+        @update:model-value="changePaginate"
+      />
     </div>
     <!-- //***************** DIALOGS *************** -->
     <!-- //++Show Activity++  -->
@@ -37,7 +52,7 @@
   </q-page>
   <!-- //************** INNER LOADING ************* -->
   <q-inner-loading :showing="loadingPageState">
-    <q-spinner-bars size="35px" color="primary" />
+    <q-spinner-bars size="30px" color="primary" />
   </q-inner-loading>
 </template>
 
@@ -55,6 +70,7 @@ const activityStore = useActivity();
 const dialogDeleteActivity = ref<boolean>(false);
 const dialogShowActivity = ref<boolean>(false);
 const activityID = ref<number>();
+const currentPage = ref<number>(1);
 
 // ****************** Functions Template *********************
 const opendialogDeleteActivity = (article_id: number) => {
@@ -69,11 +85,17 @@ const opendialogShowActivity = async (article_id: number) => {
 
 //************* Functions Computed *************
 const activitiesState = computed(() => activityStore.activities);
+const totalPageState = computed(() => activityStore.total_pages);
 const loadingPageState = computed(() => activityStore.isLoadingPageList);
+
+const changePaginate = async (page: number) => {
+  activityStore.isLoadingTable = true;
+  await activityStore.getListActivitiesStore(page);
+};
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
-  await activityStore.getListActivitiesStore();
+  await activityStore.getListActivitiesStore(1);
 });
 
 onUnmounted(() => {

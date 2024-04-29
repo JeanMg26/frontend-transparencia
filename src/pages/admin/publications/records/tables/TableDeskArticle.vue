@@ -89,20 +89,6 @@
       </q-inner-loading>
     </tbody>
   </q-markup-table>
-  <!-- //++Pagination++ -->
-  <q-pagination
-    v-if="articlesState.length"
-    size="0.8rem"
-    class="fles justify-end q-mt-md"
-    v-model="currentPage"
-    max="1"
-    direction-links
-    outline
-    color="primary"
-    active-design="unelevated"
-    active-color="primary"
-    active-text-color="white"
-  />
 </template>
 
 <script setup lang="ts">
@@ -133,7 +119,6 @@ defineProps({
 
 // ****************** Constants *****************
 const router = useRouter();
-const currentPage = ref<number>(1);
 const articleStore = useArticle();
 
 //************* Functions Computed *************

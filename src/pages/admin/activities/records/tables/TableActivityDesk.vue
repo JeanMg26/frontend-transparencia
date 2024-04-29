@@ -83,24 +83,10 @@
       </template>
       <!-- //++ Inner Loafing ++ -->
       <q-inner-loading :showing="loadingTableState">
-        <q-spinner-bars size="35px" color="primary" />
+        <q-spinner-bars size="25px" color="primary" />
       </q-inner-loading>
     </tbody>
   </q-markup-table>
-  <!-- //++Pagination++ -->
-  <q-pagination
-    v-if="activitiesState.length"
-    size="0.8rem"
-    class="fles justify-end q-mt-md"
-    v-model="currentPage"
-    max="1"
-    direction-links
-    outline
-    color="primary"
-    active-design="unelevated"
-    active-color="primary"
-    active-text-color="white"
-  />
 </template>
 
 <script setup lang="ts">
@@ -131,7 +117,6 @@ defineProps({
 
 // ****************** Constants *****************
 const router = useRouter();
-const currentPage = ref<number>(1);
 const activityStore = useActivity();
 
 //************* Functions Computed *************

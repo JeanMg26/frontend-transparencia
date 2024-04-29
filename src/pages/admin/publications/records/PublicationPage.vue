@@ -26,6 +26,21 @@
         :opendialogShowArticle="opendialogShowArticle"
         :articlesState="articlesState"
       />
+      <!-- //++Pagination++ -->
+      <q-pagination
+        v-if="articlesState.length"
+        size="0.8rem"
+        class="fles justify-end q-mt-md"
+        v-model="currentPage"
+        :max="totalPageState"
+        direction-links
+        outline
+        color="primary"
+        active-design="unelevated"
+        active-color="primary"
+        active-text-color="white"
+        @update:model-value="changePaginate"
+      />
     </div>
     <!-- //***************** DIALOGS *************** -->
     <!-- //++Show Article++  -->
@@ -58,6 +73,7 @@ const categoryStore = useCategory();
 const dialogDeleteArticle = ref<boolean>(false);
 const dialogShowArticle = ref<boolean>(false);
 const articleID = ref<number>();
+const currentPage = ref<number>(1);
 
 // ****************** Functions Template *********************
 const opendialogDeleteArticle = (article_id: number) => {
@@ -70,16 +86,21 @@ const opendialogShowArticle = async (article_id: number) => {
   dialogShowArticle.value = !dialogShowArticle.value;
 };
 
+const changePaginate = async (page: number) => {
+  articleStore.isLoadingTable = true;
+  await articleStore.getListArticlesStore(page);
+};
+
 //************* Functions Computed *************
 const articlesState = computed(() => articleStore.articles);
+const totalPageState = computed(() => articleStore.total_page);
 const categoriesState = computed(() => categoryStore.categories);
 const loadingPageState = computed(() => articleStore.isLoadingPageList);
-const loadingTableState = computed(() => articleStore.isLoadingTable);
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
   await categoryStore.getCategoriesStore();
-  await articleStore.getListArticlesStore();
+  await articleStore.getListArticlesStore(1);
 });
 
 onUnmounted(() => {

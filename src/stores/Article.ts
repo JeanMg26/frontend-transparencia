@@ -6,6 +6,7 @@ import { AxiosError } from "axios";
 interface ArticleState {
   articles: Article[];
   article: Article;
+  total_page: number;
   isLoadingPageList: boolean;
   isLoadingPageSingle: boolean;
   isLoadingTable: boolean;
@@ -15,17 +16,17 @@ export const useArticle = defineStore("article", {
   state: (): ArticleState => ({
     articles: [],
     article: {} as Article,
+    total_page: 0,
     isLoadingPageList: true,
     isLoadingPageSingle: true,
     isLoadingTable: true,
   }),
   actions: {
-    async getListArticlesStore() {
+    async getListArticlesStore(page: number) {
       try {
-        const {
-          data: { data },
-        } = await getListArticlesAPI();
-        this.articles = data;
+        const { data } = await getListArticlesAPI(page);
+        this.articles = data.data;
+        this.total_page = data.meta.last_page;
         this.isLoadingPageList = false;
         this.isLoadingTable = false;
         console.log(data);
