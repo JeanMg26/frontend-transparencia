@@ -99,7 +99,7 @@ const loadingPageState = computed(() => articleStore.isLoadingPageList);
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
-  await categoryStore.getCategoriesStore();
+  await categoryStore.getCategoriesStore(1);
   await articleStore.getListArticlesStore(1);
 });
 

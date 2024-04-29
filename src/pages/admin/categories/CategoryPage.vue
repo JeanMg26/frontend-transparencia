@@ -24,6 +24,22 @@
       <TableDesktopCategory
         :openDialogUpdateCat="openDialogUpdateCat"
         :openDialogDeleteCat="openDialogDeleteCat"
+        :categoriesState="categoriesState"
+        :loadingTableState="loadingTableState"
+      />
+      <!-- //++Pagination++ -->
+      <q-pagination
+        v-if="categoriesState.length"
+        size="0.8rem"
+        class="fles justify-end q-mt-md"
+        v-model="currentPage"
+        max="1"
+        direction-links
+        outline
+        color="primary"
+        active-design="unelevated"
+        active-color="primary"
+        active-text-color="white"
       />
     </div>
     <!-- //*************** DIALOGS *************** -->
@@ -39,7 +55,6 @@
 </template>
 
 <script setup lang="ts">
-import { useQuasar } from "quasar";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useCategory } from "@stores/Category";
 
@@ -49,11 +64,11 @@ import DialogOperationCategory from "./dialogs/DialogOperationCategory.vue";
 import DialogDeleteCategory from "./dialogs/DialogDeleteCategory.vue";
 
 //***************** Constants *****************
-const $q = useQuasar();
 const categoryStore = useCategory();
 const dialogAddCat = ref<boolean>(false);
 const dialogDeleteCat = ref<boolean>(false);
 const catID = ref<number>();
+const currentPage = ref<number>(1);
 
 //************* Functions Template *************
 const openDialogOperationCat = () => {
@@ -72,11 +87,13 @@ const openDialogDeleteCat = (cat_id: number) => {
 };
 
 //************* Functions Computed *************
+const categoriesState = computed(() => categoryStore.categories);
 const loadingPageState = computed(() => categoryStore.isLoadingPage);
+const loadingTableState = computed(() => categoryStore.isLoadingTable);
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
-  await categoryStore.getCategoriesStore();
+  await categoryStore.getCategoriesStore(1);
 });
 
 onUnmounted(() => {

@@ -26,8 +26,8 @@ const getUserAPI = (user_id: number) => {
 };
 
 // ++ Categories
-const getCategoriesAPI = () => {
-  return jwtAxios.get("cats");
+const getCategoriesAPI = (page: number) => {
+  return jwtAxios.get("cats?page=" + page);
 };
 
 const getCategoryAPI = (cat_id: number) => {

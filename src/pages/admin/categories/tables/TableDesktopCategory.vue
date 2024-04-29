@@ -67,29 +67,16 @@
       </q-inner-loading>
     </tbody>
   </q-markup-table>
-  <!-- //++Pagination++ -->
-  <q-pagination
-    v-if="categoriesState.length"
-    size="0.8rem"
-    class="fles justify-end q-mt-md"
-    v-model="currentPage"
-    max="1"
-    direction-links
-    outline
-    color="primary"
-    active-design="unelevated"
-    active-color="primary"
-    active-text-color="white"
-  />
 </template>
 
 <script setup lang="ts">
 import { date } from "quasar";
 import { useCategory } from "@stores/Category";
-import { computed, ref } from "vue";
+import { PropType, computed, ref } from "vue";
 
 // ++ Components
 import NoResults from "@components/others/NoResults.vue";
+import { Category } from "@interfaces/interface-store";
 
 // ++Props
 defineProps({
@@ -101,15 +88,15 @@ defineProps({
     type: Function,
     required: true,
   },
+  categoriesState: {
+    type: Object as PropType<Category[]>,
+    required: true,
+  },
+  loadingTableState: {
+    type: Boolean,
+    required: true,
+  },
 });
-
-//***************** Constants *****************
-const categoryStore = useCategory();
-const currentPage = ref<number>(1);
-
-//************* Functions Computed *************
-const categoriesState = computed(() => categoryStore.categories);
-const loadingTableState = computed(() => categoryStore.isLoadingTable);
 </script>
 
 <style lang="scss" scoped>
