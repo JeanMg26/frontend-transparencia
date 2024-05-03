@@ -76,7 +76,7 @@
         <span>|</span>
         <span>RRSS</span>
         <span>|</span>
-        <span @click="goSignIn()">Iniciar Sesión</span>
+        <!-- <span @click="goSignIn()">Iniciar Sesión</span> -->
       </div>
     </div>
     <div class="text-center q-mt-md all-rights">
