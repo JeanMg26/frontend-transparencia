@@ -1,0 +1,1 @@
+import{B as e,V as t}from"./index.4f03f91b.js";const a=e("jwt",{state:()=>({jwt_access:t.getItem("jwt_access")?t.getItem("jwt_access"):""}),actions:{setJWTStore(s){this.jwt_access=s},cleanJWTStore(){this.jwt_access=""}}});export{a as u};

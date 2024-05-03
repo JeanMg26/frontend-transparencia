@@ -1,0 +1,1 @@
+import{B as a}from"./index.4f03f91b.js";import{g as r,A as t}from"./api_rest.be0b8500.js";const f=a("profile",{state:()=>({profile:{},isLoadingPage:!0}),actions:{async getProfileStore(){var e;try{const{data:o}=await r();this.profile=o.data,console.log(o)}catch(o){o instanceof t&&console.log((e=o.response)==null?void 0:e.data)}finally{this.isLoadingPage=!1}}}});export{f as u};
