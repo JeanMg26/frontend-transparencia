@@ -28,14 +28,14 @@
           <q-card flat bordered>
             <q-card-section>
               <!-- //++ Image ++ -->
-              <!-- <div v-if="articleState.image" class="text-center q-mt-md">
+              <div v-if="articleState.url_img" class="text-center q-mt-md">
                 <q-img
-                  :src="articleState.image"
+                  :src="articleState.url_img"
                   spinner-color="primary"
                   spinner-size="82px"
                   class="image-publication"
                 />
-              </div> -->
+              </div>
               <!-- //++ Title++ -->
               <div class="title-article">
                 <span>{{ articleState.title }}</span>
@@ -107,7 +107,7 @@ const goSignIn = () => {
 //************* Functions LifeCycle *************
 onMounted(async () => {
   await articleStore.getArticleStore(articleLS.value.id);
-  await articleStore.getListArticlesStore();
+  await articleStore.getListArticlesStore(1);
   // await publicationStore.getArticleStore();
 });
 </script>

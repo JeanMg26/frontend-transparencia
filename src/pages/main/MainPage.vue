@@ -176,7 +176,8 @@
                 <template v-if="listActivityState[0]">
                   <q-img
                     :src="listActivityState[0].url_img"
-                    class="first-image"
+                    class="first-image cursor-pointer"
+                    @click="goActivity(listActivityState[1].id)"
                   >
                     <div class="absolute-bottom img-caption">
                       {{ listActivityState[0].title }}
@@ -188,14 +189,22 @@
               <div class="col-12 col-md-6">
                 <div class="div">
                   <template v-if="listActivityState[1]">
-                    <q-img :src="listActivityState[1].url_img">
+                    <q-img
+                      :src="listActivityState[1].url_img"
+                      @click="goActivity(listActivityState[2].id)"
+                      class="cursor-pointer"
+                    >
                       <div class="absolute-bottom img-caption">
                         {{ listActivityState[1].title }}
                       </div>
                     </q-img>
                   </template>
                   <template v-if="listActivityState[2]">
-                    <q-img :src="listActivityState[2].url_img">
+                    <q-img
+                      :src="listActivityState[2].url_img"
+                      @click="goActivity(listActivityState[1].id)"
+                      class="cursor-pointer"
+                    >
                       <div class="absolute-bottom img-caption">
                         {{ listActivityState[2].title }}
                       </div>
@@ -292,6 +301,10 @@ const goNosotros = () => {
 
 const goPrensa = () => {
   router.push({ name: "BlogPrensa" });
+};
+
+const goActivity = (id_Activity: number) => {
+  router.push({ name: "BlogActivity", params: { activity: id_Activity } });
 };
 
 //************* Functions Computed *************

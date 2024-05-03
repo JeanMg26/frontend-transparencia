@@ -1,57 +1,41 @@
 <template>
-  <q-page>
+  <q-page v-if="!loadingPageState">
     <div class="header-publication">
       <span @click="goBackMain()">Página principal</span>
       <q-icon name="fa-solid fa-chevron-right" size="0.6rem" />
-      <span>Prensa</span>
+      <span>Actividades</span>
     </div>
     <!-- //++Body++ -->
     <div class="section-body">
-      <div class="row q-col-gutter-x-md">
-        <!-- //--Articles Menu-- -->
-        <div v-if="$q.screen.width >= 1024" class="col-md-4 col-xl-3">
-          <q-list bordered class="list-articles">
-            <q-item
-              v-for="(social, index) in listSocialMedia"
-              :key="index"
-              clickable
-              :active="social.id == socialMedia"
-              active-class="article-active"
-              @click="goSocialMedia(social.id)"
-            >
-              <q-item-section>
-                <div class="flex items-center">
-                  <q-icon :name="social.icon" size="0.8rem" class="q-mr-sm" />
-                  <span>{{ social.name }}</span>
-                </div>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </div>
-        <!-- //--Articles Post-- -->
-        <div class="col-12 col-md-8 col-xl-9 q-pl-none">
-          <q-card flat bordered class="card-body">
-            <q-card-section>
-              <div class="text-center">
-                <iframe
-                  src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fgerenciageneralgorea&tabs=timeline&width=500&height=500&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false&appId"
-                  width="500"
-                  height="500"
-                  style="border: none; overflow: hidden"
-                  scrolling="no"
-                  frameborder="0"
-                  allowfullscreen="true"
-                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                ></iframe>
-              </div>
-            </q-card-section>
-          </q-card>
-        </div>
+      <div class="col-12 col-md-8 col-xl-9">
+        <q-card flat bordered>
+          <q-card-section>
+            <!-- //++ Image ++ -->
+            <div v-if="activityState.url_img" class="text-center q-mt-md">
+              <q-img
+                :src="activityState.url_img"
+                spinner-color="primary"
+                spinner-size="82px"
+                class="image-publication"
+              />
+            </div>
+            <!-- //++ Title++ -->
+            <div class="title-article">
+              <span>{{ activityState.title }}</span>
+            </div>
+          </q-card-section>
+          <q-card-section v-html="activityState.description" />
+        </q-card>
       </div>
     </div>
     <!-- //++ Footer ++ -->
     <Footer />
   </q-page>
+
+  <!-- //****************** INNER LOADING ***************** -->
+  <q-inner-loading :showing="loadingPageState">
+    <q-spinner-bars size="35px" color="primary" />
+  </q-inner-loading>
 </template>
 
 <script setup lang="ts">
@@ -60,6 +44,7 @@ import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useArticle } from "@stores/Article";
 import { Article } from "@interfaces/interface-store";
+import { useActivity } from "@stores/Activity";
 
 // ++Componens
 import Footer from "../components/Footer.vue";
@@ -69,16 +54,7 @@ const $q = useQuasar();
 const router = useRouter();
 const articleLS = ref<any>($q.localStorage.getItem("article"));
 const articleStore = useArticle();
-
-const socialMedia = ref<number>(1);
-
-const listSocialMedia = ref<any>([
-  { id: 1, name: "Facebook", icon: "fa-brands fa-facebook-f" },
-  { id: 2, name: "Instagram", icon: "fa-brands fa-instagram" },
-  { id: 3, name: "Youtube", icon: "fa-brands fa-youtube" },
-  { id: 4, name: "Twitter", icon: "fa-brands fa-x-twitter" },
-  { id: 5, name: "Linkedin", icon: "fa-brands fa-linkedin-in" },
-]);
+const activityStore = useActivity();
 
 //************* Functions Template *************
 const goBackMain = () => {
@@ -88,21 +64,17 @@ const goBackMain = () => {
 };
 
 //************* Functions Computed *************
-const articlesState = computed(() => articleStore.articles);
-const articleState = computed(() => articleStore.article);
-const loadingListArticleState = computed(() => articleStore.isLoadingPageList);
-const loadingSingleArticleState = computed(
-  () => articleStore.isLoadingPageSingle
-);
-// const loadingArticleState = computed(() => cate.isLoadingPage);
+const activityState = computed(() => activityStore.activity);
+const loadingPageState = computed(() => activityStore.isLoadingPageSingle);
 
 //**************** Functions API ****************
-const goSocialMedia = async (social_id: number) => {
-  socialMedia.value = social_id;
-  // router.push({
-  //   name: "BlogPublication",
-  //   params: { publication: article.route },
-  // });
+const goArticle = async (article: Article) => {
+  await articleStore.getArticleStore(article.id);
+  $q.localStorage.set("article", article);
+  router.push({
+    name: "BlogPublication",
+    params: { publication: article.route },
+  });
 };
 
 const goSignIn = () => {
@@ -111,8 +83,7 @@ const goSignIn = () => {
 
 //************* Functions LifeCycle *************
 onMounted(async () => {
-  await articleStore.getArticleStore(articleLS.value.id);
-  await articleStore.getListArticlesStore(1);
+  await activityStore.getActivityStore(6);
   // await publicationStore.getArticleStore();
 });
 </script>
@@ -149,7 +120,6 @@ onMounted(async () => {
   .list-articles {
     width: 350px;
     background-color: $grey-2;
-    user-select: none;
     .q-item {
       background-color: #fff;
       margin: 1rem;
@@ -159,9 +129,6 @@ onMounted(async () => {
         color: #fff;
       }
     }
-  }
-  .card-body {
-    padding: 1rem;
   }
 }
 
